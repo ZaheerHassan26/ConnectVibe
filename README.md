@@ -1,2 +1,2 @@
 # ConnectVibe
-ChatApp
+React-Native ChatApp
