@@ -19,13 +19,8 @@ import {
   import {emailRegex} from '../../Utils/function';
   import {useImages} from '../../Utils/Images';
   import Button from '../../Components/Button';
-  import styles from './styles';
+  import styles from './style';
 
-
-
-
-  
-  
   const schema = yup.object({
     name: yup.string().required('Name is required'),
     email: yup
@@ -37,7 +32,7 @@ import {
     confirmPassword: yup.string().required('Confirm password is required'),
   });
   
-  const Signup: React.FC<NavigationType> = ({navigation}) => {
+  const Signup  = ({navigation}) => {
     const [pictureModalVisible, setPictureModalVisible] = useState(false);
     const [profileImage, setProfileImage] = useState('');
     const [passwordView, setPasswordView] = useState(false);

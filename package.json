@@ -17,13 +17,13 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
-    "@types/react-native": "^0.69.12",
-    "@types/react-native-vector-icons": "^6.4.18",
-    "axios": "^1.6.8",
-    "formik": "^2.4.5",
     "react": "18.0.0",
-    "react-hook-form": "^7.46.2",
     "react-native": "0.69.12",
+    "react-native-image-crop-picker": "^0.40.3",
+    "react-native-paper": "^5.12.3",
+    "react-native-vector-icons": "^10.0.3",
+    "formik": "^2.4.5",
+    "react-hook-form": "^7.46.2",
     "react-native-confirmation-code-field": "^7.4.0",
     "react-native-document-picker": "^9.0.1",
     "react-native-gesture-handler": "^2.16.0",
@@ -60,6 +60,7 @@
     "prettier": "^2.4.1",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
+
   },
   "jest": {
     "preset": "react-native"

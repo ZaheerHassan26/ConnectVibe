@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-
 const styles = StyleSheet.create({
   mainView: {
     marginHorizontal: 27,
@@ -78,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default styles

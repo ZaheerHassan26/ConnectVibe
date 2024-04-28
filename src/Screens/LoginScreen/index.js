@@ -9,21 +9,17 @@ import {
 } from 'react-native';
 
 import * as yup from 'yup';
+import {useImages} from '../../Utils/Images';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-
-import Input from '../../Components/Input';
-import Button from '../../Components/Button';
 import {emailRegex} from '../../Utils/function';
-import {useImages} from '../../Utils/Images';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Input from '../../Components/Input';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {Controller, useForm} from 'react-hook-form';
+import Button from '../../Components/Button';
 import styles from './style';
-import { connect } from 'react-redux';
-
-
 
 const schema = yup.object({
   username: yup
@@ -55,7 +51,7 @@ const Login = ({navigation}) => {
     password: yup.string().required().label('Password'),
   });
 
-  const loginUser = async (data: object) => {};
+  const loginUser = async data => {};
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#EDF4F6'}}>
@@ -168,7 +164,7 @@ const Login = ({navigation}) => {
               <Text style={styles.careateAnAccountText}>
                 Don’t have an account yet?
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <TouchableOpacity onPress={() => navigation.navigate('Registeration')}>
                 <Text
                   style={[styles.careateAnAccountText, styles.fontWeightBold]}>
                   Register now
@@ -182,13 +178,5 @@ const Login = ({navigation}) => {
   );
 };
 
-const mapStateTopProps = (state) => ({
-  userDetail: state.login.userDetail,
-  requesting: state.login.requesting,
-});
 
-const mapDispatchToProps = (dispath) => ({
-  loginAction: (data, fcmToken) => dispath(loginAction(data, fcmToken)),
-});
-
-export default connect(mapStateTopProps, mapDispatchToProps)(Login);
+export default Login;

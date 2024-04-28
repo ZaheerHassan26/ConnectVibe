@@ -5,11 +5,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import EditProfile from '../Screens/EditProfile';
 import {NavigationContainer} from '@react-navigation/native';
-import Home from '../Screens/Home';
-import Chat from '../Screens/Chat';
-import Setting from '../Screens/Setting';
+import EditProfile from '../Screens/EditProfileScreen';
+import Home from '../Screens/HomeScreen';
+import Chat from '../Screens/ChatScreen';
+import Setting from '../Screens/SettingScreen';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,7 +71,7 @@ export default function AppNavigator() {
       ),
     },
   ];
-  const TabBarIcon = ({route, focused}: any) => {
+  const TabBarIcon = ({route, focused}) => {
     const tab = tabConfig.find(tab => tab.name === route.name);
     return <>{focused ? tab.focusedIcon : tab.defaultIcon}</>;
   };
