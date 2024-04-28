@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {useImages} from '../utils/Images';
+import {useImages} from '../Utils/Images';
 
 export default function SplashScreen() {
   const {images} = useImages();

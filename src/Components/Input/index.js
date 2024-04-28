@@ -4,28 +4,11 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
-// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-interface Props {
-  editable?: boolean;
-  keyboardType?: any;
-  multiline?: boolean;
-  maxLength?: number;
-  textAlign?: any;
-  secureTextEntry?: boolean;
-  placeholder: string;
-  onBlur: () => void;
-  onChangeText: () => void;
-  value: any;
-  error?: string;
-  containerStyle?: object;
-  numberOfLines?: number;
-  showPassword?: boolean;
-}
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-const Input: React.FC<Props> = props => {
+const Input = props => {
   const {
     secureTextEntry,
     placeholder,
@@ -42,7 +25,6 @@ const Input: React.FC<Props> = props => {
     editable,
     showPassword,
   } = props;
-
   return (
     <>
       <View style={[styles.main, containerStyle]}>

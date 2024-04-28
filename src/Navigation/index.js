@@ -1,13 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import React, { createContext, useEffect, useState } from 'react'
-import { useColorScheme } from 'react-native'
-// import AppNavigator from './AppStack'
+import AppNavigator from './AppStack'
 import AuthNavigator from './AuthStack'
 import SplashScreen from '../Screens/SplashScreen'
 import { createStackNavigator } from '@react-navigation/stack'
 export const AuthContext = createContext()
 const Splash = createStackNavigator()
+
+
 const RootNavigator = () => {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [loading, setLoading] = useState(false)

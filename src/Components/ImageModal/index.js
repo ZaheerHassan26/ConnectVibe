@@ -1,11 +1,10 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
-import {useImages} from '../../utils/Images';
-import {CamerProps} from '../../utils/function';
+import {useImages} from '../../Utils/Images';
 import ImageCropPicker from 'react-native-image-crop-picker';
 
-const CameraModal: React.FC<CamerProps> = ({
+const CameraModal = ({
   pictureModalVisible,
   setPictureModalVisible,
   setProfileImage,
@@ -14,13 +13,13 @@ const CameraModal: React.FC<CamerProps> = ({
 
   const openCamara = () => {
     ImageCropPicker.openCamera({
-        width: 300,
-        height: 400,
-        cropping: true,
-      }).then((image) => {
-        setPictureModalVisible(false);
-        setProfileImage(image);
-      });
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      setPictureModalVisible(false);
+      setProfileImage(image);
+    });
   };
 
   const openImagePicker = () => {

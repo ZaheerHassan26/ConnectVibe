@@ -8,17 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 
-interface Props {
-  containerStyle: object;
-  textStyle: object;
-  text: string;
-  onPress: () => void;
-  //   rightImage,
-  loading: boolean;
-  disabled?: boolean;
-}
-
-const Button: React.FC<Props> = ({
+const Button = ({
   containerStyle,
   textStyle,
   text,
