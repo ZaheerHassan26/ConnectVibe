@@ -7,6 +7,7 @@ import {
   View,
   StatusBar,
 } from 'react-native';
+
 import * as yup from 'yup';
 import {useImages} from '../../Utils/Images';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

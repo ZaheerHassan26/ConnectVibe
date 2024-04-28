@@ -9,7 +9,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import EditProfile from '../Screens/EditProfileScreen';
 import Home from '../Screens/HomeScreen';
 import Chat from '../Screens/ChatScreen';
-import Setting from '../Screens/Setting';
+import Setting from '../Screens/SettingScreen';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
