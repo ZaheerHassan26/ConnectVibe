@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React from 'react';
 // import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {useImages} from '../utils/Images';
+import {useImages} from '../Utils/Images';
 import {useNavigation} from '@react-navigation/native';
 
 export default function Home() {

@@ -1,7 +1,7 @@
 import {Appearance, Platform, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-// import EvilIcons from 'react-native-vector-icons/EvilIcons';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -23,12 +23,12 @@ export default function AppNavigator() {
       component: Home,
       focusedIcon: (
         <View style={styles.activeIconContainer}>
-          {/* <AntDesign size={25} color={'white'} name={'home'} /> */}
+          <AntDesign size={25} color={'white'} name={'home'} />
         </View>
       ),
       defaultIcon: (
         <View style={styles.defaultIcon}>
-          {/* <AntDesign size={20} color={'white'} name={'home'} /> */}
+          <AntDesign size={20} color={'white'} name={'home'} />
           <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>Home</Text>
         </View>
       ),
@@ -38,17 +38,17 @@ export default function AppNavigator() {
       component: EditProfile,
       focusedIcon: (
         <View style={styles.activeIconContainer}>
-          {/* <EvilIcons
+          <EvilIcons
             size={30}
             color={'white'}
             name={'user'}
             style={{marginBottom: 7}}
-          /> */}
+          />
         </View>
       ),
       defaultIcon: (
         <View style={styles.defaultIcon}>
-          {/* <EvilIcons size={25} color={'white'} name={'user'} /> */}
+          <EvilIcons size={25} color={'white'} name={'user'} />
           <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>
             Profile
           </Text>
@@ -60,12 +60,12 @@ export default function AppNavigator() {
       component: Setting,
       focusedIcon: (
         <View style={styles.activeIconContainer}>
-          {/* <AntDesign size={25} color={'white'} name={'setting'} /> */}
+          <AntDesign size={25} color={'white'} name={'setting'} />
         </View>
       ),
       defaultIcon: (
         <View style={styles.defaultIcon}>
-          {/* <AntDesign size={20} color={'white'} name={'setting'} /> */}
+          <AntDesign size={20} color={'white'} name={'setting'} />
           <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>Logs</Text>
         </View>
       ),

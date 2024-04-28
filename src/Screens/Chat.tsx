@@ -10,10 +10,10 @@ import {
   View,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-// import Entypo from 'react-native-vector-icons/Entypo';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 interface Props {
@@ -44,7 +44,7 @@ export default function Chat({route}: Props) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          {/* <Ionicons size={25} color={'white'} name={'arrow-back'} /> */}
+          <Ionicons size={25} color={'white'} name={'arrow-back'} />
         </TouchableOpacity>
         <View style={styles.imagediv}>
           <View style={styles.imageContainer}>
@@ -95,19 +95,19 @@ export default function Chat({route}: Props) {
           </View>
           <View style={styles.iconContainer}>
             <TouchableOpacity>
-              {/* <Entypo size={25} color={'#10445C'} name={'link'} /> */}
+              <Entypo size={25} color={'#10445C'} name={'link'} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openCamera}>
-              {/* <Entypo size={25} color={'#10445C'} name={'camera'} /> */}
+              <Entypo size={25} color={'#10445C'} name={'camera'} />
             </TouchableOpacity>
           </View>
         </View>
         <Pressable style={styles.sendbtn}>
-          {/* <MaterialCommunityIcons
+          <MaterialCommunityIcons
             size={25}
             color={'#10445C'}
             name={inputValue == '' ? 'microphone' : 'send'}
-          /> */}
+          />
         </Pressable>
       </View>
     </SafeAreaView>

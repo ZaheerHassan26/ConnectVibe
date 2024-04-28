@@ -2,24 +2,28 @@ import React, {useState} from 'react';
 import {
   Image,
   SafeAreaView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
   StatusBar,
 } from 'react-native';
+
 import * as yup from 'yup';
-import {useImages} from '../utils/Images';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import Foundation from 'react-native-vector-icons/Foundation';
-// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {emailRegex} from '../utils/function';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Foundation from 'react-native-vector-icons/Foundation';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Input from '../Components/Input';
-import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
-import Button from '../Components/Button';
-import {NavigationType} from '../utils/function';
+import {yupResolver} from '@hookform/resolvers/yup';
+
+import Input from '../../Components/Input';
+import Button from '../../Components/Button';
+import {emailRegex} from '../../Utils/function';
+import {useImages} from '../../Utils/Images';
+import styles from './style';
+import { connect } from 'react-redux';
+
+
 
 const schema = yup.object({
   username: yup
@@ -29,7 +33,7 @@ const schema = yup.object({
   password: yup.string().required('Password is required'),
 });
 
-const Login: React.FC<NavigationType> = ({navigation}) => {
+const Login = ({navigation}) => {
   const {
     control,
     handleSubmit,
@@ -84,11 +88,11 @@ const Login: React.FC<NavigationType> = ({navigation}) => {
 
             <View style={styles.inputFocus}>
               <View style={styles.emailImgView}>
-                {/* <MaterialCommunityIcons
+                <MaterialCommunityIcons
                   size={17}
                   color={'white'}
                   name={'email'}
-                /> */}
+                />
               </View>
               <Controller
                 control={control}
@@ -110,7 +114,7 @@ const Login: React.FC<NavigationType> = ({navigation}) => {
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
                 <View style={{flexDirection: 'row', width: '89%'}}>
                   <View style={styles.emailImgView}>
-                    {/* <Foundation size={17} color={'white'} name={'key'} /> */}
+                    <Foundation size={17} color={'white'} name={'key'} />
                   </View>
                   <Controller
                     control={control}
@@ -131,11 +135,11 @@ const Login: React.FC<NavigationType> = ({navigation}) => {
                 <TouchableOpacity
                   onPress={() => setPasswordView(!passwordView)}
                   style={{justifyContent: 'center', marginRight: 5}}>
-                  {/* <FontAwesome5
+                  <FontAwesome5
                     size={15}
                     color={'white'}
                     name={passwordView ? 'eye' : 'eye-slash'}
-                  /> */}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
@@ -177,82 +181,14 @@ const Login: React.FC<NavigationType> = ({navigation}) => {
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  mainView: {
-    marginHorizontal: 27,
-  },
-  lableStyle: {
-    fontSize: 15,
-    lineHeight: 24,
-    fontWeight: '700',
-    color: 'white',
-    marginBottom: 5,
-  },
-  inputFocus: {
-    flexDirection: 'row',
-    borderWidth: 1.5,
-    borderRadius: 5,
-    borderColor: 'grey',
-    marginTop: 3,
-    paddingLeft: 14,
-    height: 42,
-    backgroundColor: '#3a6579',
-  },
-  loginImage: {
-    marginTop: 100,
-    alignSelf: 'center',
-    height: 68,
-    width: 103,
-  },
-  cardView: {
-    flex: 1,
-    paddingTop: 40,
-    paddingBottom: 15,
-    marginTop: 10,
-    borderTopLeftRadius: 42,
-    borderTopRightRadius: 42,
-    backgroundColor: '#10445C',
-  },
-  logoImgView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  logoImg: {height: 19, width: 200},
-  cardHeader: {
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  siginTxt: {color: 'white', fontWeight: '600', fontSize: 32},
-  subTxt: {color: 'white', fontWeight: '400', fontSize: 14, marginTop: 10},
-  emailImg: {height: 13, width: 16},
-  emailError: {color: 'yellow'},
-  forgotPass: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontWeight: '400',
-    fontSize: 14,
-    textDecorationLine: 'underline',
-  },
-  passError: {color: 'yellow'},
-  passView: {flexDirection: 'row'},
-  emailImgView: {justifyContent: 'center', marginRight: 10},
 
-  careateAnAccountView: {
-    flexDirection: 'row',
-    gap: 6,
-    marginTop: 15,
-    justifyContent: 'center',
-  },
-  careateAnAccountText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '400',
-  },
-  fontWeightBold: {
-    fontWeight: '700',
-    textDecorationLine: 'underline',
-  },
+const mapStateTopProps = (state) => ({
+  userDetail: state.login.userDetail,
+  requesting: state.login.requesting,
 });
 
-export default Login;
+const mapDispatchToProps = (dispath) => ({
+  loginAction: (data, fcmToken) => dispath(loginAction(data, fcmToken)),
+});
+
+export default connect(mapStateTopProps, mapDispatchToProps)(Login);

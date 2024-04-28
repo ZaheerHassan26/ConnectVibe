@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import React, { useState } from 'react';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {
   CodeField,
@@ -39,7 +39,7 @@ export default function ForgotCode() {
         <TouchableOpacity
           style={styles.backTouchable}
           onPress={() => navigation.goBack()}>
-          {/* <Ionicons size={25} color={'#10445C'} name={'arrow-back'} /> */}
+          <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
 
           <Text style={styles.entrCodedText}>Enter the code</Text>
         </TouchableOpacity>

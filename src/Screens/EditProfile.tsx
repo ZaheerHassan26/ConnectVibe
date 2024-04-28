@@ -8,14 +8,14 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {useImages} from '../utils/Images';
+import {useImages} from '../Utils/Images';
 // import Entypo from 'react-native-vector-icons/Entypo';
 import * as yup from 'yup';
 import {TextInput} from 'react-native-paper';
 import CameraModal from '../Components/ImageModal';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {emailRegex} from '../utils/function';
+import {emailRegex} from '../Utils/function';
 
 const schema = yup.object({
   username: yup.string().trim().required(),

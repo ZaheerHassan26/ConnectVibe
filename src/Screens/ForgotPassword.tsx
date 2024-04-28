@@ -8,9 +8,9 @@ import {
   StatusBar,
 } from 'react-native';
 import * as yup from 'yup';
-import {useImages} from '../utils/Images';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useImages} from '../Utils/Images';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useNavigation} from '@react-navigation/native';
 
@@ -43,7 +43,7 @@ const Login = () => {
         <TouchableOpacity
           style={styles.backTouchable}
           onPress={() => navigation.goBack()}>
-          {/* <Ionicons size={25} color={'#10445C'} name={'arrow-back'} /> */}
+          <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
 
           <Text style={styles.forgetPasswordText}>Forgot your password</Text>
         </TouchableOpacity>
@@ -52,7 +52,7 @@ const Login = () => {
         <Text style={styles.enterEmailText}>Enter email</Text>
         <View style={styles.inputFocus}>
           <View style={styles.emailImgView}>
-            {/* <MaterialCommunityIcons size={25} color={'white'} name={'email'} /> */}
+            <MaterialCommunityIcons size={25} color={'white'} name={'email'} />
           </View>
           <TextInput
             style={styles.textInputStyle}
