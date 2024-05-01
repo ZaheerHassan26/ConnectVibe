@@ -41,9 +41,8 @@ import {
             style={styles.backTouchable}
             onPress={() => navigation.goBack()}>
             <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
-  
-            <Text style={styles.entrCodedText}>Enter the code</Text>
           </TouchableOpacity>
+            <Text style={styles.entrCodedText}>Enter the code</Text>
         </View>
         <View style={styles.codeInputView}>
           <Text style={styles.verficationCodeText}>

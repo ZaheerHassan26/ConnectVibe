@@ -28,7 +28,7 @@ const ForgotPassword = () => {
       .label('Email'),
   });
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async data => {
     navigation.navigate('ForgotCode');
   };
 
@@ -45,9 +45,8 @@ const ForgotPassword = () => {
           style={styles.backTouchable}
           onPress={() => navigation.goBack()}>
           <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
-
-          <Text style={styles.forgetPasswordText}>Forgot your password</Text>
         </TouchableOpacity>
+        <Text style={styles.forgetPasswordText}>Forgot your password</Text>
       </View>
       <View style={styles.EmailInputView}>
         <Text style={styles.enterEmailText}>Enter email</Text>
@@ -77,6 +76,5 @@ const ForgotPassword = () => {
     </View>
   );
 };
-
 
 export default ForgotPassword;
