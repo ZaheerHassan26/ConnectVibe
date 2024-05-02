@@ -1,5 +1,6 @@
 import combinedReducers from './mainReducer';
 import createSagaMiddleware from 'redux-saga';
+import {createStore, applyMiddleware, compose} from 'redux';
 import {persistCombineReducers} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {mainSaga} from './mainSaga';
@@ -23,4 +24,4 @@ const store = createStore(
   composeEnhancers(applyMiddleware(...middlewares)),
 );
 sagaMiddleware.run(mainSaga);
-export {store};
+export default store;

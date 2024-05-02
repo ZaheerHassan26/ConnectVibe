@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -45,7 +40,11 @@ const Input = props => {
           textAlign={textAlign}
         />
       </View>
-      {error ? <Text style={{color: 'red'}}>{error}</Text> : ''}
+      {error ? (
+        <Text style={{color: 'red', alignSelf: 'flex-start'}}>{error}</Text>
+      ) : (
+        ''
+      )}
     </>
   );
 };
