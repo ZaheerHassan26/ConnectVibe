@@ -31,7 +31,7 @@ function* singupAPiCall({data, callBack}) {
     if (response?.data?.email) {
       Toast.show(response?.data?.email[0]);
     } else {
-      Toast.show(L('went_wrong'));
+      Toast.show('went_wrong');
     }
   }
 }
