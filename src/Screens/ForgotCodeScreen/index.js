@@ -34,18 +34,19 @@ const ForgotCode = ({
   });
 
   const onConfirmCode = () => {
-    if (value) {
-      const data = {
-        token: value,
-      };
-      forgotTokenAction(data, callBack);
-    } else {
-      setValueError(true);
-    }
+    // if (value) {
+    //   const data = {
+    //     token: value,
+    //   };
+    //   forgotTokenAction(data, callBack);
+    // } else {
+    //   setValueError(true);
+    // }
+    callBack()
   };
 
   const callBack = () => {
-    navigation.navigate('setNewPassword', {
+    navigation.navigate('SetNewPassword', {
       code: value,
     });
   };
@@ -86,7 +87,7 @@ const ForgotCode = ({
           style={{
             alignItems: 'flex-start',
           }}>
-          <Text style={styles.userEmailText}>zh78452@gmail.com</Text>
+          <Text style={styles.userEmailText}>{mail}</Text>
         </View>
         <View style={styles.CodeWrapper}>
           <CodeField
@@ -123,11 +124,7 @@ const ForgotCode = ({
           onPress={onConfirmCode}
           text={'Confirm'}
           loading={tokenRequesting}
-          containerStyle={{
-            backgroundColor: '#000',
-            marginTop: 40,
-            width: 160,
-          }}
+          containerStyle={styles.button}
           disabled={tokenRequesting}
         />
       </View>
