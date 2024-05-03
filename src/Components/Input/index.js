@@ -31,7 +31,7 @@ const Input = props => {
           maxLength={maxLength}
           multiline={multiline}
           textAlignVertical="top"
-          placeholderTextColor={'white'}
+          placeholderTextColor={'rgb(156, 178, 188)'}
           secureTextEntry={secureTextEntry && !showPassword}
           value={value}
           onBlur={onBlur}

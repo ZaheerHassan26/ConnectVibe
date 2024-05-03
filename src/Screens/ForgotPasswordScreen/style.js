@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     flexDirection: 'row',
     paddingHorizontal: 10,
-    marginBottom:20
+    marginBottom: 20,
   },
   backTouchable: {
     flexDirection: 'row',
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     left: 10,
     fontWeight: '700',
   },
+
   EmailInputView: {
     flex: 1,
     backgroundColor: '#10445C',
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
     gap: 11,
     paddingHorizontal: 27,
   },
+
   enterEmailText: {
     color: '#fff',
     fontSize: 24,
@@ -39,31 +41,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   inputFocus: {
-    justifyContent: 'space-between',
     flexDirection: 'row',
-    borderBottomWidth: 2,
+    borderWidth: 1.5,
     borderRadius: 5,
-    borderColor: 'white',
-    marginTop: 30,
+    borderColor: 'grey',
     paddingLeft: 14,
-    color: 'blue',
     height: 42,
     backgroundColor: '#3a6579',
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 1,
-    elevation: 1,
   },
+
   textInputStyle: {
     color: 'white',
     flex: 1,
     marginLeft: 10,
   },
-  emailError: {color: 'yellow'},
+  emailError: {color: 'red', alignSelf: 'flex-start'},
   loginBtn: {
     width: '40%',
     backgroundColor: '#00a1e9',
@@ -75,5 +67,10 @@ const styles = StyleSheet.create({
   },
   loginTxt: {fontSize: 20, color: 'white', fontWeight: 'bold'},
   emailImgView: {justifyContent: 'center'},
+  button: {
+    backgroundColor: '#00a1e9',
+    marginTop: 25,
+    height: 52,
+  },
 });
 export default styles;

@@ -7,11 +7,16 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {TextInput} from 'react-native-paper';
 import {Toast} from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Foundation from 'react-native-vector-icons/Foundation';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+import Entypo from 'react-native-vector-icons/Entypo';
+
 import * as yup from 'yup';
 
 import CameraModal from '../../Components/ImageModal';
@@ -21,6 +26,7 @@ import Button from '../../Components/Button';
 import {signup as signupAction} from './redux/action';
 import styles from './style';
 import {connect} from 'react-redux';
+import Input from '../../Components/Input';
 
 const schema = yup.object({
   name: yup.string().required('Name is required'),
@@ -72,145 +78,175 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
   return (
     <>
-      <ScrollView>
-        <View style={styles.main}>
-          <View style={styles.newRegistrationView}>
-            <TouchableOpacity
-              style={styles.backTouchable}
-              onPress={() => navigation.goBack()}>
-              <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
-            </TouchableOpacity>
-            <Text style={styles.newRegistrationText}>New Registration</Text>
+      <View style={styles.main}>
+        <View style={styles.newRegistrationView}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
+          </TouchableOpacity>
+          <Text style={styles.newRegistrationText}>New Registration</Text>
+        </View>
+        <View style={styles.registrationInputView}>
+          <View style={styles.registrationTextView}>
+            <Text style={styles.registrationText}>New Registration</Text>
+            {/* <Text style={styles.serviseProviderText}>User</Text> */}
           </View>
-          <View style={styles.registrationInputView}>
-            <TouchableOpacity style={styles.registrationTextView}>
-              <Text style={styles.registrationText}>New Registration</Text>
-              <Text style={styles.serviseProviderText}>User</Text>
-            </TouchableOpacity>
+          <Text style={styles.entryInformationText}>
+            Please enter the following information to create a new account.
+          </Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pictureView}>
-              <View>
-                <Text style={styles.pictureText}>Personal_pictures</Text>
-              </View>
-
               <TouchableOpacity onPress={() => setPictureModalVisible(true)}>
                 <ImageBackground
                   style={styles.userPicture}
                   borderRadius={50}
                   source={
-                    profileImage
-                      ? {uri: profileImage.path}
-                      : images.providerProfile
+                    profileImage ? {uri: profileImage.path} : images.profile
                   }>
                   <Image
                     style={styles.userPictureCircleWithCamera}
-                    source={
-                      profileImage
-                        ? images.userImageuploadactive
-                        : images.userImageupload
-                    }
+                    source={images.userImageupload}
                   />
                 </ImageBackground>
               </TouchableOpacity>
             </View>
 
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="Full Name"
-                  value={value}
-                  onChangeText={onChange}
-                  activeUnderlineColor="white"
-                  underlineColor="white"
-                  textColor="white"
-                  style={{
-                    backgroundColor: '#3a6579',
-                  }}
-                />
-              )}
-              name="name"
-            />
+            <Text style={styles.lableStyle}>User Name</Text>
 
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="Email"
-                  value={value}
-                  onChangeText={onChange}
-                  activeUnderlineColor="white"
-                  underlineColor="white"
-                  textColor="white"
-                  style={{
-                    backgroundColor: '#3a6579',
-                  }}
-                />
-              )}
-              name="email"
-            />
+            <View style={styles.inputFocus}>
+              <View style={styles.emailImgView}>
+                <Entypo size={17} color={'white'} name={'user'} />
+              </View>
+              <Controller
+                control={control}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <Input
+                    placeholder={'John'}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="userName"
+              />
+            </View>
 
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="Phone_no"
-                  value={value}
-                  onChangeText={onChange}
-                  activeUnderlineColor="white"
-                  underlineColor="white"
-                  textColor="white"
-                  style={{
-                    backgroundColor: '#3a6579',
-                  }}
-                />
-              )}
-              name="mobileNo"
-            />
-            <>
-              {errors ? (
-                <Text style={{color: 'red'}}>{errors?.mobileNo?.message}</Text>
-              ) : (
-                ''
-              )}
-            </>
+            <Text style={styles.lableStyle}>Email</Text>
 
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="Password"
-                  value={value}
-                  onChangeText={onChange}
-                  activeUnderlineColor="white"
-                  underlineColor="white"
-                  textColor="white"
-                  style={{
-                    backgroundColor: '#3a6579',
-                  }}
-                  secureTextEntry={passwordView}
+            <View style={styles.inputFocus}>
+              <View style={styles.emailImgView}>
+                <MaterialCommunityIcons
+                  size={17}
+                  color={'white'}
+                  name={'email'}
                 />
-              )}
-              name="password"
-            />
+              </View>
+              <Controller
+                control={control}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <Input
+                    placeholder={'example@test.com'}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="email"
+              />
+            </View>
 
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="confirm_Password"
-                  value={value}
-                  onChangeText={onChange}
-                  activeUnderlineColor="white"
-                  underlineColor="white"
-                  textColor="white"
-                  style={{
-                    backgroundColor: '#3a6579',
-                  }}
-                  secureTextEntry={passwordView}
+            <Text style={styles.lableStyle}>Phone_no</Text>
+
+            <View style={styles.inputFocus}>
+              <View style={styles.emailImgView}>
+                <MaterialCommunityIcons
+                  size={17}
+                  color={'white'}
+                  name={'phone'}
                 />
-              )}
-              name="confirmPassword"
-            />
+              </View>
+              <Controller
+                control={control}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <Input
+                    placeholder={'123456789'}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="mobileNo"
+              />
+            </View>
+
+            <Text style={[styles.lableStyle]}>Password</Text>
+            <View style={styles.inputFocus}>
+              <View
+                style={[styles.passView, {justifyContent: 'space-between'}]}>
+                <View style={{flexDirection: 'row', width: '89%'}}>
+                  <View style={styles.emailImgView}>
+                    <Foundation size={17} color={'white'} name={'key'} />
+                  </View>
+                  <Controller
+                    control={control}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <Input
+                        placeholder={'password'}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        showPassword={passwordView}
+                        secureTextEntry={true}
+                      />
+                    )}
+                    name="password"
+                  />
+                </View>
+                <TouchableOpacity
+                  onPress={() => setPasswordView(!passwordView)}
+                  style={{justifyContent: 'center', marginRight: 5}}>
+                  <FontAwesome5
+                    size={15}
+                    color={'white'}
+                    name={passwordView ? 'eye' : 'eye-slash'}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <Text style={[styles.lableStyle]}>Confirm Password</Text>
+            <View style={styles.inputFocus}>
+              <View
+                style={[styles.passView, {justifyContent: 'space-between'}]}>
+                <View style={{flexDirection: 'row', width: '89%'}}>
+                  <View style={styles.emailImgView}>
+                    <Foundation size={17} color={'white'} name={'key'} />
+                  </View>
+                  <Controller
+                    control={control}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <Input
+                        placeholder={'c_password'}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        showPassword={passwordView}
+                        secureTextEntry={true}
+                      />
+                    )}
+                    name="confirmPass"
+                  />
+                </View>
+                <TouchableOpacity
+                  onPress={() => setPasswordView(!passwordView)}
+                  style={{justifyContent: 'center', marginRight: 5}}>
+                  <FontAwesome5
+                    size={15}
+                    color={'white'}
+                    name={passwordView ? 'eye' : 'eye-slash'}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
             <View style={{}}>
               <Text style={styles.byClickText}>
                 terms_and_condition_new_account
@@ -238,9 +274,9 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 marginBottom: 25,
               }}
             />
-          </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
       <CameraModal
         pictureModalVisible={pictureModalVisible}
         setPictureModalVisible={setPictureModalVisible}
