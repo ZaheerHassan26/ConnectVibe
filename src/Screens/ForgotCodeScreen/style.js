@@ -92,6 +92,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 25,
   },
+  button: {
+    backgroundColor: '#00a1e9',
+    marginTop: 25,
+    height: 52,
+  },
 });
 
 export default styles;

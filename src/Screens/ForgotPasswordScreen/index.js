@@ -1,23 +1,16 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  StatusBar,
-} from 'react-native';
-import * as yup from 'yup';
-import {useImages} from '../../Utils/Images';
+import {Text, TouchableOpacity, View, StatusBar} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {useNavigation} from '@react-navigation/native';
 import {forgotPassword as forgotPasswordAction} from './redux/actions';
 
 import styles from './style';
+import Button from '../../Components/Button';
+
 import {connect} from 'react-redux';
 import {emailRegex} from '../../Utils/function';
+import Input from '../../Components/Input';
 
 const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
   const [email, setEmail] = useState('');
@@ -37,8 +30,9 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
       const data = {
         email: email,
       };
+      callBack();
 
-      forgotPasswordAction(data, callBack);
+      // forgotPasswordAction(data, callBack);
     }
   };
   const callBack = () => {
@@ -51,7 +45,6 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
         backgroundColor={'#EDF4F6'}
         barStyle={'dark-content'}
       />
-
       <View style={styles.loginView}>
         <TouchableOpacity
           style={styles.backTouchable}
@@ -60,37 +53,33 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
         </TouchableOpacity>
         <Text style={styles.forgetPasswordText}>Forgot your password</Text>
       </View>
+
       <View style={styles.EmailInputView}>
         <Text style={styles.enterEmailText}>Enter email</Text>
+
         <View style={styles.inputFocus}>
           <View style={styles.emailImgView}>
-            <MaterialCommunityIcons size={25} color={'white'} name={'email'} />
+            <MaterialCommunityIcons size={17} color={'white'} name={'email'} />
           </View>
-          <TextInput
-            style={styles.textInputStyle}
-            keyboardType={'email-address'}
-            autoCapitalize="none"
-            textContentType="username"
-            value={email}
+
+          <Input
             placeholder={'example@test.com'}
-            placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
+            value={email}
             onChangeText={value => onCheckEmail(value)}
           />
         </View>
-        {emailError ? (
-          <Text style={{color: 'red', alignSelf: 'flex-start'}}>
-            {emailError}
-          </Text>
-        ) : (
-          ''
-        )}
-
-        <TouchableOpacity
-          style={styles.loginBtn}
+        {emailError ? <Text style={styles.emailError}>{emailError}</Text> : ''}
+        <Button
           onPress={onForgotPassword}
-          loading={requesting}>
-          <Text style={styles.loginTxt}>Submit Code</Text>
-        </TouchableOpacity>
+          text={'Send Code'}
+          textStyle={{
+            fontSize: 20,
+            fontWeight: 'bold',
+          }}
+          loading={requesting}
+          containerStyle={styles.button}
+          disabled={requesting}
+        />
       </View>
     </View>
   );

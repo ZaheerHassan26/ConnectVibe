@@ -7,7 +7,7 @@ export function useImages() {
       profile: require('../Assets/Images/profile.png'),
       userImageupload: require('../Assets/Images/userImageupload.png'),
       userImageuploadactive: require('../Assets/Images/userImageuploadactive.png'),
-      providerProfile: require('../Assets/Images/providerProfile.png'),
+      profile: require('../Assets/Images/providerProfile.png'),
       camera: require('../Assets/Images/camera.png'),
       attachment: require('../Assets/Images/attachment.png'),
     },
