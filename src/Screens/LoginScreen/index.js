@@ -23,9 +23,10 @@ import Button from '../../Components/Button';
 import styles from './style';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Error from '../../Components/Input/Error';
 
 const schema = yup.object({
-  username: yup
+  email: yup
     .string()
     .matches(emailRegex, 'Email is invalid')
     .required('Email is required'),
@@ -97,16 +98,10 @@ const Login = ({navigation, loginAction, requesting}) => {
                     value={value}
                   />
                 )}
-                name="username"
+                name="email"
               />
             </View>
-            {errors?.username ? (
-              <Text style={{color: 'red', alignSelf: 'flex-start'}}>
-                {errors?.username?.message}
-              </Text>
-            ) : (
-              ''
-            )}
+            <Error errors={errors?.email} />
 
             <Text style={[styles.lableStyle, {marginTop: 20}]}>Password</Text>
             <View style={styles.inputFocus}>
@@ -142,13 +137,8 @@ const Login = ({navigation, loginAction, requesting}) => {
                 </TouchableOpacity>
               </View>
             </View>
-            {errors?.password ? (
-              <Text style={{color: 'red', alignSelf: 'flex-start'}}>
-                {errors?.password?.message}
-              </Text>
-            ) : (
-              ''
-            )}
+            <Error errors={errors?.password} />
+
             <TouchableOpacity
               style={{
                 alignItems: 'flex-end',

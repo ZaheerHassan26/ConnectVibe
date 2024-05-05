@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import login from '../Screens/LoginScreen/redux/reducer';
 import signUp from '../Screens/RegisterScreen/redux/reducer';
 import forgotPassword from '../Screens/ForgotPasswordScreen/redux/reducer';
+import editProfile from "../Screens/EditProfileScreen/redux/reducer";
+
 
 const appPresistConfig = {
   key: 'login',
@@ -16,4 +18,5 @@ export default {
   login: persistReducer(appPresistConfig, login),
   signUp,
   forgotPassword,
+  editProfile
 };

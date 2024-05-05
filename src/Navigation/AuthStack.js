@@ -7,9 +7,12 @@ import RegisterationScreen from '../Screens/RegisterScreen';
 import NewPasswordScreen from '../Screens/SetnewPassword';
 
 const AuthStack = createStackNavigator();
+
 const AuthNavigator = () => (
   <AuthStack.Navigator
-    screenOptions={{headerShown: false}}
+    screenOptions={{
+      headerShown: false,
+    }}
     initialRouteName="Login">
     <AuthStack.Screen name="Login" component={LoginScreen} />
     <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />

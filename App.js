@@ -9,7 +9,7 @@ export default function App() {
   return (
     <ToastProvider>
       <Provider store={store}>
-        <RootNavigator />
+        <AppNavigator />
       </Provider>
     </ToastProvider>
   );

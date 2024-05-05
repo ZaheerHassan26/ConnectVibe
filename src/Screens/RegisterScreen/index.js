@@ -27,16 +27,17 @@ import {signup as signupAction} from './redux/action';
 import styles from './style';
 import {connect} from 'react-redux';
 import Input from '../../Components/Input';
+import Error from '../../Components/Input/Error';
 
 const schema = yup.object({
-  name: yup.string().required('Name is required'),
+  name: yup.string().required('This field is required'),
   email: yup
     .string()
-    .required('Email is required')
+    .required('This field is required')
     .matches(emailRegex, 'Email is invalid'),
-  mobileNo: yup.string().required('Mobile Number is required'),
-  password: yup.string().required('Password is required'),
-  confirmPassword: yup.string().required('Confirm password is required'),
+  mobileNo: yup.string().required('This field is required'),
+  password: yup.string().required('This field is required'),
+  confirmPassword: yup.string().required('This field is required'),
 });
 
 const Signup = ({navigation, signupAction, requesting}) => {
@@ -54,8 +55,9 @@ const Signup = ({navigation, signupAction, requesting}) => {
   const {images} = useImages();
 
   const signupButton = data => {
+    console.log(data);
     if (data.password !== data.confirmPassword) {
-      Toast.show(L('pass_match'));
+      Toast.show('Password must be same');
     } else {
       const payload = new FormData();
       if (profileImage) {
@@ -65,6 +67,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
           uri: profileImage.path,
         });
       }
+      payload.append('username', data.name);
       payload.append('email', data.email);
       payload.append('phone', data.mobileNo.trim());
       payload.append('password', data.password.trim());
@@ -88,10 +91,9 @@ const Signup = ({navigation, signupAction, requesting}) => {
         <View style={styles.registrationInputView}>
           <View style={styles.registrationTextView}>
             <Text style={styles.registrationText}>New Registration</Text>
-            {/* <Text style={styles.serviseProviderText}>User</Text> */}
           </View>
           <Text style={styles.entryInformationText}>
-            Please enter the following information to create a new account.
+            Please enter the following informemailation to create a new account.
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pictureView}>
@@ -126,9 +128,11 @@ const Signup = ({navigation, signupAction, requesting}) => {
                     value={value}
                   />
                 )}
-                name="userName"
+                name="name"
               />
             </View>
+
+            <Error errors={errors?.name} />
 
             <Text style={styles.lableStyle}>Email</Text>
 
@@ -154,6 +158,8 @@ const Signup = ({navigation, signupAction, requesting}) => {
               />
             </View>
 
+            <Error errors={errors?.email} />
+
             <Text style={styles.lableStyle}>Phone_no</Text>
 
             <View style={styles.inputFocus}>
@@ -177,6 +183,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 name="mobileNo"
               />
             </View>
+            <Error errors={errors?.mobileNo} />
 
             <Text style={[styles.lableStyle]}>Password</Text>
             <View style={styles.inputFocus}>
@@ -206,12 +213,15 @@ const Signup = ({navigation, signupAction, requesting}) => {
                   style={{justifyContent: 'center', marginRight: 5}}>
                   <FontAwesome5
                     size={15}
+                    fontSize
                     color={'white'}
                     name={passwordView ? 'eye' : 'eye-slash'}
                   />
                 </TouchableOpacity>
               </View>
             </View>
+
+            <Error errors={errors?.password} />
 
             <Text style={[styles.lableStyle]}>Confirm Password</Text>
             <View style={styles.inputFocus}>
@@ -233,7 +243,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
                         secureTextEntry={true}
                       />
                     )}
-                    name="confirmPass"
+                    name="confirmPassword"
                   />
                 </View>
                 <TouchableOpacity
@@ -247,6 +257,8 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 </TouchableOpacity>
               </View>
             </View>
+            <Error errors={errors?.confirmPassword} />
+
             <View style={{}}>
               <Text style={styles.byClickText}>
                 terms_and_condition_new_account
@@ -268,11 +280,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 fontWeight: 'bold',
               }}
               loading={requesting}
-              containerStyle={{
-                backgroundColor: '#00a1e9',
-                marginTop: 30,
-                marginBottom: 25,
-              }}
+              containerStyle={styles.button}
             />
           </ScrollView>
         </View>

@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
   },
   newRegistrationView: {
     backgroundColor: '#EDF4F6',
-    flexDirection: 'row',
     paddingTop: 60,
+    flexDirection: 'row',
     paddingHorizontal: 10,
-    paddingBottom: 45,
+    marginBottom: 20,
   },
   newRegistrationText: {
     color: '#10445C',
@@ -114,6 +114,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
     textDecorationLine: 'underline',
   },
+  button:{
+    backgroundColor: '#00a1e9',
+    marginTop: 30,
+    marginBottom: 25,
+  }
 });
 
 export default styles;
