@@ -1,72 +1,60 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { NavigationContainer } from '@react-navigation/native'
-import React, { createContext, useEffect, useState } from 'react'
-import AppNavigator from './AppStack'
-import AuthNavigator from './AuthStack'
-import SplashScreen from '../Screens/SplashScreen'
-import { createStackNavigator } from '@react-navigation/stack'
-export const AuthContext = createContext()
-const Splash = createStackNavigator()
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import AppNavigator from './AppStack';
+import AuthNavigator from './AuthStack';
+import SplashScreen from '../Screens/SplashScreen';
+import {createStackNavigator} from '@react-navigation/stack';
 
+const Splash = createStackNavigator();
 
 const RootNavigator = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [splash, setSplash] = useState(true)
- 
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [splash, setSplash] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => setSplash(false), 2000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(() => setSplash(false), 2000);
+    return () => clearInterval(interval);
+  }, []);
   const load = async () => {
     try {
-      setLoading(true)
-      const token = await AsyncStorage.getItem('accessToken')
+      setLoading(true);
+      const token = await AsyncStorage.getItem('accessToken');
       if (token) {
-        // const { success } = await onBoardUser()
-        // success && setIsSignedIn(true)
+        setIsSignedIn(true);
       } else {
-        setIsSignedIn(false)
+        setIsSignedIn(false);
       }
     } catch (error) {
-      setIsSignedIn(false)
+      setIsSignedIn(false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
   useEffect(() => {
-    load()
-  }, [])
-  const logout = async () => {
-    await AsyncStorage.clear()
-    setIsSignedIn(false)
-  }
-  const login = () => {
-    setIsSignedIn(true)
-  }
-  const renderLoading = () => <SplashScreen />
+    load();
+  }, []);
+
+  const renderLoading = () => <SplashScreen />;
   const SplashNavigator = () => (
-    <Splash.Navigator screenOptions={{ headerShown: false }}>
+    <Splash.Navigator screenOptions={{headerShown: false}}>
       <Splash.Screen name="splash" component={SplashScreen} />
     </Splash.Navigator>
-  )
+  );
   const renderApp = () => (
     <NavigationContainer>
-      <AuthContext.Provider value={{ logout, login }}>
-        <>
-          {splash ? (
-            <SplashNavigator />
-          ) : isSignedIn ? (
-            <></>
-            // <AppNavigator />
-          ) : (
-            <AuthNavigator />
-          )}
-        </>
-      </AuthContext.Provider>
+      <>
+        {splash ? (
+          <SplashNavigator />
+        ) : isSignedIn ? (
+          <AppNavigator />
+        ) : (
+          <AuthNavigator />
+        )}
+      </>
     </NavigationContainer>
-  )
-  return loading ? renderLoading() : renderApp()
-}
-export default RootNavigator
+  );
+  return loading ? renderLoading() : renderApp();
+};
+export default RootNavigator;

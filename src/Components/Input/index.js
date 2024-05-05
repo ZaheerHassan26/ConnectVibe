@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -36,7 +31,7 @@ const Input = props => {
           maxLength={maxLength}
           multiline={multiline}
           textAlignVertical="top"
-          placeholderTextColor={'white'}
+          placeholderTextColor={'rgb(156, 178, 188)'}
           secureTextEntry={secureTextEntry && !showPassword}
           value={value}
           onBlur={onBlur}
@@ -45,7 +40,11 @@ const Input = props => {
           textAlign={textAlign}
         />
       </View>
-      {error ? <Text style={{color: 'red'}}>{error}</Text> : ''}
+      {error ? (
+        <Text style={{color: 'red', alignSelf: 'flex-start'}}>{error}</Text>
+      ) : (
+        ''
+      )}
     </>
   );
 };

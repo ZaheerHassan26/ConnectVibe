@@ -1,37 +1,43 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  StatusBar,
-} from 'react-native';
-import * as yup from 'yup';
-import {useImages} from '../../Utils/Images';
+import {Text, TouchableOpacity, View, StatusBar} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {useNavigation} from '@react-navigation/native';
+import {forgotPassword as forgotPasswordAction} from './redux/actions';
+
 import styles from './style';
+import Button from '../../Components/Button';
 
-const ForgotPassword = () => {
-  const [passwordView, setPasswordView] = useState(false);
-  const {images} = useImages();
-  const navigation = useNavigation();
+import {connect} from 'react-redux';
+import {emailRegex} from '../../Utils/function';
+import Input from '../../Components/Input';
 
-  const validationSchema = yup.object({
-    email: yup
-      .string()
-      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Enter a valid email')
-      .required()
-      .label('Email'),
-  });
+const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
 
-  const handleSubmit = async (data) => {
-    navigation.navigate('ForgotCode');
+  const onCheckEmail = value => {
+    setEmail(value);
+    setEmailError('');
   };
 
+  const onForgotPassword = () => {
+    if (!email) {
+      setEmailError('Email is required');
+    } else if (!emailRegex.test(email)) {
+      setEmailError('Email must be valid');
+    } else {
+      const data = {
+        email: email,
+      };
+      callBack();
+
+      // forgotPasswordAction(data, callBack);
+    }
+  };
+  const callBack = () => {
+    navigation.navigate('ForgotCode', {email});
+  };
   return (
     <View style={styles.main}>
       <StatusBar
@@ -39,44 +45,53 @@ const ForgotPassword = () => {
         backgroundColor={'#EDF4F6'}
         barStyle={'dark-content'}
       />
-
       <View style={styles.loginView}>
         <TouchableOpacity
           style={styles.backTouchable}
           onPress={() => navigation.goBack()}>
           <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
-
-          <Text style={styles.forgetPasswordText}>Forgot your password</Text>
         </TouchableOpacity>
+        <Text style={styles.forgetPasswordText}>Forgot your password</Text>
       </View>
+
       <View style={styles.EmailInputView}>
         <Text style={styles.enterEmailText}>Enter email</Text>
+
         <View style={styles.inputFocus}>
           <View style={styles.emailImgView}>
-            <MaterialCommunityIcons size={25} color={'white'} name={'email'} />
+            <MaterialCommunityIcons size={17} color={'white'} name={'email'} />
           </View>
-          <TextInput
-            style={styles.textInputStyle}
-            keyboardType={'email-address'}
-            autoCapitalize="none"
-            textContentType="username"
+
+          <Input
             placeholder={'example@test.com'}
-            placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
+            value={email}
+            onChangeText={value => onCheckEmail(value)}
           />
         </View>
-        {/* {emailError ? <Text style={{color: 'red'}}>{emailError}</Text> : ''} */}
-
-        <TouchableOpacity
-          onPress={handleSubmit}
-          style={styles.loginBtn}
-          //   disabled={isLoading}
-        >
-          <Text style={styles.loginTxt}>Submit Code</Text>
-        </TouchableOpacity>
+        {emailError ? <Text style={styles.emailError}>{emailError}</Text> : ''}
+        <Button
+          onPress={onForgotPassword}
+          text={'Send Code'}
+          textStyle={{
+            fontSize: 20,
+            fontWeight: 'bold',
+          }}
+          loading={requesting}
+          containerStyle={styles.button}
+          disabled={requesting}
+        />
       </View>
     </View>
   );
 };
 
+const mapStateToProps = state => ({
+  requesting: state?.forgotPassword?.requesting,
+});
 
-export default ForgotPassword;
+const mapDispatchToProps = dispatch => ({
+  forgotPasswordAction: (data, callBack) =>
+    dispatch(forgotPasswordAction(data, callBack)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

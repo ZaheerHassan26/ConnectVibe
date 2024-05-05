@@ -16,20 +16,24 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {emailRegex} from '../../Utils/function';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Input from '../../Components/Input';
+import {login as loginAction} from './redux/actions';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import Button from '../../Components/Button';
 import styles from './style';
+import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Error from '../../Components/Input/Error';
 
 const schema = yup.object({
-  username: yup
+  email: yup
     .string()
     .matches(emailRegex, 'Email is invalid')
     .required('Email is required'),
   password: yup.string().required('Password is required'),
 });
 
-const Login = ({navigation}) => {
+const Login = ({navigation, loginAction, requesting}) => {
   const {
     control,
     handleSubmit,
@@ -42,16 +46,10 @@ const Login = ({navigation}) => {
 
   const [passwordView, setPasswordView] = useState(false);
 
-  const validationSchema = yup.object({
-    email: yup
-      .string()
-      .matches(emailRegex, 'Enter a valid email')
-      .required()
-      .label('Email'),
-    password: yup.string().required().label('Password'),
-  });
-
-  const loginUser = async data => {};
+  const loginUser = async data => {
+    // const fcmToken = await AsyncStorage.getItem('FCMToken');
+    loginAction(data, navigation);
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#EDF4F6'}}>
@@ -100,9 +98,10 @@ const Login = ({navigation}) => {
                     value={value}
                   />
                 )}
-                name="username"
+                name="email"
               />
             </View>
+            <Error errors={errors?.email} />
 
             <Text style={[styles.lableStyle, {marginTop: 20}]}>Password</Text>
             <View style={styles.inputFocus}>
@@ -121,7 +120,6 @@ const Login = ({navigation}) => {
                         onChangeText={onChange}
                         value={value}
                         showPassword={passwordView}
-                        error={errors?.password?.message}
                         secureTextEntry={true}
                       />
                     )}
@@ -139,20 +137,25 @@ const Login = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             </View>
+            <Error errors={errors?.password} />
+
             <TouchableOpacity
-              style={{alignItems: 'flex-end', marginTop: 10}}
+              style={{
+                alignItems: 'flex-end',
+                bottom: errors?.password ? 16 : 0,
+              }}
               onPress={() => navigation.navigate('ForgotPassword')}>
               <Text style={styles.forgotPass}>Forgot Password ?</Text>
             </TouchableOpacity>
 
             <Button
-              onPress={() => console.log('dlogin')}
+              onPress={handleSubmit(loginUser)}
               text={'Login'}
               textStyle={{
                 fontSize: 20,
                 fontWeight: 'bold',
               }}
-              // loading={requesting}
+              loading={requesting}
               containerStyle={{
                 backgroundColor: '#00a1e9',
                 marginTop: 25,
@@ -164,7 +167,8 @@ const Login = ({navigation}) => {
               <Text style={styles.careateAnAccountText}>
                 Don’t have an account yet?
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Registeration')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Registeration')}>
                 <Text
                   style={[styles.careateAnAccountText, styles.fontWeightBold]}>
                   Register now
@@ -178,5 +182,13 @@ const Login = ({navigation}) => {
   );
 };
 
+const mapStateTopProps = state => ({
+  userDetail: state.login.userDetail,
+  requesting: state.login.requesting,
+});
 
-export default Login;
+const mapDispatchToProps = dispatch => ({
+  loginAction: (data, navigation) => dispatch(loginAction(data, navigation)),
+});
+
+export default connect(mapStateTopProps, mapDispatchToProps)(Login);

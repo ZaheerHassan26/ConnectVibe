@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EDF4F6',
   },
-  loginView: {
+  newPasswordView: {
     backgroundColor: '#EDF4F6',
     paddingTop: 60,
     flexDirection: 'row',
@@ -16,29 +16,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  forgetPasswordText: {
+  backArrowImage: {
+    width: 18,
+    height: 13,
+  },
+  newPasswordText: {
     color: '#10445C',
     fontSize: 18,
-    left: 10,
     fontWeight: '700',
+    left: 10,
   },
-
-  EmailInputView: {
+  passwordInputView: {
     flex: 1,
     backgroundColor: '#10445C',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 32,
-    gap: 11,
     paddingHorizontal: 27,
   },
 
-  enterEmailText: {
+  setNewPasswordlText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: '700',
     marginTop: 50,
-    marginBottom: 20,
+    marginBottom: 30,
+  },
+  lableStyle: {
+    fontSize: 15,
+    lineHeight: 24,
+    fontWeight: '700',
+    color: 'white',
+    marginTop: 10,
   },
   inputFocus: {
     flexDirection: 'row',
@@ -50,23 +59,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#3a6579',
   },
 
-  textInputStyle: {
-    color: 'white',
-    flex: 1,
-    marginLeft: 10,
-  },
-  emailError: {color: 'red', alignSelf: 'flex-start'},
-  loginBtn: {
-    width: '40%',
-    backgroundColor: '#00a1e9',
-    height: 52,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-    marginVertical: 30,
-  },
-  loginTxt: {fontSize: 20, color: 'white', fontWeight: 'bold'},
-  emailImgView: {justifyContent: 'center'},
+  emailImgView: {justifyContent: 'center', marginRight: 10},
+  passView: {flexDirection: 'row'},
+
   button: {
     backgroundColor: '#00a1e9',
     marginTop: 25,
