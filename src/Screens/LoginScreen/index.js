@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Error from '../../Components/Input/Error';
 
 const schema = yup.object({
-  email: yup
+  username: yup
     .string()
     .matches(emailRegex, 'Email is invalid')
     .required('Email is required'),
@@ -47,6 +47,7 @@ const Login = ({navigation, loginAction, requesting}) => {
   const [passwordView, setPasswordView] = useState(false);
 
   const loginUser = async data => {
+    console.log(data);
     // const fcmToken = await AsyncStorage.getItem('FCMToken');
     loginAction(data, navigation);
   };
@@ -98,10 +99,10 @@ const Login = ({navigation, loginAction, requesting}) => {
                     value={value}
                   />
                 )}
-                name="email"
+                name="username"
               />
             </View>
-            <Error errors={errors?.email} />
+            <Error errors={errors?.username} />
 
             <Text style={[styles.lableStyle, {marginTop: 20}]}>Password</Text>
             <View style={styles.inputFocus}>

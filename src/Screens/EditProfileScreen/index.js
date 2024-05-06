@@ -23,8 +23,8 @@ import {useImages} from '../../Utils/Images';
 import Button from '../../Components/Button';
 
 const schema = yup.object({
-  username: yup.string().trim().required(),
-  mobile_number: yup
+  name: yup.string().trim().required(),
+  phone: yup
     .string()
     .matches(/^(?:\D*\d){12}\D*$/, 'Invalid phone number')
     .required()
@@ -41,6 +41,7 @@ const EditProfile = ({
   updateProfileAction,
   requesting,
   navigation,
+  userDeatil,
   profileData,
 }) => {
   const {
@@ -51,7 +52,6 @@ const EditProfile = ({
   } = useForm({
     resolver: yupResolver(schema),
   });
-
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [profileImage, setProfileImage] = useState('');
   const [active, setActive] = useState(false);
@@ -64,9 +64,9 @@ const EditProfile = ({
   };
 
   useLayoutEffect(() => {
-    setValue('name', profileData?.translations?.[language]?.name);
-    setValue('email', profileData?.user_email);
-    setValue('mobileNo', profileData?.phone?.substring(4));
+    setValue('name', userDeatil?.name);
+    setValue('email', userDeatil?.user_email);
+    setValue('phone', userDeatil?.phone);
   }, [isFocused]);
 
   const updatePrifileButton = data => {
@@ -139,7 +139,7 @@ const EditProfile = ({
                 style={styles.input}
               />
             )}
-            name="username"
+            name="name"
           />
 
           <Controller
@@ -156,6 +156,21 @@ const EditProfile = ({
               />
             )}
             name="email"
+          />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                label="Phone"
+                value={value}
+                onChangeText={onChange}
+                placeholder={'123456789'}
+                activeUnderlineColor={'#10445C'}
+                placeholderTextColor={'grey'}
+                style={styles.input}
+              />
+            )}
+            name="phone"
           />
 
           <Controller
@@ -197,8 +212,8 @@ const EditProfile = ({
 
 const mapStateToProps = state => ({
   requesting: state?.editProfile?.requesting,
-  userDeatil: state?.login?.userDetail,
-  profileData: state?.editProfile?.profile,
+  userDeatil: state?.login?.userDetail?.user,
+  // profileData: state?.editProfile?.profile,
 });
 
 const mapDispatchToProps = dispatch => ({
