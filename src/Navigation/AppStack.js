@@ -5,7 +5,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
 import EditProfile from '../Screens/EditProfileScreen';
 import Home from '../Screens/HomeScreen';
 import Chat from '../Screens/ChatScreen';
@@ -119,7 +118,6 @@ export default function AppNavigator() {
   };
 
   return (
-    <NavigationContainer>
       <AppStack.Navigator
         initialRouteName={'BottomBar'}
         screenOptions={{
@@ -128,7 +126,6 @@ export default function AppNavigator() {
         <AppStack.Screen name="BottomBar" component={BottomNavigator} />
         <AppStack.Screen name="chat" component={Chat} />
       </AppStack.Navigator>
-    </NavigationContainer>
   );
 }
 

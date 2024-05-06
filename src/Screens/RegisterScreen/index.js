@@ -35,7 +35,7 @@ const schema = yup.object({
     .string()
     .required('This field is required')
     .matches(emailRegex, 'Email is invalid'),
-  mobileNo: yup.string().required('This field is required'),
+  phone: yup.string().required('This field is required'),
   password: yup.string().required('This field is required'),
   confirmPassword: yup.string().required('This field is required'),
 });
@@ -67,7 +67,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
           uri: profileImage.path,
         });
       }
-      payload.append('username', data.name);
+      payload.append('name', data.name);
       payload.append('email', data.email);
       payload.append('phone', data.mobileNo.trim());
       payload.append('password', data.password.trim());
@@ -76,7 +76,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
     }
   };
   const callBack = () => {
-    navigation.navigate('login');
+    navigation.navigate('Login');
   };
 
   return (
