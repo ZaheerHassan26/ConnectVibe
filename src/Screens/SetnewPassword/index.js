@@ -8,6 +8,7 @@ import {Toast} from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {setNewpassword as setNewPasswordAction} from '../ForgotPasswordScreen/redux/actions';
 
 import styles from './style';
 import Button from '../../Components/Button';
@@ -36,7 +37,7 @@ const SetNewPassword = ({
 
   const onSure = data => {
     if (data.confirm_password !== data.password) {
-      //   Toast.show(L('pass_match'));
+      Toast.show('Password must be same');
     } else {
       const changePasswordData = {
         token: route?.params?.code,
@@ -116,7 +117,7 @@ const SetNewPassword = ({
                     secureTextEntry={true}
                   />
                 )}
-                name="confirmPass"
+                name="confirm_password"
               />
             </View>
             <TouchableOpacity

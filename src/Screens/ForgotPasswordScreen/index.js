@@ -30,10 +30,9 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
       const data = {
         email: email,
       };
-      callBack();
-
       // forgotPasswordAction(data, callBack);
     }
+    callBack()
   };
   const callBack = () => {
     navigation.navigate('ForgotCode', {email});

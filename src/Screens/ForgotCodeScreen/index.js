@@ -34,14 +34,14 @@ const ForgotCode = ({
   });
 
   const onConfirmCode = () => {
-    // if (value) {
-    //   const data = {
-    //     token: value,
-    //   };
-    //   forgotTokenAction(data, callBack);
-    // } else {
-    //   setValueError(true);
-    // }
+    if (value) {
+      const data = {
+        token: value,
+      };
+      forgotTokenAction(data, callBack);
+    } else {
+      setValueError(true);
+    }
     callBack()
   };
 
@@ -116,17 +116,18 @@ const ForgotCode = ({
         ) : (
           ''
         )}
-        <TouchableOpacity onPress={onResendButton}>
-          <Text style={styles.resendText}>Resend</Text>
-        </TouchableOpacity>
-
         <Button
           onPress={onConfirmCode}
-          text={'Confirm'}
+          text={'Submit'}
           loading={tokenRequesting}
           containerStyle={styles.button}
           disabled={tokenRequesting}
         />
+        <TouchableOpacity onPress={onResendButton}>
+          <Text style={styles.resendText}>Resend</Text>
+        </TouchableOpacity>
+
+        
       </View>
     </View>
   );

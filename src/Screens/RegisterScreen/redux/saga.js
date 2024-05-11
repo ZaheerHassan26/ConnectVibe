@@ -25,6 +25,7 @@ function* singupAPiCall({data, callBack}) {
     const response = yield call(signupApi, data);
     yield put(signupSuccess(response.data));
     callBack();
+    Toast.show('User created successfully');
   } catch (e) {
     const {response} = e;
     yield put(signupFailure(response));

@@ -55,7 +55,6 @@ const Signup = ({navigation, signupAction, requesting}) => {
   const {images} = useImages();
 
   const signupButton = data => {
-    console.log(data);
     if (data.password !== data.confirmPassword) {
       Toast.show('Password must be same');
     } else {
@@ -180,10 +179,10 @@ const Signup = ({navigation, signupAction, requesting}) => {
                     value={value}
                   />
                 )}
-                name="mobileNo"
+                name="phone"
               />
             </View>
-            <Error errors={errors?.mobileNo} />
+            <Error errors={errors?.phone} />
 
             <Text style={[styles.lableStyle]}>Password</Text>
             <View style={styles.inputFocus}>
