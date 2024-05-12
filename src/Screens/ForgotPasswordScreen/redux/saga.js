@@ -72,14 +72,16 @@ function* ForgotToken({data, callBack}) {
   } catch (e) {
     const {response} = e;
     yield put(forgotTokenFailure(response));
-    Toast.show(L('invalid_code'));
+    if(response.data.detail){
+      Toast.show('Invalid code');
+    }
   }
 }
 
 function* SetNEwPassword({data, callBack}) {
   try {
     yield call(setNewPassworddApi, data);
-    Toast.show(L('password_change'));
+    Toast.show('Password reset successfully');
     callBack();
   } catch (e) {
     const {response} = e;
@@ -87,7 +89,7 @@ function* SetNEwPassword({data, callBack}) {
     if (response?.data.password) {
       Toast.show(response?.data.password);
     } else {
-      Toast.show(L('went_wrong'));
+      Toast.show('Something went wrong');
     }
   }
 }

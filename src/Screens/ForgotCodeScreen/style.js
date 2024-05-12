@@ -69,20 +69,23 @@ const styles = StyleSheet.create({
   codeFieldRoot: {marginTop: 20, width: '100%'},
   cell: {
     flex: 1,
-    lineHeight: 38,
-    fontSize: 28,
+    fontSize: 25,
     color: '#fff',
-    borderBottomWidth: 2,
-    borderColor: '#fff',
+    borderColor: 'grey',
     textAlign: 'center',
     fontWeight: '600',
-    paddingTop: 5,
+    paddingTop: 15,
     marginRight: 5,
     marginLeft: 5,
+    backgroundColor: '#1D536C',
+    height: 67,
+    width: 55,
+    borderWidth: 1,
+    borderRadius: 4,
   },
   focusCell: {
     borderColor: '#fff',
-    fontSize: 28,
+    fontSize: 25,
     fontWeight: '600',
   },
   CodeWrapper: {
@@ -96,6 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00a1e9',
     marginTop: 25,
     height: 52,
+    width:'100%'
   },
 });
 
