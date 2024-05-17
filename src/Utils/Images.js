@@ -1,12 +1,12 @@
 export function useImages() {
   return {
     images: {
-      appLogo: require('../Assets/Images/Applogo.png'),
+      appLogo: require('../Assets/Images/appLogo.png'),
       logo: require('../Assets/Images/logo.png'),
-      logotext: require('../Assets/Images/logotxt.png'),
+      logoText: require('../Assets/Images/logoTxt.png'),
       profile: require('../Assets/Images/profile.png'),
-      userImageupload: require('../Assets/Images/userImageupload.png'),
-      userImageuploadactive: require('../Assets/Images/userImageuploadactive.png'),
+      userImageUpload: require('../Assets/Images/userImageUpload.png'),
+      userImageUploadActive: require('../Assets/Images/userImageUploadActive.png'),
       profile: require('../Assets/Images/providerProfile.png'),
       camera: require('../Assets/Images/camera.png'),
       attachment: require('../Assets/Images/attachment.png'),

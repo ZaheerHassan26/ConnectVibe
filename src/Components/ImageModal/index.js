@@ -11,7 +11,7 @@ const CameraModal = ({
 }) => {
   const {images} = useImages();
 
-  const openCamara = () => {
+  const openCamera = () => {
     ImageCropPicker.openCamera({
       width: 300,
       height: 400,
@@ -50,15 +50,15 @@ const CameraModal = ({
           style={styles.iconTouchable}
           onPress={openImagePicker}>
           <View style={styles.iconView}>
-            <Image style={styles.attachemtnIcon} source={images.attachment} />
+            <Image style={styles.attachmentIcon} source={images.attachment} />
           </View>
-          <Text style={styles.gelleryAndCameraTxt}>Gallery</Text>
+          <Text style={styles.galleryAndCameraTxt}>Gallery</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconTouchable} onPress={openCamara}>
+        <TouchableOpacity style={styles.iconTouchable} onPress={openCamera}>
           <View style={styles.iconView}>
             <Image style={styles.cameraIcon} source={images.camera} />
           </View>
-          <Text style={styles.gelleryAndCameraTxt}>Camera</Text>
+          <Text style={styles.galleryAndCameraTxt}>Camera</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   iconTouchable: {
     alignItems: 'center',
   },
-  attachemtnIcon: {
+  attachmentIcon: {
     width: 20,
     height: 20,
   },
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  gelleryAndCameraTxt: {
+  galleryAndCameraTxt: {
     color: '#000',
     fontSize: 12,
     fontWeight: '400',

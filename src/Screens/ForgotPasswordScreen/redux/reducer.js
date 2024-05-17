@@ -1,10 +1,10 @@
 import {
   FORGOT_PASSWORD,
-  FORGOT_PASSWORD_SUUCESS,
+  FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_FAILURE,
   FORGOT_TOKEN,
   FORGOT_TOKEN_SUCCESS,
-  FORGOT_TOKEN_FAILUR,
+  FORGOT_TOKEN_FAILURE,
   SET_NEW_PASSWORD,
   SET_NEW_PASSWORD_SUCCESS,
   SET_NEW_PASSWORD_FAILURE,
@@ -24,7 +24,7 @@ export default function (state = initialState, action) {
         ...state,
         requesting: true,
       };
-    case FORGOT_PASSWORD_SUUCESS:
+    case FORGOT_PASSWORD_SUCCESS:
       return {
         ...state,
         requesting: false,
@@ -45,7 +45,7 @@ export default function (state = initialState, action) {
         ...state,
         tokenRequesting: false,
       };
-    case FORGOT_TOKEN_FAILUR:
+    case FORGOT_TOKEN_FAILURE:
       return {
         ...state,
         tokenRequesting: false,

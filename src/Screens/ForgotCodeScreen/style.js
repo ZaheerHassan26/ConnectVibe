@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  entrCodedText: {
+  enterCodedText: {
     color: '#10445C',
     fontSize: 18,
     fontWeight: '700',
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingHorizontal: 27,
   },
-  verficationCodeText: {
+  verificationCodeText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: '700',

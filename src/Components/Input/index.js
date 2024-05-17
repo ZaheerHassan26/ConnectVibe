@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
-
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Input = props => {
   const {

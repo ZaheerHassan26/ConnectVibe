@@ -2,10 +2,10 @@ import {call, put, all, takeLatest} from 'redux-saga/effects';
 import {FORGOT_PASSWORD, FORGOT_TOKEN, SET_NEW_PASSWORD} from './types';
 import {
   forgotPasswordSuccess,
-  forgotPasswordfailure,
+  forgotPasswordFailure,
   forgotTokenSuccess,
   forgotTokenFailure,
-  setNewpasswordFailure,
+  setNewPasswordFailure,
 } from './actions';
 import {Toast} from 'react-native-toast-notifications';
 import {BASE_URL} from '../../../Config/app';
@@ -23,7 +23,7 @@ async function ForgetPasswordApi(data) {
   return XHR(URL, option);
 }
 
-async function ForgetTokendApi(data) {
+async function ForgetTokenApi(data) {
   const URL = `${BASE_URL}/api/v1/forgot-password/validate_token/`;
   const option = {
     headers: {
@@ -35,7 +35,7 @@ async function ForgetTokendApi(data) {
   return XHR(URL, option);
 }
 
-async function setNewPassworddApi(data) {
+async function setNewPasswordApi(data) {
   const URL = `${BASE_URL}/api/v1/forgot-password/confirm/`;
   const option = {
     headers: {
@@ -55,7 +55,7 @@ function* ForgotPassword({data, callBack}) {
     callBack();
   } catch (e) {
     const {response} = e;
-    yield put(forgotPasswordfailure(response));
+    yield put(forgotPasswordFailure(response));
     let message = 'Something went wrong, please try again later';
     if (response && response.data && response.data.email) {
       message = response?.data?.email;
@@ -66,7 +66,7 @@ function* ForgotPassword({data, callBack}) {
 
 function* ForgotToken({data, callBack}) {
   try {
-    const response = yield call(ForgetTokendApi, data);
+    const response = yield call(ForgetTokenApi, data);
     yield put(forgotTokenSuccess(response.data));
     callBack();
   } catch (e) {
@@ -80,12 +80,12 @@ function* ForgotToken({data, callBack}) {
 
 function* SetNEwPassword({data, callBack}) {
   try {
-    yield call(setNewPassworddApi, data);
+    yield call(setNewPasswordApi, data);
     Toast.show('Password reset successfully');
     callBack();
   } catch (e) {
     const {response} = e;
-    yield put(setNewpasswordFailure(response));
+    yield put(setNewPasswordFailure(response));
     if (response?.data.password) {
       Toast.show(response?.data.password);
     } else {

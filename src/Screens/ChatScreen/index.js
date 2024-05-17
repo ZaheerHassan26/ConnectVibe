@@ -40,7 +40,7 @@ import {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons size={25} color={'white'} name={'arrow-back'} />
           </TouchableOpacity>
-          <View style={styles.imagediv}>
+          <View style={styles.imageDiv}>
             <View style={styles.imageContainer}>
               {data?.image == null ? (
                 <Text
@@ -96,7 +96,7 @@ import {
               </TouchableOpacity>
             </View>
           </View>
-          <Pressable style={styles.sendbtn}>
+          <Pressable style={styles.sendBtn}>
             <MaterialCommunityIcons
               size={25}
               color={'#10445C'}

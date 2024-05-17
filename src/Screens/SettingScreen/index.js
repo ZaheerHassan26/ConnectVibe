@@ -12,7 +12,7 @@ import {useImages} from '../../Utils/Images';
 import styles from './style';
 
 export default function Setting() {
-  const [isLogOutModelVisibale, setIsLogOutModalVisible] = useState(false);
+  const [isLogOutModelVisible, setIsLogOutModalVisible] = useState(false);
   const {images} = useImages();
 
   const data = [
@@ -75,7 +75,7 @@ export default function Setting() {
       </View>
       <Logout
         setIsLogOutModalVisible={setIsLogOutModalVisible}
-        isLogOutModelVisibale={isLogOutModelVisibale}
+        isLogOutModelVisible={isLogOutModelVisible}
       />
     </SafeAreaView>
   );

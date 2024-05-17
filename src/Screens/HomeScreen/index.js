@@ -69,7 +69,7 @@ import {
                     <View style={{marginLeft: 10}}>
                       <Text style={styles.userName}>{item?.name}</Text>
                       <Text style={{color: '#10445C'}} numberOfLines={1}>
-                        {'dkafkj' ?? 'null'}
+                        {'hey' ?? 'null'}
                       </Text>
                     </View>
                   </View>

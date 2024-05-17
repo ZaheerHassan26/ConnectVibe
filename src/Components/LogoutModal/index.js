@@ -5,7 +5,7 @@ import {logout as logoutAction} from '../../Screens/LoginScreen/redux/actions';
 import { connect } from 'react-redux';
 
 const Logout = ({
-  isLogOutModelVisibale,
+  isLogOutModelVisible,
   setIsLogOutModalVisible,
   logoutAction,
 }) => {
@@ -14,7 +14,7 @@ const Logout = ({
       animationIn="zoomIn"
       animationOut="zoomOut"
       backdropOpacity={0.5}
-      isVisible={isLogOutModelVisibale}
+      isVisible={isLogOutModelVisible}
       style={styles.addModalContainer}
       hasBackdrop={true}
       onBackdropPress={() => setIsLogOutModalVisible(false)}>

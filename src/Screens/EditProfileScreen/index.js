@@ -41,7 +41,7 @@ const EditProfile = ({
   updateProfileAction,
   requesting,
   navigation,
-  userDeatil,
+  userDetail,
   profileData,
 }) => {
   const {
@@ -64,12 +64,12 @@ const EditProfile = ({
   };
 
   useLayoutEffect(() => {
-    setValue('name', userDeatil?.name);
-    setValue('email', userDeatil?.user_email);
-    setValue('phone', userDeatil?.phone);
+    setValue('name', userDetail?.name);
+    setValue('email', userDetail?.user_email);
+    setValue('phone', userDetail?.phone);
   }, [isFocused]);
 
-  const updatePrifileButton = data => {
+  const updateProfileButton = data => {
     if (!active) {
       const payload = new FormData();
       const city = CityData.find(item => item.label === data.city);
@@ -133,7 +133,7 @@ const EditProfile = ({
                 label="username"
                 value={value}
                 onChangeText={onChange}
-                placeholder={'Admintest'}
+                placeholder={'AdminTest'}
                 placeholderTextColor={'grey'}
                 activeUnderlineColor={'#10445C'}
                 style={styles.input}
@@ -195,7 +195,7 @@ const EditProfile = ({
             text={'Save'}
             loading={requesting}
             containerStyle={styles.buttonCon}
-            onPress={handleSubmit(updatePrifileButton)}
+            onPress={handleSubmit(updateProfileButton)}
             disabled={requesting}
           />
         </View>
@@ -212,7 +212,7 @@ const EditProfile = ({
 
 const mapStateToProps = state => ({
   requesting: state?.editProfile?.requesting,
-  userDeatil: state?.login?.userDetail?.user,
+  userDetail: state?.login?.userDetail?.user,
   // profileData: state?.editProfile?.profile,
 });
 

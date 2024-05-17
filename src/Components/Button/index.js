@@ -1,9 +1,7 @@
 import {
-  View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import React from 'react';
@@ -13,7 +11,6 @@ const Button = ({
   textStyle,
   text,
   onPress,
-  //   rightImage,
   loading,
   disabled,
 }) => {
@@ -27,8 +24,6 @@ const Button = ({
       ) : (
         <Text style={[styles.buttonText, textStyle]}>{text}</Text>
       )}
-
-      {/* {rightImage && <Image style={styles.rightImage} source={rightImage} />} */}
     </TouchableOpacity>
   );
 };
@@ -39,7 +34,6 @@ const styles = StyleSheet.create({
   buttonTouchable: {
     height: 60,
     borderWidth: 1,
-    // borderColor: '#fff',
     borderRadius: 10,
     width: 143,
     flexDirection: 'row',

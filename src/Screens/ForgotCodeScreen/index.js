@@ -28,7 +28,7 @@ const ForgotCode = ({
   const [valueError, setValueError] = useState(false);
   const [mail, setMail] = useState(route?.params?.email);
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-  const [propss, getCellOnLayoutHandler] = useClearByFocusCell({
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
@@ -42,7 +42,7 @@ const ForgotCode = ({
     } else {
       setValueError(true);
     }
-    callBack()
+    callBack();
   };
 
   const callBack = () => {
@@ -55,10 +55,10 @@ const ForgotCode = ({
     const data = {
       email: mail,
     };
-    forgotPasswordAction(data, varificationCode);
+    forgotPasswordAction(data, verificationCode);
   };
 
-  const varificationCode = () => {
+  const verificationCode = () => {
     navigation.navigate('forgotCode');
   };
   return (
@@ -74,10 +74,10 @@ const ForgotCode = ({
           onPress={() => navigation.goBack()}>
           <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
         </TouchableOpacity>
-        <Text style={styles.entrCodedText}>Enter the code</Text>
+        <Text style={styles.enterCodedText}>Enter the code</Text>
       </View>
       <View style={styles.codeInputView}>
-        <Text style={styles.verficationCodeText}>
+        <Text style={styles.verificationCodeText}>
           Enter the verification code
         </Text>
         <Text style={styles.enterCodeText}>
@@ -92,7 +92,7 @@ const ForgotCode = ({
         <View style={styles.CodeWrapper}>
           <CodeField
             ref={ref}
-            {...propss}
+            {...props}
             value={value}
             onChangeText={e => {
               setValue(e), setValueError(false);
@@ -110,12 +110,15 @@ const ForgotCode = ({
               </Text>
             )}
           />
+          {valueError ? (
+            <Text style={{marginHorizontal: 5, top: 6, color: 'red'}}>
+              Please enter the code
+            </Text>
+          ) : (
+            ''
+          )}
         </View>
-        {valueError ? (
-          <Text style={{color: 'red'}}>Please enter the code</Text>
-        ) : (
-          ''
-        )}
+
         <Button
           onPress={onConfirmCode}
           text={'Submit'}
@@ -126,8 +129,6 @@ const ForgotCode = ({
         <TouchableOpacity onPress={onResendButton}>
           <Text style={styles.resendText}>Resend</Text>
         </TouchableOpacity>
-
-        
       </View>
     </View>
   );
@@ -136,11 +137,11 @@ const ForgotCode = ({
 const mapStateToProps = state => ({
   tokenRequesting: state.forgotPassword.tokenRequesting,
 });
-const mapDispatchToPropos = dispatch => ({
+const mapDispatchToProps = dispatch => ({
   forgotTokenAction: (data, callBack) =>
     dispatch(forgotTokenAction(data, callBack)),
   forgotPasswordAction: (data, callBack) =>
     dispatch(forgotPasswordAction(data, callBack)),
 });
 
-export default connect(mapStateToProps, mapDispatchToPropos)(ForgotCode);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotCode);

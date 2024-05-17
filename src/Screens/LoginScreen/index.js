@@ -74,12 +74,12 @@ const Login = ({navigation, loginAction, requesting}) => {
         </View>
         <View style={styles.cardView}>
           <View style={styles.cardHeader}>
-            <Text style={styles.siginTxt}>SignIn</Text>
+            <Text style={styles.signInTxt}>SignIn</Text>
             <Text style={styles.subTxt}>To access your dashboard</Text>
           </View>
 
           <View style={styles.mainView}>
-            <Text style={styles.lableStyle}>Email</Text>
+            <Text style={styles.labelStyle}>Email</Text>
 
             <View style={styles.inputFocus}>
               <View style={styles.emailImgView}>
@@ -104,7 +104,7 @@ const Login = ({navigation, loginAction, requesting}) => {
             </View>
             <Error errors={errors?.username} />
 
-            <Text style={[styles.lableStyle, {marginTop: 20}]}>Password</Text>
+            <Text style={[styles.labelStyle, {marginTop: 20}]}>Password</Text>
             <View style={styles.inputFocus}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
@@ -164,14 +164,14 @@ const Login = ({navigation, loginAction, requesting}) => {
                 height: 52,
               }}
             />
-            <View style={styles.careateAnAccountView}>
-              <Text style={styles.careateAnAccountText}>
+            <View style={styles.createAnAccountView}>
+              <Text style={styles.createAnAccountText}>
                 Don’t have an account yet?
               </Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Registeration')}>
+                onPress={() => navigation.navigate('Registration')}>
                 <Text
-                  style={[styles.careateAnAccountText, styles.fontWeightBold]}>
+                  style={[styles.createAnAccountText, styles.fontWeightBold]}>
                   Register now
                 </Text>
               </TouchableOpacity>

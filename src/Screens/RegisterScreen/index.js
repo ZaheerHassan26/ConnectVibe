@@ -9,13 +9,15 @@ import {
 import React, {useState} from 'react';
 import {Toast} from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {Controller, useForm} from 'react-hook-form';
+import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import Entypo from 'react-native-vector-icons/Entypo';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {Controller, useForm} from 'react-hook-form';
+
+
 
 import * as yup from 'yup';
 
@@ -92,7 +94,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
             <Text style={styles.registrationText}>New Registration</Text>
           </View>
           <Text style={styles.entryInformationText}>
-            Please enter the following informemailation to create a new account.
+            Please enter the following information to create a new account.
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pictureView}>
@@ -105,13 +107,13 @@ const Signup = ({navigation, signupAction, requesting}) => {
                   }>
                   <Image
                     style={styles.userPictureCircleWithCamera}
-                    source={images.userImageupload}
+                    source={images.userImageUpload}
                   />
                 </ImageBackground>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.lableStyle}>User Name</Text>
+            <Text style={styles.labelStyle}>User Name</Text>
 
             <View style={styles.inputFocus}>
               <View style={styles.emailImgView}>
@@ -133,7 +135,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Error errors={errors?.name} />
 
-            <Text style={styles.lableStyle}>Email</Text>
+            <Text style={styles.labelStyle}>Email</Text>
 
             <View style={styles.inputFocus}>
               <View style={styles.emailImgView}>
@@ -159,7 +161,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Error errors={errors?.email} />
 
-            <Text style={styles.lableStyle}>Phone_no</Text>
+            <Text style={styles.labelStyle}>Phone_no</Text>
 
             <View style={styles.inputFocus}>
               <View style={styles.emailImgView}>
@@ -184,7 +186,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
             </View>
             <Error errors={errors?.phone} />
 
-            <Text style={[styles.lableStyle]}>Password</Text>
+            <Text style={styles.labelStyle}>Password</Text>
             <View style={styles.inputFocus}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
@@ -222,7 +224,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Error errors={errors?.password} />
 
-            <Text style={[styles.lableStyle]}>Confirm Password</Text>
+            <Text style={styles.labelStyle}>Confirm Password</Text>
             <View style={styles.inputFocus}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>

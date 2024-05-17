@@ -1,4 +1,4 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {connect} from 'react-redux';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -8,7 +8,7 @@ import {Toast} from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {setNewpassword as setNewPasswordAction} from '../ForgotPasswordScreen/redux/actions';
+import {setNewPassword as setNewPasswordAction} from '../ForgotPasswordScreen/redux/actions';
 
 import styles from './style';
 import Button from '../../Components/Button';
@@ -62,9 +62,9 @@ const SetNewPassword = ({
       </View>
 
       <View style={styles.passwordInputView}>
-        <Text style={styles.setNewPasswordlText}>Set new password</Text>
+        <Text style={styles.setNewPasswordText}>Set new password</Text>
 
-        <Text style={[styles.lableStyle]}>Password</Text>
+        <Text style={styles.labelStyle}>Password</Text>
         <View style={styles.inputFocus}>
           <View style={[styles.passView, {justifyContent: 'space-between'}]}>
             <View style={{flexDirection: 'row', width: '89%'}}>
@@ -98,7 +98,7 @@ const SetNewPassword = ({
           </View>
         </View>
 
-        <Text style={[styles.lableStyle]}>Confirm Password</Text>
+        <Text style={styles.labelStyle}>Confirm Password</Text>
         <View style={styles.inputFocus}>
           <View style={[styles.passView, {justifyContent: 'space-between'}]}>
             <View style={{flexDirection: 'row', width: '89%'}}>

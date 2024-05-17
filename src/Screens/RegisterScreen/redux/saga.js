@@ -20,7 +20,7 @@ async function signupApi(data) {
   return XHR(URL, option);
 }
 
-function* singupAPiCall({data, callBack}) {
+function* signupAPiCall({data, callBack}) {
   try {
     const response = yield call(signupApi, data);
     yield put(signupSuccess(response.data));
@@ -37,4 +37,4 @@ function* singupAPiCall({data, callBack}) {
   }
 }
 
-export default all([takeLatest(SIGNUP, singupAPiCall)]);
+export default all([takeLatest(SIGNUP, signupAPiCall)]);

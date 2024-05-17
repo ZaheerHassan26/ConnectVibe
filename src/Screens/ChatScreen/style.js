@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flexDirection: 'row',
   },
-  imagediv: {
+  imageDiv: {
     flexDirection: 'row',
     gap: 7,
     top: 5,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flexBasis: '20%',
     justifyContent: 'space-between',
   },
-  sendbtn: {
+  sendBtn: {
     backgroundColor: '#CBDFE8',
     alignItems: 'center',
     justifyContent: 'center',
