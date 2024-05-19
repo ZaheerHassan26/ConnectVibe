@@ -4,7 +4,6 @@ import {
   Pressable,
   SafeAreaView,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,

@@ -1,12 +1,13 @@
-import { StyleSheet } from "react-native";
-
-const styles = StyleSheet.create({
+import {StyleSheet} from 'react-native';
+import {getThemeColor} from '../ThemeProvider/redux/saga';
+export const getStyles = theme =>
+  StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#EDF4F6',
+      backgroundColor: getThemeColor('primary', theme),
     },
     header: {
-      backgroundColor: '#10445C',
+      backgroundColor: getThemeColor('headerColor', theme),
       height: 80,
       flexDirection: 'row',
       alignItems: 'flex-end',
@@ -33,6 +34,8 @@ const styles = StyleSheet.create({
     },
     imageView: {
       height: 150,
+      backgroundColor: 'white',
+
       width: 150,
       borderRadius: 75,
       alignItems: 'center',
@@ -59,7 +62,14 @@ const styles = StyleSheet.create({
       width: 40,
       overflow: 'hidden',
     },
-    input: {backgroundColor: 'transparent', marginVertical: 5},
+    input: {
+      backgroundColor: 'transparent',
+      marginVertical: 5,
+    },
+    text: {
+      color: getThemeColor('text', theme),
+    },
+    placeholder: {color: getThemeColor('placeholder', theme)},
     buttonCon: {
       alignSelf: 'flex-end',
       marginHorizontal: 20,
@@ -73,5 +83,3 @@ const styles = StyleSheet.create({
     },
     btnText: {color: 'white', fontSize: 20},
   });
-
-  export default styles 

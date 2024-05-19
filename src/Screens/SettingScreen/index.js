@@ -12,11 +12,10 @@ import Logout from '../../Components/LogoutModal';
 import {useImages} from '../../Utils/Images';
 import {getStyles} from './style';
 import {connect} from 'react-redux';
-import {setTheme} from '../ThemeProvider/redux/action';
+import {setTheme, toggleTheme} from '../ThemeProvider/redux/action';
 
-const Setting = ({onSelectTheme, theme}) => {
+const Setting = ({onSelectTheme, theme, toggle_theme, isDark}) => {
   const [isLogOutModelVisible, setIsLogOutModalVisible] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   const {images} = useImages();
   const styles = getStyles(theme);
 
@@ -30,10 +29,10 @@ const Setting = ({onSelectTheme, theme}) => {
     },
   ];
   const handleToggle = () => {
-    setIsDark(!isDark),
-      isDark ? onSelectTheme('default') : onSelectTheme('dark');
+    toggle_theme();
+    isDark ? onSelectTheme('default') : onSelectTheme('dark');
   };
-
+console.log(isDark,'dark');
   const renderItem = ({item}) => (
     <TouchableOpacity
       onPress={
@@ -96,9 +95,11 @@ const Setting = ({onSelectTheme, theme}) => {
 
 const mapStateToProps = state => ({
   theme: state?.themes?.theme,
+  isDark: state?.themes?.isDark,
 });
 const mapDispatchToProps = dispatch => ({
   onSelectTheme: theme => dispatch(setTheme(theme)),
+  toggle_theme: () => dispatch(toggleTheme()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setting);

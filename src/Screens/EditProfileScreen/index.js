@@ -18,7 +18,7 @@ import {connect} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 
 import {emailRegex} from '../../Utils/function';
-import styles from './style';
+import {getStyles} from './style';
 import CameraModal from '../../Components/ImageModal';
 import {updateProfile as updateProfileAction} from './redux/actions';
 import {useImages} from '../../Utils/Images';
@@ -34,7 +34,7 @@ const schema = yup.object({
   email: yup.string().matches(emailRegex, 'Enter a valid email').label('Email'),
 });
 
-const EditProfile = ({updateProfileAction, requesting, profileData}) => {
+const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
   const {
     control,
     setValue,
@@ -48,13 +48,11 @@ const EditProfile = ({updateProfileAction, requesting, profileData}) => {
 
   const {images} = useImages();
   const isFocused = useIsFocused();
-
+  const styles = getStyles(theme);
 
   const image = {
     uri: null,
   };
-
-  
 
   const updateProfileButton = data => {
     const payload = new FormData();
@@ -79,7 +77,6 @@ const EditProfile = ({updateProfileAction, requesting, profileData}) => {
     }
     payload?._parts.length > 1 ? updateProfileAction(payload) : '';
   };
-
 
   useLayoutEffect(() => {
     setValue('name', profileData?.name);
@@ -126,8 +123,8 @@ const EditProfile = ({updateProfileAction, requesting, profileData}) => {
                   value={value}
                   onChangeText={onChange}
                   placeholder={'AdminTest'}
-                  placeholderTextColor={'grey'}
-                  activeUnderlineColor={'#10445C'}
+                  placeholderTextColor={styles.placeholder}
+                  activeUnderlineColor={styles.text.color}
                   style={styles.input}
                 />
               )}
@@ -142,9 +139,10 @@ const EditProfile = ({updateProfileAction, requesting, profileData}) => {
                   value={value}
                   onChangeText={onChange}
                   placeholder={'example@test.com'}
-                  placeholderTextColor={'grey'}
+                  textColor={styles.placeholder.color}
+                  placeholderTextColor={styles.placeholder}
                   style={styles.input}
-                  disabled
+                  editable={false}
                 />
               )}
               name="email"
@@ -157,8 +155,8 @@ const EditProfile = ({updateProfileAction, requesting, profileData}) => {
                   value={value}
                   onChangeText={onChange}
                   placeholder={'123456789'}
-                  activeUnderlineColor={'#10445C'}
-                  placeholderTextColor={'grey'}
+                  activeUnderlineColor={styles.text.color}
+                  placeholderTextColor={styles.placeholder}
                   style={styles.input}
                 />
               )}
@@ -173,9 +171,10 @@ const EditProfile = ({updateProfileAction, requesting, profileData}) => {
                   label="Password"
                   value={value}
                   onChangeText={onChange}
+                  textColor={styles.text.color}
                   placeholder={'12345'}
-                  activeUnderlineColor={'#10445C'}
-                  placeholderTextColor={'grey'}
+                  activeUnderlineColor={styles.text.color}
+                  placeholderTextColor={styles.placeholder}
                   style={styles.input}
                 />
               )}
@@ -207,6 +206,7 @@ const EditProfile = ({updateProfileAction, requesting, profileData}) => {
 const mapStateToProps = state => ({
   requesting: state?.editProfile?.requesting,
   profileData: state?.editProfile?.profile,
+  theme: state?.themes?.theme,
 });
 
 const mapDispatchToProps = dispatch => ({

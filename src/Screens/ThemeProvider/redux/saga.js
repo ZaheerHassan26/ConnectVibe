@@ -3,6 +3,7 @@ const defaultColors = {
   headerColor: '#10445C',
   headerText: '#FFFFFF',
   text: '#10445C',
+  placeholder:'#aaaaaa',
 
 
   black: '#000000',
@@ -18,11 +19,13 @@ const defaultColors = {
   900: '#1A202C',
 };
 const darkColors = {
-  primary: defaultColors.black,
+  primary: '#121212',
   black: defaultColors.white,
   headerColor: '#10445C',
   headerText: '#000',
-  text: '#fff',
+  text: '#FFFFFF',
+  placeholder:'#757575',
+
 
 
   white: defaultColors.black,
