@@ -5,15 +5,20 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Switch,
 } from 'react-native';
 import React, {useState} from 'react';
 import Logout from '../../Components/LogoutModal';
 import {useImages} from '../../Utils/Images';
-import styles from './style';
+import {getStyles} from './style';
+import {connect} from 'react-redux';
+import {setTheme} from '../ThemeProvider/redux/action';
 
-export default function Setting() {
+const Setting = ({onSelectTheme, theme}) => {
   const [isLogOutModelVisible, setIsLogOutModalVisible] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const {images} = useImages();
+  const styles = getStyles(theme);
 
   const data = [
     {
@@ -24,6 +29,10 @@ export default function Setting() {
       },
     },
   ];
+  const handleToggle = () => {
+    setIsDark(!isDark),
+      isDark ? onSelectTheme('default') : onSelectTheme('dark');
+  };
 
   const renderItem = ({item}) => (
     <TouchableOpacity
@@ -64,7 +73,7 @@ export default function Setting() {
     </TouchableOpacity>
   );
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <View style={styles.moreMainView}>
         <FlatList
           data={data}
@@ -72,6 +81,10 @@ export default function Setting() {
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
         />
+        <View style={{flexDirection: 'row'}}>
+          <Text>dark mode</Text>
+          <Switch value={isDark} onChange={handleToggle} />
+        </View>
       </View>
       <Logout
         setIsLogOutModalVisible={setIsLogOutModalVisible}
@@ -79,4 +92,13 @@ export default function Setting() {
       />
     </SafeAreaView>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  theme: state?.themes?.theme,
+});
+const mapDispatchToProps = dispatch => ({
+  onSelectTheme: theme => dispatch(setTheme(theme)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Setting);

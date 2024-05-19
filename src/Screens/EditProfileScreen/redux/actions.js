@@ -23,10 +23,9 @@ export const getProfileFailure = (error) => ({
   error,
 });
 
-export const updateProfile = (data, callBack) => ({
+export const updateProfile = (data) => ({
   type: UPDATE_PROFILE,
   data,
-  callBack,
 });
 
 export const updateProfileSuccess = (data) => ({

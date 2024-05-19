@@ -47,7 +47,6 @@ const Login = ({navigation, loginAction, requesting}) => {
   const [passwordView, setPasswordView] = useState(false);
 
   const loginUser = async data => {
-    console.log(data);
     // const fcmToken = await AsyncStorage.getItem('FCMToken');
     loginAction(data, navigation);
   };
