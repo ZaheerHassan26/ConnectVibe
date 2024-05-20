@@ -9,12 +9,15 @@ import EditProfile from '../Screens/EditProfileScreen';
 import Home from '../Screens/HomeScreen';
 import Chat from '../Screens/ChatScreen';
 import Setting from '../Screens/SettingScreen';
+import {getThemeColor} from '../Screens/ThemeProvider/redux/saga';
+import {connect} from 'react-redux';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function AppNavigator() {
+const AppNavigator = ({theme}) => {
   const colorScheme = Appearance.getColorScheme();
+  const styles = getStyles(theme);
 
   const tabConfig = [
     {
@@ -78,7 +81,7 @@ export default function AppNavigator() {
   const BottomNavigator = () => {
     return (
       <Tab.Navigator
-        initialRouteName="Location"
+        initialRouteName="home"
         screenOptions={({route}) => ({
           tabBarPressColor: 'none',
           tabBarActiveTintColor: '#58ceb2',
@@ -86,9 +89,11 @@ export default function AppNavigator() {
           tabBarHideOnKeyboard: true,
           tabBarStyle: {
             height: Platform.OS === 'ios' ? 80 : 70,
-            backgroundColor: colorScheme == 'dark' ? '#151515' : '#10445C',
+            backgroundColor: getThemeColor('headerColor', theme),
             borderTopColor: 'white',
             borderTopWidth: 1,
+            // borderRadius: 15,
+            // overflow: 'hidden',
           },
           tabBarIconStyle: {
             alignContent: 'center',
@@ -118,31 +123,38 @@ export default function AppNavigator() {
   };
 
   return (
-      <AppStack.Navigator
-        initialRouteName={'BottomBar'}
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <AppStack.Screen name="BottomBar" component={BottomNavigator} />
-        <AppStack.Screen name="chat" component={Chat} />
-      </AppStack.Navigator>
+    <AppStack.Navigator
+      initialRouteName={'BottomBar'}
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <AppStack.Screen name="BottomBar" component={BottomNavigator} />
+      <AppStack.Screen name="chat" component={Chat} />
+    </AppStack.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  activeIconContainer: {
-    width: 84,
-    alignItems: 'center',
-    height: 49,
-    borderRadius: 24,
-    backgroundColor: '#205872',
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  defaultIcon: {
-    width: 55,
-    alignItems: 'center',
-    height: 55,
-    justifyContent: 'center',
-  },
+export const getStyles = theme =>
+  StyleSheet.create({
+    activeIconContainer: {
+      width: 84,
+      alignItems: 'center',
+      height: 49,
+      borderRadius: 24,
+      backgroundColor: getThemeColor('activeTab', theme),
+      justifyContent: 'center',
+      alignSelf: 'center',
+    },
+    defaultIcon: {
+      width: 55,
+      alignItems: 'center',
+      height: 55,
+      justifyContent: 'center',
+    },
+  });
+
+const mapStateToProps = state => ({
+  theme: state?.themes?.theme,
 });
+
+export default connect(mapStateToProps, null)(AppNavigator);

@@ -53,7 +53,7 @@ export const getStyles = theme =>
       marginHorizontal: 24,
     },
     inputInnerContainer: {
-      backgroundColor: '#CBDFE8',
+      backgroundColor: getThemeColor('inputBackground', theme),
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 10,
@@ -70,6 +70,7 @@ export const getStyles = theme =>
       minHeight: 50,
       marginRight: 10,
       flexBasis: '60%',
+      color:getThemeColor('text', theme)
     },
     iconContainer: {
       flexDirection: 'row',
@@ -77,7 +78,7 @@ export const getStyles = theme =>
       justifyContent: 'space-between',
     },
     sendBtn: {
-      backgroundColor: '#CBDFE8',
+      backgroundColor: getThemeColor('inputBackground', theme),
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 25,

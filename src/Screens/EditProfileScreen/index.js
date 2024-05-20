@@ -24,6 +24,7 @@ import {updateProfile as updateProfileAction} from './redux/actions';
 import {useImages} from '../../Utils/Images';
 import Button from '../../Components/Button';
 import Error from '../../Components/Input/Error';
+import {getThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
   name: yup.string().trim().required(),
@@ -90,7 +91,11 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
         <Text style={styles.headerText}>Profile</Text>
       </View>
       {!profileData ? (
-        <ActivityIndicator size={'large'} color={'#10445C'} />
+        <ActivityIndicator
+          size={'large'}
+          color={getThemeColor('text', theme)}
+          style={{marginVertical: '60%'}}
+        />
       ) : (
         <ScrollView>
           <View style={styles.ImgView}>

@@ -3,8 +3,9 @@ const defaultColors = {
   headerColor: '#10445C',
   headerText: '#FFFFFF',
   text: '#10445C',
-  placeholder:'#aaaaaa',
-
+  placeholder: '#aaaaaa',
+  activeTab: '#205872',
+  inputBackground: '#CBDFE8',
 
   black: '#000000',
   white: '#FFFFFF',
@@ -19,14 +20,14 @@ const defaultColors = {
   900: '#1A202C',
 };
 const darkColors = {
-  primary: '#121212',
+  primary: '#1E1E1E',
   black: defaultColors.white,
-  headerColor: '#10445C',
+  headerColor: '#333333',
   headerText: '#000',
   text: '#FFFFFF',
-  placeholder:'#757575',
-
-
+  placeholder: '#757575',
+  activeTab: '#4C4C4C',
+  inputBackground: 'rgb(42, 42, 42)',
 
   white: defaultColors.black,
   100: defaultColors[900],

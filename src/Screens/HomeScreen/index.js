@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-// import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useImages} from '../../Utils/Images';
 import {useIsFocused} from '@react-navigation/native';
 import {getProfile as getProfileAction} from '../EditProfileScreen/redux/actions';
@@ -48,13 +48,13 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
     <SafeAreaView style={styles.container}>
       <StatusBar
         animated={true}
-        backgroundColor={'#10445C'}
+        backgroundColor={styles.header.backgroundColor}
         barStyle={'light-content'}
       />
       <View style={styles.header}>
         <Text style={styles.headerText}>Connect Vibe</Text>
         <Pressable>
-          {/* <EvilIcons size={28} color={'white'} name={'search'} /> */}
+          <EvilIcons size={28} color={'white'} name={'search'} />
         </Pressable>
       </View>
 

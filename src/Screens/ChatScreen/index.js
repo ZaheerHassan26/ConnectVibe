@@ -16,6 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {connect} from 'react-redux';
 import {getStyles} from './style';
+import {getThemeColor} from '../ThemeProvider/redux/saga';
 
 const Chat = ({route, theme}) => {
   const [inputValue, setInputValue] = useState('');
@@ -74,7 +75,7 @@ const Chat = ({route, theme}) => {
         <View style={styles.inputInnerContainer}>
           <View style={styles.leftInputView}>
             <TextInput
-              placeholderTextColor="#080F18"
+              placeholderTextColor={getThemeColor('placeholder', theme)}
               placeholder="Type here..."
               style={styles.inputText}
               value={inputValue}
@@ -83,17 +84,17 @@ const Chat = ({route, theme}) => {
           </View>
           <View style={styles.iconContainer}>
             <TouchableOpacity>
-              <Entypo size={25} color={'#10445C'} name={'link'} />
+              <Entypo size={25} color={getThemeColor('text', theme)} name={'link'} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openCamera}>
-              <Entypo size={25} color={'#10445C'} name={'camera'} />
+              <Entypo size={25} color={getThemeColor('text', theme)} name={'camera'} />
             </TouchableOpacity>
           </View>
         </View>
         <Pressable style={styles.sendBtn}>
           <MaterialCommunityIcons
             size={25}
-            color={'#10445C'}
+            color={getThemeColor('text', theme)}
             name={inputValue == '' ? 'microphone' : 'send'}
           />
         </Pressable>

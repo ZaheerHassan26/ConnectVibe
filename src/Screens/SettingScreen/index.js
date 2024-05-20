@@ -32,7 +32,6 @@ const Setting = ({onSelectTheme, theme, toggle_theme, isDark}) => {
     toggle_theme();
     isDark ? onSelectTheme('default') : onSelectTheme('dark');
   };
-console.log(isDark,'dark');
   const renderItem = ({item}) => (
     <TouchableOpacity
       onPress={
