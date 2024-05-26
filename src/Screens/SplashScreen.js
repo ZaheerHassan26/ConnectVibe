@@ -1,15 +1,20 @@
 import {Image, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import React from 'react';
 import {useImages} from '../Utils/Images';
+import {useThemeColor} from './ThemeProvider/redux/saga';
 
 export default function SplashScreen() {
   const {images} = useImages();
+  const backgroundColor = useThemeColor('primary');
+
   return (
-    <SafeAreaView style={styles.main}>
+    <SafeAreaView style={[styles.main, {backgroundColor: backgroundColor}]}>
       <StatusBar
         animated={true}
-        backgroundColor={'#EDF4F6'}
-        barStyle={'dark-content'}
+        backgroundColor={backgroundColor}
+        barStyle={
+          backgroundColor == '#EDF4F6' ? 'dark-content' : 'light-content'
+        }
       />
       <Image source={images.appLogo} style={styles.logo} />
     </SafeAreaView>
@@ -20,7 +25,6 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#EDF4F6',
     alignItems: 'center',
     justifyContent: 'center',
   },

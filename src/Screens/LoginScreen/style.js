@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     paddingLeft: 14,
     height: 42,
-    backgroundColor: '#3a6579',
+    // backgroundColor: '#3a6579',
   },
   loginImage: {
     marginTop: 100,
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderTopLeftRadius: 42,
     borderTopRightRadius: 42,
-    backgroundColor: '#10445C',
   },
   logoImgView: {
     justifyContent: 'center',

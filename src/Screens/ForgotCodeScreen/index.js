@@ -1,4 +1,4 @@
-import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
@@ -14,6 +14,7 @@ import {
   forgotPassword as forgotPasswordAction,
 } from '../ForgotPasswordScreen/redux/actions';
 import Button from '../../Components/Button';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const CELL_COUNT = 5;
 
@@ -61,22 +62,26 @@ const ForgotCode = ({
   const verificationCode = () => {
     navigation.navigate('ForgotCode');
   };
+
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const cardBackgroundColor = useThemeColor('headerColor');
+  const buttonColor = useThemeColor('buttonColor');
+  const cellBackgroundColor = useThemeColor('activeTab');
   return (
-    <View style={styles.main}>
-      <StatusBar
-        animated={true}
-        backgroundColor={'#EDF4F6'}
-        barStyle={'dark-content'}
-      />
-      <View style={styles.enterCodeView}>
+    <View style={[styles.main, {backgroundColor: backgroundColor}]}>
+      <View style={[styles.enterCodeView, {backgroundColor: backgroundColor}]}>
         <TouchableOpacity
           style={styles.backTouchable}
           onPress={() => navigation.goBack()}>
-          <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
+          <Ionicons size={25} color={textColor} name={'arrow-back'} />
         </TouchableOpacity>
-        <Text style={styles.enterCodedText}>Enter the code</Text>
+        <Text style={[styles.enterCodedText, {color: textColor}]}>
+          Enter the code
+        </Text>
       </View>
-      <View style={styles.codeInputView}>
+      <View
+        style={[styles.codeInputView, {backgroundColor: cardBackgroundColor}]}>
         <Text style={styles.verificationCodeText}>
           Enter the verification code
         </Text>
@@ -104,7 +109,11 @@ const ForgotCode = ({
             renderCell={({index, symbol, isFocused}) => (
               <Text
                 key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
+                style={[
+                  styles.cell,
+                  {backgroundColor: cellBackgroundColor},
+                  isFocused && styles.focusCell,
+                ]}
                 onLayout={getCellOnLayoutHandler(index)}>
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
@@ -123,7 +132,12 @@ const ForgotCode = ({
           onPress={onConfirmCode}
           text={'Submit'}
           loading={tokenRequesting}
-          containerStyle={styles.button}
+          containerStyle={[
+            styles.button,
+            {
+              backgroundColor: buttonColor,
+            },
+          ]}
           disabled={tokenRequesting}
         />
         <TouchableOpacity onPress={onResendButton}>

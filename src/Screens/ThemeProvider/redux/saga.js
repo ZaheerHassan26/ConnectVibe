@@ -1,3 +1,5 @@
+import { useTheme } from '../ThemeProvider';
+
 const defaultColors = {
   primary: '#EDF4F6',
   headerColor: '#10445C',
@@ -6,6 +8,7 @@ const defaultColors = {
   placeholder: '#aaaaaa',
   activeTab: '#205872',
   inputBackground: '#CBDFE8',
+  buttonColor:'#00a1e9',
 
   black: '#000000',
   white: '#FFFFFF',
@@ -28,6 +31,8 @@ const darkColors = {
   placeholder: '#757575',
   activeTab: '#4C4C4C',
   inputBackground: 'rgb(42, 42, 42)',
+  buttonColor:'#FFFFFF',
+
 
   white: defaultColors.black,
   100: defaultColors[900],
@@ -49,6 +54,10 @@ export const getThemeColor = (color, theme = 'default') => {
   const themeColor = themes[theme][color];
   const fallbackColor = themes.default[color];
   return themeColor || fallbackColor;
+};
+export const useThemeColor = color => {
+  const {theme} = useTheme();
+  return getThemeColor(color, theme);
 };
 
 export default themes;

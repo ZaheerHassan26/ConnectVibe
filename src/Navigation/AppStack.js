@@ -1,4 +1,4 @@
-import {Appearance, Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,7 +9,7 @@ import EditProfile from '../Screens/EditProfileScreen';
 import Home from '../Screens/HomeScreen';
 import Chat from '../Screens/ChatScreen';
 import Setting from '../Screens/SettingScreen';
-import {getThemeColor} from '../Screens/ThemeProvider/redux/saga';
+import {getThemeColor, useThemeColor} from '../Screens/ThemeProvider/redux/saga';
 import {connect} from 'react-redux';
 import AddScreen from '../Screens/AddScreen';
 
@@ -17,20 +17,22 @@ const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = ({theme}) => {
-  const colorScheme = Appearance.getColorScheme();
   const styles = getStyles(theme);
+  const headerBackgroundColor = useThemeColor('headerColor');
+  const activeTab = useThemeColor('activeTab');
+
 
   const tabConfig = [
     {
       name: 'home',
       component: Home,
       focusedIcon: (
-        <View style={styles.activeIconContainer}>
+        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
           <AntDesign size={25} color={'white'} name={'home'} />
         </View>
       ),
       defaultIcon: (
-        <View style={styles.defaultIcon}>
+        <View style={[styles.defaultIcon,{}]}>
           <AntDesign size={20} color={'white'} name={'home'} />
           <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>Home</Text>
         </View>
@@ -40,7 +42,7 @@ const AppNavigator = ({theme}) => {
       name: 'profile',
       component: EditProfile,
       focusedIcon: (
-        <View style={styles.activeIconContainer}>
+        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
           <EvilIcons
             size={30}
             color={'white'}
@@ -62,7 +64,7 @@ const AppNavigator = ({theme}) => {
       name: 'setting',
       component: Setting,
       focusedIcon: (
-        <View style={styles.activeIconContainer}>
+        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
           <AntDesign size={25} color={'white'} name={'setting'} />
         </View>
       ),
@@ -85,16 +87,13 @@ const AppNavigator = ({theme}) => {
         initialRouteName="home"
         screenOptions={({route}) => ({
           tabBarPressColor: 'none',
-          tabBarActiveTintColor: '#58ceb2',
           tabBarInactiveTintColor: 'gray',
           tabBarHideOnKeyboard: true,
           tabBarStyle: {
             height: Platform.OS === 'ios' ? 80 : 70,
-            backgroundColor: getThemeColor('headerColor', theme),
+            backgroundColor: headerBackgroundColor,
             borderTopColor: 'white',
             borderTopWidth: 1,
-            // borderRadius: 15,
-            // overflow: 'hidden',
           },
           tabBarIconStyle: {
             alignContent: 'center',
@@ -143,7 +142,7 @@ export const getStyles = theme =>
       alignItems: 'center',
       height: 49,
       borderRadius: 24,
-      backgroundColor: getThemeColor('activeTab', theme),
+      // backgroundColor: getThemeColor('activeTab', theme),
       justifyContent: 'center',
       alignSelf: 'center',
     },

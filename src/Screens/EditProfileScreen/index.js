@@ -3,6 +3,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -24,7 +25,7 @@ import {updateProfile as updateProfileAction} from './redux/actions';
 import {useImages} from '../../Utils/Images';
 import Button from '../../Components/Button';
 import Error from '../../Components/Input/Error';
-import {getThemeColor} from '../ThemeProvider/redux/saga';
+import {getThemeColor, useThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
   name: yup.string().trim().required(),
@@ -47,7 +48,6 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [profileImage, setProfileImage] = useState('');
 
-  const {images} = useImages();
   const isFocused = useIsFocused();
   const styles = getStyles(theme);
 
@@ -79,23 +79,39 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
     setValue('email', profileData?.user_email);
     setValue('phone', profileData?.phone);
   }, [isFocused]);
-  console.log(profileImage, 'image');
+
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const headerBackgroundColor = useThemeColor('headerColor');
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: backgroundColor}]}>
+      <StatusBar
+        animated={true}
+        backgroundColor={headerBackgroundColor}
+        barStyle={'light-content'}
+      />
+      <View style={[styles.header, {backgroundColor: headerBackgroundColor}]}>
         <Text style={styles.headerText}>Profile</Text>
       </View>
       {!profileData ? (
         <ActivityIndicator
           size={'large'}
-          color={getThemeColor('text', theme)}
+          color={textColor}
           style={{marginVertical: '60%'}}
         />
       ) : (
         <ScrollView>
           <View style={styles.ImgView}>
             {profileImage ? (
-              <View style={styles.imageView}>
+              <View
+                style={[
+                  styles.imageView,
+                  {
+                    borderColor: textColor,
+                  },
+                ]}>
                 <Image
                   source={
                     profileImage?.path
@@ -125,9 +141,9 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
                   value={value}
                   onChangeText={onChange}
                   placeholder={'AdminTest'}
-                  textColor={styles.text.color}
+                  textColor={textColor}
+                  activeUnderlineColor={textColor}
                   placeholderTextColor={styles.placeholder}
-                  activeUnderlineColor={styles.text.color}
                   style={styles.input}
                 />
               )}
@@ -158,8 +174,8 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
                   value={value}
                   onChangeText={onChange}
                   placeholder={'123456789'}
-                  textColor={styles.text.color}
-                  activeUnderlineColor={styles.text.color}
+                  textColor={textColor}
+                  activeUnderlineColor={textColor}
                   placeholderTextColor={styles.placeholder}
                   style={styles.input}
                 />
@@ -175,9 +191,9 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
                   label="Password"
                   value={value}
                   onChangeText={onChange}
-                  textColor={styles.text.color}
+                  textColor={textColor}
+                  activeUnderlineColor={textColor}
                   placeholder={'12345'}
-                  activeUnderlineColor={styles.text.color}
                   placeholderTextColor={styles.placeholder}
                   style={styles.input}
                 />
@@ -190,7 +206,12 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
             <Button
               text={'Save'}
               loading={requesting}
-              containerStyle={styles.buttonCon}
+              containerStyle={[
+                styles.buttonCon,
+                {
+                  backgroundColor: textColor,
+                },
+              ]}
               onPress={handleSubmit(updateProfileButton)}
               disabled={requesting}
             />

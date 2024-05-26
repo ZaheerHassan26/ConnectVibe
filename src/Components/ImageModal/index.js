@@ -1,16 +1,15 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
 import Modal from 'react-native-modal';
-import {useImages} from '../../Utils/Images';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import {useThemeColor} from '../../Screens/ThemeProvider/redux/saga';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const CameraModal = ({
   pictureModalVisible,
   setPictureModalVisible,
   setProfileImage,
 }) => {
-  const {images} = useImages();
-
   const openCamera = () => {
     ImageCropPicker.openCamera({
       width: 300,
@@ -32,7 +31,8 @@ const CameraModal = ({
       setProfileImage(image);
     });
   };
-
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
   return (
     <Modal
       animationType={'slide'}
@@ -45,20 +45,25 @@ const CameraModal = ({
         setPictureModalVisible(false);
       }}
       onBackdropPress={() => setPictureModalVisible(false)}>
-      <View style={styles.pictureModalView}>
+      <View
+        style={[styles.pictureModalView, {backgroundColor: backgroundColor}]}>
         <TouchableOpacity
           style={styles.iconTouchable}
           onPress={openImagePicker}>
-          <View style={styles.iconView}>
-            <Image style={styles.attachmentIcon} source={images.attachment} />
+          <View style={[styles.iconView, {borderColor: textColor}]}>
+            <AntDesign name="link" size={22} color={textColor} />
           </View>
-          <Text style={styles.galleryAndCameraTxt}>Gallery</Text>
+          <Text style={[styles.galleryAndCameraTxt, {color: textColor}]}>
+            Gallery
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconTouchable} onPress={openCamera}>
-          <View style={styles.iconView}>
-            <Image style={styles.cameraIcon} source={images.camera} />
+          <View style={[styles.iconView, {borderColor: textColor}]}>
+            <AntDesign name="camera" size={22} color={textColor} />
           </View>
-          <Text style={styles.galleryAndCameraTxt}>Camera</Text>
+          <Text style={[styles.galleryAndCameraTxt, {color: textColor}]}>
+            Camera
+          </Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -76,7 +81,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   pictureModalView: {
-    backgroundColor: '#EDF4F6',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 14,
@@ -105,7 +109,6 @@ const styles = StyleSheet.create({
     height: 24,
   },
   galleryAndCameraTxt: {
-    color: '#000',
     fontSize: 12,
     fontWeight: '400',
     marginTop: 5,

@@ -3,7 +3,7 @@ import React from 'react';
 import Modal from 'react-native-modal';
 import {logout as logoutAction} from '../../Screens/LoginScreen/redux/actions';
 import {connect} from 'react-redux';
-import {getThemeColor} from '../../Screens/ThemeProvider/redux/saga';
+import {getThemeColor, useThemeColor} from '../../Screens/ThemeProvider/redux/saga';
 
 const Logout = ({
   isLogOutModelVisible,
@@ -12,6 +12,12 @@ const Logout = ({
   theme,
 }) => {
   const styles = getStyles(theme);
+
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const buttontext = useThemeColor('white');
+  const subText = useThemeColor('black');
+
   return (
     <Modal
       animationIn="zoomIn"
@@ -21,23 +27,23 @@ const Logout = ({
       style={styles.addModalContainer}
       hasBackdrop={true}
       onBackdropPress={() => setIsLogOutModalVisible(false)}>
-      <View style={styles.ModalContainer}>
+      <View style={[styles.ModalContainer,{backgroundColor:backgroundColor}]}>
         <View style={styles.modalTextContainer}>
-          <Text style={styles.titleText}>Logout</Text>
-          <Text style={styles.descriptionText}>
+          <Text style={[styles.titleText,{color:textColor}]}>Logout</Text>
+          <Text style={[styles.descriptionText,{color:subText}]}>
             Are you sure to want to Logout
           </Text>
         </View>
         <View style={styles.btnView}>
           <TouchableOpacity
             onPress={() => setIsLogOutModalVisible(false)}
-            style={styles.cancelView}>
-            <Text style={styles.cancelText}>No</Text>
+            style={[styles.cancelView,{borderColor:subText}]}>
+            <Text style={[styles.cancelText,{color:subText}]}>No</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.deleteView}
+            style={[styles.deleteView,{backgroundColor:textColor}]}
             onPress={() => logoutAction()}>
-            <Text style={styles.DeleteText}>Yes</Text>
+            <Text style={[styles.DeleteText,{color:buttontext}]}>Yes</Text>
           </TouchableOpacity>
         </View>
       </View>

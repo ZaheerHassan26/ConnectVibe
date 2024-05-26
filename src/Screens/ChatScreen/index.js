@@ -16,7 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {connect} from 'react-redux';
 import {getStyles} from './style';
-import {getThemeColor} from '../ThemeProvider/redux/saga';
+import {getThemeColor, useThemeColor} from '../ThemeProvider/redux/saga';
 
 const Chat = ({route, theme}) => {
   const [inputValue, setInputValue] = useState('');
@@ -36,14 +36,24 @@ const Chat = ({route, theme}) => {
       setAttachment(image);
     });
   };
+
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const headerBackgroundColor = useThemeColor('headerColor');
+  const imageBackground = useThemeColor('black');
+  const inputBackground = useThemeColor('inputBackground');
+
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: backgroundColor}]}>
+      <View style={[styles.header, {backgroundColor: headerBackgroundColor}]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons size={25} color={'white'} name={'arrow-back'} />
         </TouchableOpacity>
         <View style={styles.imageDiv}>
-          <View style={styles.imageContainer}>
+          <View
+            style={[styles.imageContainer, {backgroundColor: imageBackground}]}>
             {data?.image == null ? (
               <Text style={styles.imgText}>
                 {`${data?.name[0]?.toUpperCase()}`}
@@ -72,29 +82,34 @@ const Chat = ({route, theme}) => {
       </ScrollView>
 
       <View style={{flexDirection: 'row'}}>
-        <View style={styles.inputInnerContainer}>
+        <View
+          style={[
+            styles.inputInnerContainer,
+            {backgroundColor: inputBackground},
+          ]}>
           <View style={styles.leftInputView}>
             <TextInput
-              placeholderTextColor={getThemeColor('placeholder', theme)}
+              placeholderTextColor={'placeholder'}
               placeholder="Type here..."
-              style={styles.inputText}
+              style={[styles.inputText,{color:textColor}]}
               value={inputValue}
               onChangeText={setInputValue}
             />
           </View>
           <View style={styles.iconContainer}>
             <TouchableOpacity>
-              <Entypo size={25} color={getThemeColor('text', theme)} name={'link'} />
+              <Entypo size={25} color={textColor} name={'link'} />
             </TouchableOpacity>
             <TouchableOpacity onPress={openCamera}>
-              <Entypo size={25} color={getThemeColor('text', theme)} name={'camera'} />
+              <Entypo size={25} color={textColor} name={'camera'} />
             </TouchableOpacity>
           </View>
         </View>
-        <Pressable style={styles.sendBtn}>
+        <Pressable
+          style={[styles.sendBtn, {backgroundColor: inputBackground}]}>
           <MaterialCommunityIcons
             size={25}
-            color={getThemeColor('text', theme)}
+            color={textColor}
             name={inputValue == '' ? 'microphone' : 'send'}
           />
         </Pressable>

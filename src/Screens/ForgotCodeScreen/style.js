@@ -3,10 +3,8 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#EDF4F6',
   },
   enterCodeView: {
-    backgroundColor: '#EDF4F6',
     paddingTop: 60,
     flexDirection: 'row',
     paddingHorizontal: 10,
@@ -17,14 +15,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   enterCodedText: {
-    color: '#10445C',
     fontSize: 18,
     fontWeight: '700',
     left: 10,
   },
   codeInputView: {
     flex: 1,
-    backgroundColor: '#10445C',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 32,
@@ -48,6 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 30,
+    textDecorationLine: 'underline',
   },
   resendText: {
     color: '#fff',
@@ -58,7 +55,6 @@ const styles = StyleSheet.create({
   },
   loginBtn: {
     width: '40%',
-    backgroundColor: '#00a1e9',
     height: 52,
     justifyContent: 'center',
     alignItems: 'center',
@@ -77,7 +73,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     marginRight: 5,
     marginLeft: 5,
-    backgroundColor: '#1D536C',
     height: 67,
     width: 55,
     borderWidth: 1,
@@ -96,10 +91,9 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
   },
   button: {
-    backgroundColor: '#00a1e9',
     marginTop: 25,
     height: 52,
-    width:'100%'
+    width: '100%',
   },
 });
 

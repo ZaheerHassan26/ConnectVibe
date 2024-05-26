@@ -11,6 +11,7 @@ import Button from '../../Components/Button';
 import {connect} from 'react-redux';
 import {emailRegex} from '../../Utils/function';
 import Input from '../../Components/Input';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
   const [email, setEmail] = useState('');
@@ -36,26 +37,32 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
   const callBack = () => {
     navigation.navigate('ForgotCode', {email});
   };
+
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const cardBackgroundColor = useThemeColor('headerColor');
+  const buttonColor = useThemeColor('buttonColor');
+  const inputBackgroundColor = useThemeColor('activeTab');
+
   return (
-    <View style={styles.main}>
-      <StatusBar
-        animated={true}
-        backgroundColor={'#EDF4F6'}
-        barStyle={'dark-content'}
-      />
-      <View style={styles.loginView}>
+    <View style={[styles.main, {backgroundColor: backgroundColor}]}>
+      <View style={[styles.loginView, {backgroundColor: backgroundColor}]}>
         <TouchableOpacity
           style={styles.backTouchable}
           onPress={() => navigation.goBack()}>
-          <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
+          <Ionicons size={25} color={textColor} name={'arrow-back'} />
         </TouchableOpacity>
-        <Text style={styles.forgetPasswordText}>Forgot your password</Text>
+        <Text style={[styles.forgetPasswordText, {color: textColor}]}>
+          Forgot your password
+        </Text>
       </View>
 
-      <View style={styles.EmailInputView}>
+      <View
+        style={[styles.EmailInputView, {backgroundColor: cardBackgroundColor}]}>
         <Text style={styles.enterEmailText}>Enter email</Text>
 
-        <View style={styles.inputFocus}>
+        <View
+          style={[styles.inputFocus, {backgroundColor: inputBackgroundColor}]}>
           <View style={styles.emailImgView}>
             <MaterialCommunityIcons size={17} color={'white'} name={'email'} />
           </View>
@@ -75,7 +82,12 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
             fontWeight: 'bold',
           }}
           loading={requesting}
-          containerStyle={styles.button}
+          containerStyle={[
+            styles.button,
+            {
+              backgroundColor: buttonColor,
+            },
+          ]}
           disabled={requesting}
         />
       </View>

@@ -42,7 +42,6 @@ export const getStyles = theme =>
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 5,
-      borderColor: '#10445C',
     },
     imgTxt: {
       color: '#10445C',
@@ -76,7 +75,6 @@ export const getStyles = theme =>
       marginHorizontal: 20,
       width: 100,
       height: 54,
-      backgroundColor: '#10445C',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 15,

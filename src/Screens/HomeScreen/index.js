@@ -22,6 +22,7 @@ import {getStyles} from './style';
 import {connect} from 'react-redux';
 import {useEffect} from 'react';
 import {useRef} from 'react';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const Home = ({userDetail, navigation, getProfileAction, theme}) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -75,15 +76,21 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
     }
   }, [isSearchActive]);
 
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const headerBackgroundColor = useThemeColor('headerColor');
+  const imageBackground = useThemeColor('black');
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: backgroundColor}]}>
       <StatusBar
         animated={true}
-        backgroundColor={styles.header.backgroundColor}
+        backgroundColor={headerBackgroundColor}
         barStyle={'light-content'}
       />
 
-      <View style={styles.header}>
+      <View style={[styles.header, {backgroundColor: headerBackgroundColor}]}>
         {!isSearchActive ? (
           <>
             <Text style={styles.headerText}>Connect Vibe</Text>
@@ -130,7 +137,11 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
               <TouchableOpacity
                 style={styles.chatContainer}
                 onPress={() => navigation.navigate('chat', {data: item})}>
-                <View style={styles.imageContainer}>
+                <View
+                  style={[
+                    styles.imageContainer,
+                    {backgroundColor: imageBackground},
+                  ]}>
                   {item?.image == null ? (
                     <Text style={styles.imgText}>
                       {`${item?.name[0]?.toUpperCase()}`}
@@ -141,8 +152,12 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
                 </View>
                 <View style={styles.textContainer} key={index}>
                   <View style={{marginLeft: 10}}>
-                    <Text style={styles.userName}>{item?.name}</Text>
-                    <Text style={styles.message} numberOfLines={1}>
+                    <Text style={[styles.userName, {color: textColor}]}>
+                      {item?.name}
+                    </Text>
+                    <Text
+                      style={[styles.message, {color: textColor}]}
+                      numberOfLines={1}>
                       {'hey' ?? 'null'}
                     </Text>
                   </View>
