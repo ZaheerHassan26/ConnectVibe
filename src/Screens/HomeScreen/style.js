@@ -22,6 +22,14 @@ export const getStyles = theme =>
       fontSize: 18,
       fontWeight: '500',
     },
+    searchContainer: {
+      backgroundColor: 'grey',
+      width: '95%',
+      height: 45,
+      borderRadius: 25,
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
     imageContainer: {
       backgroundColor: getThemeColor('black', theme),
       width: 42,
@@ -55,7 +63,7 @@ export const getStyles = theme =>
       borderRadius: 30,
     },
     userName: {color: getThemeColor('text', theme), fontSize: 16},
-    message:{color: getThemeColor('text', theme)},
+    message: {color: getThemeColor('text', theme)},
     dateView: {justifyContent: 'flex-end', right: 10},
     date: {color: 'grey', fontSize: 12},
   });

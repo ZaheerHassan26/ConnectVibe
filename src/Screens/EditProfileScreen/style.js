@@ -31,6 +31,7 @@ export const getStyles = theme =>
       margin: -0.7,
       height: '100%',
       width: '100%',
+      borderRadius: 75,
     },
     imageView: {
       height: 150,

@@ -11,6 +11,7 @@ import Chat from '../Screens/ChatScreen';
 import Setting from '../Screens/SettingScreen';
 import {getThemeColor} from '../Screens/ThemeProvider/redux/saga';
 import {connect} from 'react-redux';
+import AddScreen from '../Screens/AddScreen';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -130,6 +131,7 @@ const AppNavigator = ({theme}) => {
       }}>
       <AppStack.Screen name="BottomBar" component={BottomNavigator} />
       <AppStack.Screen name="chat" component={Chat} />
+      <AppStack.Screen name="AddScreen" component={AddScreen} />
     </AppStack.Navigator>
   );
 };

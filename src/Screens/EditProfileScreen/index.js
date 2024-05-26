@@ -51,10 +51,6 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
   const isFocused = useIsFocused();
   const styles = getStyles(theme);
 
-  const image = {
-    uri: null,
-  };
-
   const updateProfileButton = data => {
     const payload = new FormData();
     payload.append('id', profileData?.id);
@@ -65,26 +61,25 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
         uri: profileImage.path,
       });
     }
-    if (data.email.trim() !== profileData?.user_email) {
-      payload.append('email', data.email);
+    if (data.name && data.name != profileData?.name) {
+      payload.append('name', data.name);
     }
-    if (data.mobileNo && data.mobileNo != profileData?.phone) {
-      data.mobileNo = '+' + countryCode.split('0')[2] + data.mobileNo.trim();
-
-      payload.append('phone', data.mobileNo);
+    if (data.phone && data.phone != profileData?.phone) {
+      payload.append('phone', data.phone);
     }
-    if (data.password !== undefined || data.password !== '') {
+    if (data.password !== undefined && data.password !== '') {
       payload.append('new_password', data.password);
     }
     payload?._parts.length > 1 ? updateProfileAction(payload) : '';
   };
 
   useLayoutEffect(() => {
+    setProfileImage(profileData?.profile_image);
     setValue('name', profileData?.name);
     setValue('email', profileData?.user_email);
     setValue('phone', profileData?.phone);
   }, [isFocused]);
-
+  console.log(profileImage, 'image');
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -99,11 +94,13 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
       ) : (
         <ScrollView>
           <View style={styles.ImgView}>
-            {image.uri ? (
+            {profileImage ? (
               <View style={styles.imageView}>
                 <Image
                   source={
-                    profileImage ? {uri: profileImage?.path} : images.profile
+                    profileImage?.path
+                      ? {uri: profileImage?.path}
+                      : {uri: profileImage}
                   }
                   style={styles.profileImg}
                 />
@@ -128,6 +125,7 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
                   value={value}
                   onChangeText={onChange}
                   placeholder={'AdminTest'}
+                  textColor={styles.text.color}
                   placeholderTextColor={styles.placeholder}
                   activeUnderlineColor={styles.text.color}
                   style={styles.input}
@@ -160,6 +158,7 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
                   value={value}
                   onChangeText={onChange}
                   placeholder={'123456789'}
+                  textColor={styles.text.color}
                   activeUnderlineColor={styles.text.color}
                   placeholderTextColor={styles.placeholder}
                   style={styles.input}

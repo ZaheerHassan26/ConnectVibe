@@ -17,8 +17,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 
-
-
 import * as yup from 'yup';
 
 import CameraModal from '../../Components/ImageModal';
@@ -70,9 +68,10 @@ const Signup = ({navigation, signupAction, requesting}) => {
       }
       payload.append('name', data.name);
       payload.append('email', data.email);
-      payload.append('phone', data.mobileNo.trim());
+      payload.append('phone', data.phone.trim());
       payload.append('password', data.password.trim());
-      payload.append('confirmPassword', data.confirmPassword.trim());
+      payload.append('gender', 'male');
+      payload.append('dob', '2001-07-01');
       signupAction(payload, callBack);
     }
   };

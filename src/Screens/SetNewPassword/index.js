@@ -14,10 +14,11 @@ import styles from './style';
 import Button from '../../Components/Button';
 import Input from '../../Components/Input';
 import {useState} from 'react';
+import Error from '../../Components/Input/Error';
 
 const schema = yup.object({
-  password: yup.string().required(),
-  confirm_password: yup.string().required(),
+  password: yup.string().required('This field is required'),
+  confirm_password: yup.string().required('This field is required'),
 });
 
 const SetNewPassword = ({
@@ -97,7 +98,7 @@ const SetNewPassword = ({
             </TouchableOpacity>
           </View>
         </View>
-
+        <Error errors={errors.password} />
         <Text style={styles.labelStyle}>Confirm Password</Text>
         <View style={styles.inputFocus}>
           <View style={[styles.passView, {justifyContent: 'space-between'}]}>
@@ -131,6 +132,7 @@ const SetNewPassword = ({
             </TouchableOpacity>
           </View>
         </View>
+        <Error errors={errors.confirm_password} />
 
         <Button
           onPress={handleSubmit(onSure)}

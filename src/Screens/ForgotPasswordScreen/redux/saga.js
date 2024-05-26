@@ -72,7 +72,7 @@ function* ForgotToken({data, callBack}) {
   } catch (e) {
     const {response} = e;
     yield put(forgotTokenFailure(response));
-    if(response.data.detail){
+    if (response.data.detail) {
       Toast.show('Invalid code');
     }
   }

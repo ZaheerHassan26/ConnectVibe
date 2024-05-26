@@ -59,7 +59,7 @@ const ForgotCode = ({
   };
 
   const verificationCode = () => {
-    navigation.navigate('forgotCode');
+    navigation.navigate('ForgotCode');
   };
   return (
     <View style={styles.main}>

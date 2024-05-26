@@ -8,7 +8,7 @@ import {
   SET_NEW_PASSWORD,
   SET_NEW_PASSWORD_SUCCESS,
   SET_NEW_PASSWORD_FAILURE,
-} from "./types";
+} from './types';
 
 export const forgotPassword = (data, callBack) => ({
   type: FORGOT_PASSWORD,
@@ -16,12 +16,12 @@ export const forgotPassword = (data, callBack) => ({
   callBack,
 });
 
-export const forgotPasswordSuccess = (data) => ({
+export const forgotPasswordSuccess = data => ({
   type: FORGOT_PASSWORD_SUCCESS,
   data,
 });
 
-export const forgotPasswordFailure = (error) => ({
+export const forgotPasswordFailure = error => ({
   type: FORGOT_PASSWORD_FAILURE,
   error,
 });
@@ -32,12 +32,12 @@ export const forgotToken = (data, callBack) => ({
   callBack,
 });
 
-export const forgotTokenSuccess = (data) => ({
+export const forgotTokenSuccess = data => ({
   type: FORGOT_TOKEN_SUCCESS,
   data,
 });
 
-export const forgotTokenFailure = (error) => ({
+export const forgotTokenFailure = error => ({
   type: FORGOT_TOKEN_FAILURE,
   error,
 });
@@ -48,12 +48,12 @@ export const setNewPassword = (data, callBack) => ({
   callBack,
 });
 
-export const setNewPasswordSuccess = (data) => ({
+export const setNewPasswordSuccess = data => ({
   type: SET_NEW_PASSWORD_SUCCESS,
   data,
 });
 
-export const setNewPasswordFailure = (error) => ({
+export const setNewPasswordFailure = error => ({
   type: SET_NEW_PASSWORD_FAILURE,
   error,
 });
