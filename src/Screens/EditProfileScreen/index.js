@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as yup from 'yup';
 import {TextInput} from 'react-native-paper';
@@ -21,11 +21,13 @@ import {useIsFocused} from '@react-navigation/native';
 import {emailRegex} from '../../Utils/function';
 import {getStyles} from './style';
 import CameraModal from '../../Components/ImageModal';
-import {updateProfile as updateProfileAction} from './redux/actions';
-import {useImages} from '../../Utils/Images';
+import {
+  updateProfile as updateProfileAction,
+  getProfile as getProfileAction,
+} from './redux/actions';
 import Button from '../../Components/Button';
 import Error from '../../Components/Input/Error';
-import {getThemeColor, useThemeColor} from '../ThemeProvider/redux/saga';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
   name: yup.string().trim().required(),
@@ -36,7 +38,14 @@ const schema = yup.object({
   email: yup.string().matches(emailRegex, 'Enter a valid email').label('Email'),
 });
 
-const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
+const EditProfile = ({
+  updateProfileAction,
+  requesting,
+  profileData,
+  theme,
+  userDetail,
+  getProfileAction,
+}) => {
   const {
     control,
     setValue,
@@ -73,7 +82,14 @@ const EditProfile = ({updateProfileAction, requesting, profileData, theme}) => {
     payload?._parts.length > 1 ? updateProfileAction(payload) : '';
   };
 
-  useLayoutEffect(() => {
+  useLayoutEffect(() => {}, [isFocused, profileData]);
+
+  useEffect(() => {
+    const data = {
+      id: userDetail?.id,
+    };
+    getProfileAction(data);
+
     setProfileImage(profileData?.profile_image);
     setValue('name', profileData?.name);
     setValue('email', profileData?.user_email);
@@ -232,9 +248,11 @@ const mapStateToProps = state => ({
   requesting: state?.editProfile?.requesting,
   profileData: state?.editProfile?.profile,
   theme: state?.themes?.theme,
+  userDetail: state?.login?.userDetail?.user,
 });
 
 const mapDispatchToProps = dispatch => ({
+  getProfileAction: data => dispatch(getProfileAction(data)),
   updateProfileAction: data => dispatch(updateProfileAction(data)),
 });
 

@@ -48,14 +48,14 @@ const Login = ({navigation, loginAction, requesting}) => {
   const [passwordView, setPasswordView] = useState(false);
 
   const loginUser = async data => {
-    // const fcmToken = await AsyncStorage.getItem('FCMToken');
-    loginAction(data, navigation);
+    const fcmToken = await AsyncStorage.getItem('FCMToken');
+    loginAction(data, fcmToken, navigation);
   };
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
   const cardBackgroundColor = useThemeColor('headerColor');
   const buttonColor = useThemeColor('buttonColor');
-
+  const placeholderColor = useThemeColor('placeholder');
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: backgroundColor}}>
@@ -77,7 +77,7 @@ const Login = ({navigation, loginAction, requesting}) => {
             Connect Vibe
           </Text>
         </View>
-        <View style={[styles.cardView,{backgroundColor:cardBackgroundColor}]}>
+        <View style={[styles.cardView, {backgroundColor: cardBackgroundColor}]}>
           <View style={styles.cardHeader}>
             <Text style={styles.signInTxt}>SignIn</Text>
             <Text style={styles.subTxt}>To access your dashboard</Text>
@@ -99,9 +99,11 @@ const Login = ({navigation, loginAction, requesting}) => {
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
                     placeholder={'example@test.com'}
+                    placeholderColor={placeholderColor}
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
+                    cardBackgroundColor
                   />
                 )}
                 name="username"
@@ -124,6 +126,7 @@ const Login = ({navigation, loginAction, requesting}) => {
                         placeholder={'password'}
                         onBlur={onBlur}
                         onChangeText={onChange}
+                        placeholderColor={placeholderColor}
                         value={value}
                         showPassword={passwordView}
                         secureTextEntry={true}
@@ -194,7 +197,8 @@ const mapStateTopProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loginAction: (data, navigation) => dispatch(loginAction(data, navigation)),
+  loginAction: (data, fcmToken, navigation) =>
+    dispatch(loginAction(data, fcmToken, navigation)),
 });
 
 export default connect(mapStateTopProps, mapDispatchToProps)(Login);

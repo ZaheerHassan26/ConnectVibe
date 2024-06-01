@@ -43,6 +43,7 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
   const cardBackgroundColor = useThemeColor('headerColor');
   const buttonColor = useThemeColor('buttonColor');
   const inputBackgroundColor = useThemeColor('activeTab');
+  const placeholderColor = useThemeColor('placeholder');
 
   return (
     <View style={[styles.main, {backgroundColor: backgroundColor}]}>
@@ -68,6 +69,7 @@ const ForgotPassword = ({navigation, forgotPasswordAction, requesting}) => {
           </View>
 
           <Input
+            placeholderColor={placeholderColor}
             placeholder={'example@test.com'}
             value={email}
             onChangeText={value => onCheckEmail(value)}

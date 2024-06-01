@@ -10,8 +10,8 @@ export function useImages() {
       profile: require('../Assets/Images/providerProfile.png'),
       camera: require('../Assets/Images/camera.png'),
       attachment: require('../Assets/Images/attachment.png'),
-      power: require("../Assets/Images/power.png"),
-      rightArrow: require("../Assets/Images/rightArrow.png"),
+      power: require('../Assets/Images/power.png'),
+      rightArrow: require('../Assets/Images/rightArrow.png'),
     },
   };
 }

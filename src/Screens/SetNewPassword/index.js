@@ -57,6 +57,7 @@ const SetNewPassword = ({
   const cardBackgroundColor = useThemeColor('headerColor');
   const buttonColor = useThemeColor('buttonColor');
   const inputBackgroundColor = useThemeColor('activeTab');
+  const placeholderColor = useThemeColor('placeholder');
 
   return (
     <View style={[styles.main, {backgroundColor: backgroundColor}]}>
@@ -91,6 +92,7 @@ const SetNewPassword = ({
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    placeholderColor={placeholderColor}
                     placeholder={'password'}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -126,6 +128,7 @@ const SetNewPassword = ({
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    placeholderColor={placeholderColor}
                     placeholder={'c_password'}
                     onBlur={onBlur}
                     onChangeText={onChange}

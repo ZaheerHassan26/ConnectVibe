@@ -22,7 +22,6 @@ async function signupApi(data) {
 
 function* signupAPiCall({data, callBack}) {
   try {
-    console.log(data, 'credentials');
     const response = yield call(signupApi, data);
     yield put(signupSuccess(response.data));
     callBack();

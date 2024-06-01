@@ -13,26 +13,26 @@ import {
 import React, {useState} from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-
-import {useImages} from '../../Utils/Images';
-import {useIsFocused} from '@react-navigation/native';
-import {getProfile as getProfileAction} from '../EditProfileScreen/redux/actions';
-import {getStyles} from './style';
 import {connect} from 'react-redux';
 import {useEffect} from 'react';
 import {useRef} from 'react';
-import {useThemeColor} from '../ThemeProvider/redux/saga';
+import {useIsFocused} from '@react-navigation/native';
 
-const Home = ({userDetail, navigation, getProfileAction, theme}) => {
+import {useImages} from '../../Utils/Images';
+import {getProfile as getProfileAction} from '../EditProfileScreen/redux/actions';
+import {getStyles} from './style';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
+import AddButton from '../../Components/AddButton';
+
+const Home = ({userDetail, navigation, getProfileAction}) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [searchName, setSearchName] = useState(false);
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchName, setSearchName] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
   const translateX = useRef(new Animated.Value(0)).current;
 
   const {images} = useImages();
   const isFocused = useIsFocused();
-  const styles = getStyles(theme);
+  const styles = getStyles();
 
   const dummyData = [
     {
@@ -54,13 +54,6 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
   };
 
   useEffect(() => {
-    const data = {
-      id: userDetail?.id,
-    };
-    getProfileAction(data);
-  }, [isFocused]);
-
-  useEffect(() => {
     if (isSearchActive) {
       Animated.timing(translateX, {
         toValue: 0,
@@ -76,10 +69,19 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
     }
   }, [isSearchActive]);
 
+  useEffect(() => {
+    const newFilteredData = dummyData.filter(item => {
+      return item.name.toLowerCase().includes(searchName.toLowerCase());
+    });
+    setFilteredData(newFilteredData);
+  }, [searchName, isFocused]);
+
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
   const headerBackgroundColor = useThemeColor('headerColor');
   const imageBackground = useThemeColor('black');
+  const searchBar = useThemeColor('activeTab');
+  const placeholderColor = useThemeColor('placeholder');
 
   return (
     <SafeAreaView
@@ -100,7 +102,10 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
           </>
         ) : (
           <Animated.View
-            style={[styles.searchContainer, {transform: [{translateX}]}]}>
+            style={[
+              styles.searchContainer,
+              {transform: [{translateX}], backgroundColor: searchBar},
+            ]}>
             <View
               style={{
                 flexDirection: 'row',
@@ -109,28 +114,26 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
                 alignItems: 'center',
               }}>
               <Pressable
-                onPress={() => setIsSearchActive(false)}
+                onPress={() => {
+                  setIsSearchActive(false), setSearchName('');
+                }}
                 style={{marginHorizontal: 5}}>
                 <Ionicons size={20} color={'white'} name={'arrow-back'} />
               </Pressable>
               <TextInput
                 value={searchName}
+                placeholderTextColor={placeholderColor}
                 placeholder="search"
                 style={{width: '80%', color: 'white', textAlign: 'left'}}
                 onChangeText={handleSearch}
               />
             </View>
-            {searchName !== '' && (
-              <Pressable onPress={() => setSearchName('')}>
-                <Entypo size={22} color={'white'} name={'cross'} />
-              </Pressable>
-            )}
           </Animated.View>
         )}
       </View>
 
       <FlatList
-        data={dummyData}
+        data={filteredData || []}
         renderItem={({item, index}) => {
           return (
             <>
@@ -143,7 +146,7 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
                     {backgroundColor: imageBackground},
                   ]}>
                   {item?.image == null ? (
-                    <Text style={styles.imgText}>
+                    <Text style={[styles.imgText, {color: backgroundColor}]}>
                       {`${item?.name[0]?.toUpperCase()}`}
                     </Text>
                   ) : (
@@ -170,13 +173,13 @@ const Home = ({userDetail, navigation, getProfileAction, theme}) => {
           );
         }}
       />
+      <AddButton />
     </SafeAreaView>
   );
 };
 
 const mapStateToProps = state => ({
   userDetail: state?.login?.userDetail?.user,
-  theme: state?.themes?.theme,
 });
 
 const mapDispatchToProps = dispatch => ({

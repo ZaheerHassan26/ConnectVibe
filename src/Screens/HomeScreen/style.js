@@ -23,10 +23,9 @@ export const getStyles = theme =>
       fontWeight: '500',
     },
     searchContainer: {
-      backgroundColor: 'grey',
       width: '95%',
       height: 45,
-      borderRadius: 25,
+      borderRadius: 8,
       alignItems: 'center',
       flexDirection: 'row',
     },

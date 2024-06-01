@@ -7,6 +7,8 @@ import signUp from '../Screens/RegisterScreen/redux/reducer';
 import forgotPassword from '../Screens/ForgotPasswordScreen/redux/reducer';
 import editProfile from '../Screens/EditProfileScreen/redux/reducer';
 import themes from '../Screens/ThemeProvider/redux/reducer';
+import searchUser from '../Screens/NewChat/redux/reducer';
+import deviceAdd from '../Screens/HomeScreen/redux/reducer';
 
 const appPersistConfig = {
   key: 'login',
@@ -23,5 +25,7 @@ export default {
   signUp,
   forgotPassword,
   editProfile,
+  searchUser,
+  deviceAdd,
   themes: persistedThemesReducer,
 };
