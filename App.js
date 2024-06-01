@@ -9,6 +9,7 @@ import SplashScreen from './src/Screens/SplashScreen';
 import {Dimensions} from 'react-native';
 import {persistStore} from 'redux-persist';
 import {PersistGate} from 'redux-persist/integration/react';
+import {ThemeProvider} from './src/Screens/ThemeProvider/ThemeProvider';
 
 const persist = persistStore(store);
 
@@ -29,17 +30,19 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <AnimatedSplash
-        isLoaded={loading}
-        customComponent={<SplashScreen />}
-        logoWidth={logoWidth}
-        logoHeight={logoHeight}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persist}>
-            <RootNavigator />
-          </PersistGate>
-        </Provider>
-      </AnimatedSplash>
+      <ThemeProvider>
+        <AnimatedSplash
+          isLoaded={loading}
+          customComponent={<SplashScreen />}
+          logoWidth={logoWidth}
+          logoHeight={logoHeight}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persist}>
+              <RootNavigator />
+            </PersistGate>
+          </Provider>
+        </AnimatedSplash>
+      </ThemeProvider>
     </ToastProvider>
   );
 }

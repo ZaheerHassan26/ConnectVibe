@@ -14,10 +14,12 @@ import styles from './style';
 import Button from '../../Components/Button';
 import Input from '../../Components/Input';
 import {useState} from 'react';
+import Error from '../../Components/Input/Error';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
-  password: yup.string().required(),
-  confirm_password: yup.string().required(),
+  password: yup.string().required('This field is required'),
+  confirm_password: yup.string().required('This field is required'),
 });
 
 const SetNewPassword = ({
@@ -50,22 +52,36 @@ const SetNewPassword = ({
     navigation.navigate('Login');
   };
 
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const cardBackgroundColor = useThemeColor('headerColor');
+  const buttonColor = useThemeColor('buttonColor');
+  const inputBackgroundColor = useThemeColor('activeTab');
+
   return (
-    <View style={styles.main}>
-      <View style={styles.newPasswordView}>
+    <View style={[styles.main, {backgroundColor: backgroundColor}]}>
+      <View
+        style={[styles.newPasswordView, {backgroundColor: backgroundColor}]}>
         <TouchableOpacity
           style={styles.backTouchable}
           onPress={() => navigation.goBack()}>
-          <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
+          <Ionicons size={25} color={textColor} name={'arrow-back'} />
         </TouchableOpacity>
-        <Text style={styles.newPasswordText}>Set the new password</Text>
+        <Text style={[styles.newPasswordText, {color: textColor}]}>
+          Set the new password
+        </Text>
       </View>
 
-      <View style={styles.passwordInputView}>
+      <View
+        style={[
+          styles.passwordInputView,
+          {backgroundColor: cardBackgroundColor},
+        ]}>
         <Text style={styles.setNewPasswordText}>Set new password</Text>
 
         <Text style={styles.labelStyle}>Password</Text>
-        <View style={styles.inputFocus}>
+        <View
+          style={[styles.inputFocus, {backgroundColor: inputBackgroundColor}]}>
           <View style={[styles.passView, {justifyContent: 'space-between'}]}>
             <View style={{flexDirection: 'row', width: '89%'}}>
               <View style={styles.emailImgView}>
@@ -97,9 +113,10 @@ const SetNewPassword = ({
             </TouchableOpacity>
           </View>
         </View>
-
+        <Error errors={errors.password} />
         <Text style={styles.labelStyle}>Confirm Password</Text>
-        <View style={styles.inputFocus}>
+        <View
+          style={[styles.inputFocus, {backgroundColor: inputBackgroundColor}]}>
           <View style={[styles.passView, {justifyContent: 'space-between'}]}>
             <View style={{flexDirection: 'row', width: '89%'}}>
               <View style={styles.emailImgView}>
@@ -131,12 +148,18 @@ const SetNewPassword = ({
             </TouchableOpacity>
           </View>
         </View>
+        <Error errors={errors.confirm_password} />
 
         <Button
           onPress={handleSubmit(onSure)}
           text={'Sure'}
           loading={passwordRequesting}
-          containerStyle={styles.button}
+          containerStyle={[
+            styles.button,
+            {
+              backgroundColor: buttonColor,
+            },
+          ]}
         />
       </View>
     </View>

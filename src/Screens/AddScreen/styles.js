@@ -1,29 +1,20 @@
 import {StyleSheet} from 'react-native';
-
 import {getThemeColor} from '../ThemeProvider/redux/saga';
-
 export const getStyles = theme =>
   StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: getThemeColor('primary', theme),
     },
-    bottomItemView: {
-      flexDirection: 'row',
-      alignItems: 'center',
+    header: {
+      backgroundColor: getThemeColor('headerColor', theme),
+      height: 80,
+      borderBottomRightRadius: 26,
+      borderBottomLeftRadius: 26,
       justifyContent: 'space-between',
-      paddingBottom: 15,
-    },
-    leftBottomView: {
+      paddingHorizontal: 20,
+      alignItems: 'flex-end',
+      paddingBottom: 20,
       flexDirection: 'row',
-      alignItems: 'center',
-      gap: 16,
-    },
-    bottomText: {
-      fontSize: 13,
-      fontWeight: '700',
-      color: '#3F3F44',
     },
   });
-
-

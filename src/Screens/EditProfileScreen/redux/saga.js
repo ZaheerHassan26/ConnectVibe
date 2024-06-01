@@ -65,13 +65,12 @@ function* getProfileApiCall({ data }) {
   }
 }
 
-function* updateProfileApiCall({ data, callBack }) {
+function* updateProfileApiCall({ data }) {
   try {
     const response = yield call(updateProfileApi, data);
 
     yield put(updateProfileSuccess(response.data));
     Toast.show("Profile updated successfully");
-    callBack();
   } catch (e) {
     const { response } = e;
     yield put(updateProfileFailure(response));

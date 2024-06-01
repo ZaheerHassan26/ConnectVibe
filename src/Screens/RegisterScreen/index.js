@@ -17,8 +17,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 
-
-
 import * as yup from 'yup';
 
 import CameraModal from '../../Components/ImageModal';
@@ -30,6 +28,7 @@ import styles from './style';
 import {connect} from 'react-redux';
 import Input from '../../Components/Input';
 import Error from '../../Components/Input/Error';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
   name: yup.string().required('This field is required'),
@@ -70,9 +69,10 @@ const Signup = ({navigation, signupAction, requesting}) => {
       }
       payload.append('name', data.name);
       payload.append('email', data.email);
-      payload.append('phone', data.mobileNo.trim());
+      payload.append('phone', data.phone.trim());
       payload.append('password', data.password.trim());
-      payload.append('confirmPassword', data.confirmPassword.trim());
+      payload.append('gender', 'male');
+      payload.append('dob', '2001-07-01');
       signupAction(payload, callBack);
     }
   };
@@ -80,16 +80,32 @@ const Signup = ({navigation, signupAction, requesting}) => {
     navigation.navigate('Login');
   };
 
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const cardBackgroundColor = useThemeColor('headerColor');
+  const buttonColor = useThemeColor('buttonColor');
+  const inputBackgroundColor = useThemeColor('activeTab');
+
   return (
     <>
-      <View style={styles.main}>
-        <View style={styles.newRegistrationView}>
+      <View style={[styles.main, {backgroundColor: backgroundColor}]}>
+        <View
+          style={[
+            styles.newRegistrationView,
+            {backgroundColor: backgroundColor},
+          ]}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
+            <Ionicons size={25} color={textColor} name={'arrow-back'} />
           </TouchableOpacity>
-          <Text style={styles.newRegistrationText}>New Registration</Text>
+          <Text style={[styles.newRegistrationText, {color: textColor}]}>
+            New Registration
+          </Text>
         </View>
-        <View style={styles.registrationInputView}>
+        <View
+          style={[
+            styles.registrationInputView,
+            {backgroundColor: cardBackgroundColor},
+          ]}>
           <View style={styles.registrationTextView}>
             <Text style={styles.registrationText}>New Registration</Text>
           </View>
@@ -115,7 +131,11 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Text style={styles.labelStyle}>User Name</Text>
 
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View style={styles.emailImgView}>
                 <Entypo size={17} color={'white'} name={'user'} />
               </View>
@@ -137,7 +157,11 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Text style={styles.labelStyle}>Email</Text>
 
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View style={styles.emailImgView}>
                 <MaterialCommunityIcons
                   size={17}
@@ -163,7 +187,11 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Text style={styles.labelStyle}>Phone_no</Text>
 
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View style={styles.emailImgView}>
                 <MaterialCommunityIcons
                   size={17}
@@ -187,7 +215,11 @@ const Signup = ({navigation, signupAction, requesting}) => {
             <Error errors={errors?.phone} />
 
             <Text style={styles.labelStyle}>Password</Text>
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
                 <View style={{flexDirection: 'row', width: '89%'}}>
@@ -225,7 +257,11 @@ const Signup = ({navigation, signupAction, requesting}) => {
             <Error errors={errors?.password} />
 
             <Text style={styles.labelStyle}>Confirm Password</Text>
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
                 <View style={{flexDirection: 'row', width: '89%'}}>
@@ -281,7 +317,12 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 fontWeight: 'bold',
               }}
               loading={requesting}
-              containerStyle={styles.button}
+              containerStyle={[
+                styles.button,
+                {
+                  backgroundColor: buttonColor,
+                },
+              ]}
             />
           </ScrollView>
         </View>

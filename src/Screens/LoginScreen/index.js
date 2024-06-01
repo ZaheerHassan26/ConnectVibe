@@ -24,6 +24,7 @@ import styles from './style';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Error from '../../Components/Input/Error';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
   username: yup
@@ -47,32 +48,36 @@ const Login = ({navigation, loginAction, requesting}) => {
   const [passwordView, setPasswordView] = useState(false);
 
   const loginUser = async data => {
-    console.log(data);
     // const fcmToken = await AsyncStorage.getItem('FCMToken');
     loginAction(data, navigation);
   };
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const cardBackgroundColor = useThemeColor('headerColor');
+  const buttonColor = useThemeColor('buttonColor');
+
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#EDF4F6'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: backgroundColor}}>
       <StatusBar
         animated={true}
-        backgroundColor={'#EDF4F6'}
-        barStyle={'dark-content'}
+        backgroundColor={backgroundColor}
+        barStyle={textColor == '#FFFFFF' ? 'light-content' : 'dark-content'}
       />
       <KeyboardAwareScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          backgroundColor: '#EDF4F6',
+          backgroundColor: backgroundColor,
         }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
         <Image source={images.logo} style={styles.loginImage} />
         <View style={styles.logoImgView}>
-          <Text style={{marginTop: 10, fontSize: 32, color: '#10445C'}}>
+          <Text style={{marginTop: 10, fontSize: 32, color: textColor}}>
             Connect Vibe
           </Text>
         </View>
-        <View style={styles.cardView}>
+        <View style={[styles.cardView,{backgroundColor:cardBackgroundColor}]}>
           <View style={styles.cardHeader}>
             <Text style={styles.signInTxt}>SignIn</Text>
             <Text style={styles.subTxt}>To access your dashboard</Text>
@@ -158,7 +163,7 @@ const Login = ({navigation, loginAction, requesting}) => {
               }}
               loading={requesting}
               containerStyle={{
-                backgroundColor: '#00a1e9',
+                backgroundColor: buttonColor,
                 marginTop: 25,
                 width: '100%',
                 height: 52,

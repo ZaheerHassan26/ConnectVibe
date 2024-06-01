@@ -5,15 +5,19 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Switch,
 } from 'react-native';
 import React, {useState} from 'react';
 import Logout from '../../Components/LogoutModal';
 import {useImages} from '../../Utils/Images';
-import styles from './style';
+import {getStyles} from './style';
+import {connect} from 'react-redux';
+import {setTheme, toggleTheme} from '../ThemeProvider/redux/action';
 
-export default function Setting() {
+const Setting = ({onSelectTheme, theme, toggle_theme, isDark}) => {
   const [isLogOutModelVisible, setIsLogOutModalVisible] = useState(false);
   const {images} = useImages();
+  const styles = getStyles(theme);
 
   const data = [
     {
@@ -24,7 +28,10 @@ export default function Setting() {
       },
     },
   ];
-
+  const handleToggle = () => {
+    toggle_theme();
+    isDark ? onSelectTheme('default') : onSelectTheme('dark');
+  };
   const renderItem = ({item}) => (
     <TouchableOpacity
       onPress={
@@ -64,7 +71,7 @@ export default function Setting() {
     </TouchableOpacity>
   );
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <View style={styles.moreMainView}>
         <FlatList
           data={data}
@@ -72,6 +79,10 @@ export default function Setting() {
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
         />
+        <View style={{flexDirection: 'row'}}>
+          <Text>dark mode</Text>
+          <Switch value={isDark} onChange={handleToggle} />
+        </View>
       </View>
       <Logout
         setIsLogOutModalVisible={setIsLogOutModalVisible}
@@ -79,4 +90,15 @@ export default function Setting() {
       />
     </SafeAreaView>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  theme: state?.themes?.theme,
+  isDark: state?.themes?.isDark,
+});
+const mapDispatchToProps = dispatch => ({
+  onSelectTheme: theme => dispatch(setTheme(theme)),
+  toggle_theme: () => dispatch(toggleTheme()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Setting);

@@ -1,4 +1,4 @@
-import {Appearance, Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,24 +9,30 @@ import EditProfile from '../Screens/EditProfileScreen';
 import Home from '../Screens/HomeScreen';
 import Chat from '../Screens/ChatScreen';
 import Setting from '../Screens/SettingScreen';
+import {getThemeColor, useThemeColor} from '../Screens/ThemeProvider/redux/saga';
+import {connect} from 'react-redux';
+import AddScreen from '../Screens/AddScreen';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function AppNavigator() {
-  const colorScheme = Appearance.getColorScheme();
+const AppNavigator = ({theme}) => {
+  const styles = getStyles(theme);
+  const headerBackgroundColor = useThemeColor('headerColor');
+  const activeTab = useThemeColor('activeTab');
+
 
   const tabConfig = [
     {
       name: 'home',
       component: Home,
       focusedIcon: (
-        <View style={styles.activeIconContainer}>
+        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
           <AntDesign size={25} color={'white'} name={'home'} />
         </View>
       ),
       defaultIcon: (
-        <View style={styles.defaultIcon}>
+        <View style={[styles.defaultIcon,{}]}>
           <AntDesign size={20} color={'white'} name={'home'} />
           <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>Home</Text>
         </View>
@@ -36,7 +42,7 @@ export default function AppNavigator() {
       name: 'profile',
       component: EditProfile,
       focusedIcon: (
-        <View style={styles.activeIconContainer}>
+        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
           <EvilIcons
             size={30}
             color={'white'}
@@ -58,7 +64,7 @@ export default function AppNavigator() {
       name: 'setting',
       component: Setting,
       focusedIcon: (
-        <View style={styles.activeIconContainer}>
+        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
           <AntDesign size={25} color={'white'} name={'setting'} />
         </View>
       ),
@@ -78,15 +84,14 @@ export default function AppNavigator() {
   const BottomNavigator = () => {
     return (
       <Tab.Navigator
-        initialRouteName="Location"
+        initialRouteName="home"
         screenOptions={({route}) => ({
           tabBarPressColor: 'none',
-          tabBarActiveTintColor: '#58ceb2',
           tabBarInactiveTintColor: 'gray',
           tabBarHideOnKeyboard: true,
           tabBarStyle: {
             height: Platform.OS === 'ios' ? 80 : 70,
-            backgroundColor: colorScheme == 'dark' ? '#151515' : '#10445C',
+            backgroundColor: headerBackgroundColor,
             borderTopColor: 'white',
             borderTopWidth: 1,
           },
@@ -118,31 +123,39 @@ export default function AppNavigator() {
   };
 
   return (
-      <AppStack.Navigator
-        initialRouteName={'BottomBar'}
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <AppStack.Screen name="BottomBar" component={BottomNavigator} />
-        <AppStack.Screen name="chat" component={Chat} />
-      </AppStack.Navigator>
+    <AppStack.Navigator
+      initialRouteName={'BottomBar'}
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <AppStack.Screen name="BottomBar" component={BottomNavigator} />
+      <AppStack.Screen name="chat" component={Chat} />
+      <AppStack.Screen name="AddScreen" component={AddScreen} />
+    </AppStack.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  activeIconContainer: {
-    width: 84,
-    alignItems: 'center',
-    height: 49,
-    borderRadius: 24,
-    backgroundColor: '#205872',
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  defaultIcon: {
-    width: 55,
-    alignItems: 'center',
-    height: 55,
-    justifyContent: 'center',
-  },
+export const getStyles = theme =>
+  StyleSheet.create({
+    activeIconContainer: {
+      width: 84,
+      alignItems: 'center',
+      height: 49,
+      borderRadius: 24,
+      // backgroundColor: getThemeColor('activeTab', theme),
+      justifyContent: 'center',
+      alignSelf: 'center',
+    },
+    defaultIcon: {
+      width: 55,
+      alignItems: 'center',
+      height: 55,
+      justifyContent: 'center',
+    },
+  });
+
+const mapStateToProps = state => ({
+  theme: state?.themes?.theme,
 });
+
+export default connect(mapStateToProps, null)(AppNavigator);
