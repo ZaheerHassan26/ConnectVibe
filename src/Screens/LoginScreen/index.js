@@ -47,9 +47,10 @@ const Login = ({navigation, loginAction, requesting}) => {
 
   const [passwordView, setPasswordView] = useState(false);
 
-  const loginUser = async data => {
+  const loginUser = async (data) => {
     const fcmToken = await AsyncStorage.getItem('FCMToken');
-    loginAction(data, fcmToken, navigation);
+    console.log(fcmToken,'token');
+    loginAction(data, fcmToken);
   };
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
@@ -197,8 +198,7 @@ const mapStateTopProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loginAction: (data, fcmToken, navigation) =>
-    dispatch(loginAction(data, fcmToken, navigation)),
+  loginAction: (data, fcmToken) => dispatch(loginAction(data, fcmToken)),
 });
 
 export default connect(mapStateTopProps, mapDispatchToProps)(Login);

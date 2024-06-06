@@ -8,7 +8,7 @@ import {BASE_URL} from '../../../Config/app';
 import XHR from '../../../Utils/XHR';
 
 async function addDeviceAPi(data) {
-  const URL = `${BASE_URL}/modules/firebase-push-notifications/user_fcm_device_add/`;
+  const URL = `${BASE_URL}/firebase_push_notifications/user_fcm_device_add/`;
   const accessToken = await AsyncStorage.getItem('accessToken');
   const option = {
     headers: {
@@ -23,7 +23,7 @@ async function addDeviceAPi(data) {
 
 function* addDeviceApiCall({data}) {
   try {
-    const response = yield call(addDeviceAPi, data);
+    const response =  yield call(addDeviceAPi, data);
     yield put(addDeviceSuccess());
   } catch (e) {
     const {response} = e;

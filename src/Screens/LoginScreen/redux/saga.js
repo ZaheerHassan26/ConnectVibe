@@ -4,7 +4,7 @@ import {Toast} from 'react-native-toast-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {BASE_URL} from '../../../Config/app';
-import {addDevice as addDeviceAction} from '../../HomeScreen/redux/reducer';
+import {addDevice as addDeviceAction} from '../../HomeScreen/redux/actions';
 
 import XHR from '../../../Utils/XHR';
 
@@ -73,8 +73,10 @@ async function accountDisableAPi(data) {
 
 function* loginApiCall({data, fcmToken}) {
   try {
+    console.log(data,'token',fcmToken)
     const response = yield call(loginAPi, data);
     if (response?.data?.token) {
+      console.log(response.data);
       AsyncStorage.setItem('accessToken', response.data.token);
       const fcmData = {
         registration_id: fcmToken,
