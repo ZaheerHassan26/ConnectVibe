@@ -73,10 +73,8 @@ async function accountDisableAPi(data) {
 
 function* loginApiCall({data, fcmToken}) {
   try {
-    console.log(data,'token',fcmToken)
     const response = yield call(loginAPi, data);
     if (response?.data?.token) {
-      console.log(response.data);
       AsyncStorage.setItem('accessToken', response.data.token);
       const fcmData = {
         registration_id: fcmToken,

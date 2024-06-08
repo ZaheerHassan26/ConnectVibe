@@ -9,6 +9,8 @@ import editProfile from '../Screens/EditProfileScreen/redux/reducer';
 import themes from '../Screens/ThemeProvider/redux/reducer';
 import searchUser from '../Screens/NewChat/redux/reducer';
 import deviceAdd from '../Screens/HomeScreen/redux/reducer';
+import notification from "../Screens/ChatScreen/redux/reducer";
+
 
 const appPersistConfig = {
   key: 'login',
@@ -27,5 +29,6 @@ export default {
   editProfile,
   searchUser,
   deviceAdd,
+  notification,
   themes: persistedThemesReducer,
 };

@@ -19,15 +19,18 @@ import {useRef} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 
 import {useImages} from '../../Utils/Images';
-import {getProfile as getProfileAction} from '../EditProfileScreen/redux/actions';
+import {getUser as getUserAction} from '../NewChat/redux/action';
 import {getStyles} from './style';
 import {useThemeColor} from '../ThemeProvider/redux/saga';
 import AddButton from '../../Components/AddButton';
+import firestore from '@react-native-firebase/firestore';
 
-const Home = ({userDetail, navigation, getProfileAction}) => {
+const Home = ({userDetail, navigation, getUserAction, userSearched}) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchName, setSearchName] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [chatRooms, setChatRooms] = useState([]);
+
   const translateX = useRef(new Animated.Value(0)).current;
 
   const {images} = useImages();
@@ -53,6 +56,39 @@ const Home = ({userDetail, navigation, getProfileAction}) => {
     setSearchName(val);
   };
 
+  const getChatRoomsForUser = async (userId, callback) => {
+    const chatRoomsQuery = await firestore()
+      .collection('Chats')
+      .where('user1', '==', userId)
+      .get();
+
+    const user2ChatRoomsQuery = await firestore()
+      .collection('Chats')
+      .where('user2', '==', userId)
+      .get();
+
+    let chatRooms = [];
+
+    chatRoomsQuery.forEach(doc => {
+      chatRooms.push({id: doc.id, ...doc.data()});
+    });
+
+    user2ChatRoomsQuery.forEach(doc => {
+      chatRooms.push({id: doc.id, ...doc.data()});
+    });
+
+    callback(chatRooms);
+  };
+
+  useEffect(() => {
+    const fetchChatRooms = async () => {
+      await getChatRoomsForUser(userDetail?.id, rooms => {
+        setChatRooms(rooms);
+      });
+    };
+    fetchChatRooms();
+  }, []);
+
   useEffect(() => {
     if (isSearchActive) {
       Animated.timing(translateX, {
@@ -70,10 +106,11 @@ const Home = ({userDetail, navigation, getProfileAction}) => {
   }, [isSearchActive]);
 
   useEffect(() => {
-    const newFilteredData = dummyData.filter(item => {
-      return item.name.toLowerCase().includes(searchName.toLowerCase());
-    });
-    setFilteredData(newFilteredData);
+    getUserAction('');
+    // const newFilteredData = dummyData.filter(item => {
+    //   return item.name.toLowerCase().includes(searchName.toLowerCase());
+    // });
+    // setFilteredData(newFilteredData);
   }, [searchName, isFocused]);
 
   const backgroundColor = useThemeColor('primary');
@@ -133,13 +170,15 @@ const Home = ({userDetail, navigation, getProfileAction}) => {
       </View>
 
       <FlatList
-        data={filteredData || []}
+        data={chatRooms || []}
         renderItem={({item, index}) => {
           return (
             <>
               <TouchableOpacity
                 style={styles.chatContainer}
-                onPress={() => navigation.navigate('chat', {data: item})}>
+                onPress={() => {
+                  navigation.navigate('Chat', {roomID: item.id, data: item});
+                }}>
                 <View
                   style={[
                     styles.imageContainer,
@@ -147,7 +186,7 @@ const Home = ({userDetail, navigation, getProfileAction}) => {
                   ]}>
                   {item?.image == null ? (
                     <Text style={[styles.imgText, {color: backgroundColor}]}>
-                      {`${item?.name[0]?.toUpperCase()}`}
+                      {/* {`${item?.name[0]?.toUpperCase()}`} */}
                     </Text>
                   ) : (
                     <Image source={item?.image} style={styles.image} />
@@ -160,9 +199,7 @@ const Home = ({userDetail, navigation, getProfileAction}) => {
                     </Text>
                     <Text
                       style={[styles.message, {color: textColor}]}
-                      numberOfLines={1}>
-                      {'hey' ?? 'null'}
-                    </Text>
+                      numberOfLines={1}></Text>
                   </View>
                 </View>
                 <View style={styles.dateView}>
@@ -180,10 +217,12 @@ const Home = ({userDetail, navigation, getProfileAction}) => {
 
 const mapStateToProps = state => ({
   userDetail: state?.login?.userDetail?.user,
+  userSearched: state?.searchUser?.profile,
 });
 
 const mapDispatchToProps = dispatch => ({
   getProfileAction: data => dispatch(getProfileAction(data)),
+  getUserAction: data => dispatch(getUserAction(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

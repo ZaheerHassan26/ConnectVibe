@@ -71,8 +71,6 @@ const Signup = ({navigation, signupAction, requesting}) => {
       payload.append('email', data.email);
       payload.append('phone', data.phone.trim());
       payload.append('password', data.password.trim());
-      payload.append('gender', 'male');
-      payload.append('dob', '2001-07-01');
       signupAction(payload, callBack);
     }
   };
@@ -301,19 +299,6 @@ const Signup = ({navigation, signupAction, requesting}) => {
               </View>
             </View>
             <Error errors={errors?.confirmPassword} />
-
-            <View style={{}}>
-              <Text style={styles.byClickText}>
-                terms_and_condition_new_account
-              </Text>
-              <TouchableOpacity
-              // onPress={() => navigation.navigate('termsAndCondition')}
-              >
-                <Text style={styles.termsAndConditionText}>
-                  terms_and_conditions
-                </Text>
-              </TouchableOpacity>
-            </View>
 
             <Button
               onPress={handleSubmit(signupButton)}

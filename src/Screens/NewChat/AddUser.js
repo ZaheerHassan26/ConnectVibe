@@ -11,6 +11,7 @@ import {
 import React, {useState, useEffect} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 
 import {useThemeColor} from '../ThemeProvider/redux/saga';
 import {getUser as getUserAction} from './redux/action';
@@ -20,18 +21,76 @@ import {Text} from 'react-native';
 
 const height = Dimensions.get('window').height;
 
-const AddUser = ({navigation, getUserAction, users, loading}) => {
+const AddUser = ({
+  navigation,
+  getUserAction,
+  userSearched,
+  loading,
+  userDetail,
+}) => {
   const [searchName, setSearchName] = useState('');
+  const [threads, setThreads] = useState([]);
 
   const handleSearch = val => {
     setSearchName(val);
   };
+
+  const createAndNavigate = item => {
+    let loggedUser = userDetail?.id;
+    let secondUser = item?.id;
+
+    const chatRoom = threads.find(el => {
+      return (
+        (el.user1 == loggedUser && el.user2 == secondUser) ||
+        (el.user2 == loggedUser && el.user1 == secondUser)
+      );
+    });
+    if (!chatRoom) {
+      firestore()
+        .collection('Chats')
+        .add({
+          user1: loggedUser,
+          user2: secondUser,
+        })
+        .then(data => {
+          navigation.navigate('chat', {
+            roomID: data?._documentPath?._parts[1],
+            data: item,
+          });
+        });
+    } else {
+      navigation.navigate('chat', {
+        roomID: chatRoom?._id,
+        data: item,
+      });
+    }
+  };
+
+  const getRooms = () => {
+    firestore()
+      .collection('Chats')
+      .onSnapshot(querySnapshot => {
+        const threads = querySnapshot._docs.map(documentSnapshot => {
+          return {
+            _id: documentSnapshot.id,
+            name: '',
+            ...documentSnapshot.data(),
+          };
+        });
+        setThreads(threads);
+      });
+  };
+
+  useEffect(() => {
+    getRooms();
+  }, []);
 
   useEffect(() => {
     if (searchName !== '') {
       getUserAction(searchName);
     }
   }, [searchName]);
+
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
   const headerBackgroundColor = useThemeColor('headerColor');
@@ -72,14 +131,14 @@ const AddUser = ({navigation, getUserAction, users, loading}) => {
           <View style={{marginVertical: '50%'}}>
             <ActivityIndicator color={textColor} size={'large'} />
           </View>
-        ) : (
+        ) : userSearched?.length ? (
           <FlatList
-            data={searchName == '' ? [] : users}
+            data={searchName == '' ? [] : userSearched}
             renderItem={({item, index}) => (
               <>
                 <TouchableOpacity
                   style={styles.chatContainer}
-                  onPress={() => navigation.navigate('chat', {data: item})}>
+                  onPress={() => createAndNavigate(item)}>
                   <View
                     style={[
                       styles.imageContainer,
@@ -107,6 +166,15 @@ const AddUser = ({navigation, getUserAction, users, loading}) => {
               </>
             )}
           />
+        ) : (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: '50%',
+            }}>
+            <Text style={{color: textColor}}>No user Found</Text>
+          </View>
         )}
       </View>
     </SafeAreaView>
@@ -115,8 +183,9 @@ const AddUser = ({navigation, getUserAction, users, loading}) => {
 
 const mapStateToProps = state => ({
   theme: state?.themes?.theme,
-  users: state?.searchUser?.profile,
+  userSearched: state?.searchUser?.profile,
   loading: state?.searchUser?.requesting,
+  userDetail: state?.login?.userDetail?.user,
 });
 
 const mapDispatchToProps = dispatch => ({

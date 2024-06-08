@@ -47,9 +47,8 @@ const Login = ({navigation, loginAction, requesting}) => {
 
   const [passwordView, setPasswordView] = useState(false);
 
-  const loginUser = async (data) => {
+  const loginUser = async data => {
     const fcmToken = await AsyncStorage.getItem('FCMToken');
-    console.log(fcmToken,'token');
     loginAction(data, fcmToken);
   };
   const backgroundColor = useThemeColor('primary');

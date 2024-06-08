@@ -40,7 +40,6 @@ async function updateProfileApi(data) {
 function* getProfileApiCall({data}) {
   try {
     const response = yield call(getProfileApi, data);
-
     yield put(getProfileSuccess(response.data));
   } catch (e) {
     const {response} = e;

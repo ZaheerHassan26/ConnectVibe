@@ -31,6 +31,8 @@ function* signupAPiCall({data, callBack}) {
     yield put(signupFailure(response));
     if (response?.data?.email) {
       Toast.show(response?.data?.email[0]);
+    } else if (response?.data?.phone) {
+      Toast.show(response?.data?.phone[0]);
     } else {
       Toast.show('went_wrong');
     }

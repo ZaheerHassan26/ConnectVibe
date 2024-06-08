@@ -6,6 +6,8 @@ import forgotPassword from '../Screens/ForgotPasswordScreen/redux/saga';
 import editProfile from '../Screens/EditProfileScreen/redux/saga';
 import searchUser from '../Screens/NewChat/redux/saga';
 import deviceAdd from '../Screens/HomeScreen/redux/saga';
+import notification from "../Screens/ChatScreen/redux/saga";
+
 
 export function* mainSaga() {
   yield all({
@@ -15,5 +17,6 @@ export function* mainSaga() {
     editProfile,
     searchUser,
     deviceAdd,
+    notification
   });
 }

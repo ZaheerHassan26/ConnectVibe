@@ -82,14 +82,11 @@ const EditProfile = ({
     payload?._parts.length > 1 ? updateProfileAction(payload) : '';
   };
 
-  useLayoutEffect(() => {}, [isFocused, profileData]);
-
   useEffect(() => {
     const data = {
       id: userDetail?.id,
     };
     getProfileAction(data);
-
     setProfileImage(profileData?.profile_image);
     setValue('name', profileData?.name);
     setValue('email', profileData?.user_email);

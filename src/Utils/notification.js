@@ -9,20 +9,15 @@ const RemotePushController = props => {
   useEffect(() => {
     if (Platform.OS === 'android') {
       PushNotification.configure({
-        // (optional) Called when Token is generated (iOS and Android)
         onRegister: function (token) {
-          // props.setAppToken(token)
-          // dispatch(transaction.setFCMToken(token.token));
           console.log(token, 'token');
           AsyncStorage.setItem('FCMToken', token.token);
         },
-        // (required) Called when a remote or local notification is opened or received
         onNotification: function (notification) {
           if (notification.userInteraction) {
             // navigate('Notifications');
           }
         },
-        // Android only: GCM or FCM Sender ID
         senderID: '629772472444',
         popInitialNotification: true,
         requestPermissions: true,
