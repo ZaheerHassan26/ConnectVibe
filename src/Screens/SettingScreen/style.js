@@ -21,9 +21,16 @@ export const getStyles = theme =>
     },
     bottomText: {
       fontSize: 13,
+      left: 5,
       fontWeight: '700',
       color: '#3F3F44',
     },
+    moreMainView: {
+      flex: 1,
+      backgroundColor: '#fff',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      paddingHorizontal: 20,
+      paddingTop: 25,
+    },
   });
-
-

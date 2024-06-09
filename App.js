@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import RootNavigator from './src/Navigation';
-import AppNavigator from './src/Navigation/AppStack';
 import {ToastProvider} from 'react-native-toast-notifications';
 import {Provider} from 'react-redux';
 import store from './src/Redux/store';
@@ -9,7 +8,9 @@ import SplashScreen from './src/Screens/SplashScreen';
 import {Dimensions} from 'react-native';
 import {persistStore} from 'redux-persist';
 import {PersistGate} from 'redux-persist/integration/react';
+
 import {ThemeProvider} from './src/Screens/ThemeProvider/ThemeProvider';
+import RemotePushController from './src/Utils/notification';
 
 const persist = persistStore(store);
 
@@ -38,6 +39,7 @@ export default function App() {
           logoHeight={logoHeight}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persist}>
+              <RemotePushController />
               <RootNavigator />
             </PersistGate>
           </Provider>

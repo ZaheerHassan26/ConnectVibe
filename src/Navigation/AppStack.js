@@ -9,9 +9,15 @@ import EditProfile from '../Screens/EditProfileScreen';
 import Home from '../Screens/HomeScreen';
 import Chat from '../Screens/ChatScreen';
 import Setting from '../Screens/SettingScreen';
-import {getThemeColor, useThemeColor} from '../Screens/ThemeProvider/redux/saga';
+import {
+  getThemeColor,
+  useThemeColor,
+} from '../Screens/ThemeProvider/redux/saga';
 import {connect} from 'react-redux';
 import AddScreen from '../Screens/AddScreen';
+import AddUser from '../Screens/NewChat/AddUser';
+import CreateGroup from '../Screens/ChatScreen/CreateGroup';
+import GroupChat from '../Screens/ChatScreen/GroupChat';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -21,42 +27,20 @@ const AppNavigator = ({theme}) => {
   const headerBackgroundColor = useThemeColor('headerColor');
   const activeTab = useThemeColor('activeTab');
 
-
   const tabConfig = [
     {
       name: 'home',
       component: Home,
       focusedIcon: (
-        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
+        <View
+          style={[styles.activeIconContainer, {backgroundColor: activeTab}]}>
           <AntDesign size={25} color={'white'} name={'home'} />
         </View>
       ),
       defaultIcon: (
-        <View style={[styles.defaultIcon,{}]}>
+        <View style={[styles.defaultIcon, {}]}>
           <AntDesign size={20} color={'white'} name={'home'} />
           <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>Home</Text>
-        </View>
-      ),
-    },
-    {
-      name: 'profile',
-      component: EditProfile,
-      focusedIcon: (
-        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
-          <EvilIcons
-            size={30}
-            color={'white'}
-            name={'user'}
-            style={{marginBottom: 7}}
-          />
-        </View>
-      ),
-      defaultIcon: (
-        <View style={styles.defaultIcon}>
-          <EvilIcons size={25} color={'white'} name={'user'} />
-          <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>
-            Profile
-          </Text>
         </View>
       ),
     },
@@ -64,7 +48,8 @@ const AppNavigator = ({theme}) => {
       name: 'setting',
       component: Setting,
       focusedIcon: (
-        <View style={[styles.activeIconContainer,{backgroundColor:activeTab}]}>
+        <View
+          style={[styles.activeIconContainer, {backgroundColor: activeTab}]}>
           <AntDesign size={25} color={'white'} name={'setting'} />
         </View>
       ),
@@ -101,7 +86,7 @@ const AppNavigator = ({theme}) => {
           },
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarButton: ['home', 'profile', 'setting'].includes(route.name)
+          tabBarButton: ['home', 'setting'].includes(route.name)
             ? undefined
             : () => {
                 return null;
@@ -129,8 +114,12 @@ const AppNavigator = ({theme}) => {
         headerShown: false,
       }}>
       <AppStack.Screen name="BottomBar" component={BottomNavigator} />
-      <AppStack.Screen name="chat" component={Chat} />
+      <AppStack.Screen name="Chat" component={Chat} />
+      <AppStack.Screen name="EditProfile" component={EditProfile} />
+      <AppStack.Screen name="AddUser" component={AddUser} />
       <AppStack.Screen name="AddScreen" component={AddScreen} />
+      <AppStack.Screen name="CreateGroup" component={CreateGroup} />
+      <AppStack.Screen name="GroupChat" component={GroupChat} />
     </AppStack.Navigator>
   );
 };
@@ -142,7 +131,6 @@ export const getStyles = theme =>
       alignItems: 'center',
       height: 49,
       borderRadius: 24,
-      // backgroundColor: getThemeColor('activeTab', theme),
       justifyContent: 'center',
       alignSelf: 'center',
     },

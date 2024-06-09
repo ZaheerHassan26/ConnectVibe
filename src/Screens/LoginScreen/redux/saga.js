@@ -4,6 +4,8 @@ import {Toast} from 'react-native-toast-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {BASE_URL} from '../../../Config/app';
+import {addDevice as addDeviceAction} from '../../HomeScreen/redux/actions';
+
 import XHR from '../../../Utils/XHR';
 
 import {
@@ -78,6 +80,7 @@ function* loginApiCall({data, fcmToken}) {
         registration_id: fcmToken,
         type: Platform.OS,
       };
+      yield put(addDeviceAction(fcmData));
       yield put(loginSuccess(response.data));
     }
   } catch (e) {

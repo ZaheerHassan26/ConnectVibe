@@ -18,6 +18,13 @@ export const getStyles = theme =>
       paddingBottom: 20,
       flexDirection: 'row',
     },
+    searchContainer: {
+      width: '85%',
+      height: 45,
+      borderRadius: 8,
+      marginLeft: 10,
+      color: 'white',
+    },
     imageDiv: {
       flexDirection: 'row',
       gap: 7,
@@ -39,6 +46,30 @@ export const getStyles = theme =>
       fontSize: 18,
       alignSelf: 'center',
     },
+    sentTextHeader: {
+      paddingTop: 8,
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+    },
+    sentHeaderView: {
+      justifyContent: 'flex-end',
+      marginLeft: 20,
+      borderRadius: 12,
+      // borderTopLeftRadius: 40,
+      // borderTopRightRadius: 40,
+      // borderBottomLeftRadius: 40,
+      marginBottom: 10,
+      maxWidth: '65%',
+      alignItems: 'flex-end',
+    },
+    sentText: {
+      paddingVertical: 15,
+      paddingHorizontal: 10,
+      color: '#FFF',
+      fontSize: 14,
+      fontWeight: '400',
+      flexWrap: 'wrap',
+    },
     imageContainer: {
       backgroundColor: getThemeColor('black', theme),
       width: 42,
@@ -53,7 +84,6 @@ export const getStyles = theme =>
       marginHorizontal: 24,
     },
     inputInnerContainer: {
-      backgroundColor: getThemeColor('inputBackground', theme),
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 10,
@@ -70,7 +100,7 @@ export const getStyles = theme =>
       minHeight: 50,
       marginRight: 10,
       flexBasis: '60%',
-      color:getThemeColor('text', theme)
+      color: getThemeColor('text', theme),
     },
     iconContainer: {
       flexDirection: 'row',

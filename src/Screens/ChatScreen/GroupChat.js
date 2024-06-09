@@ -37,7 +37,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
-const Chat = ({route, theme, addNotificationAction, userDetail}) => {
+const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
   const [inputValue, setInputValue] = useState('');
   const [preview, setPreview] = useState(false);
   const [assets, setAssets] = useState([]);
@@ -178,6 +178,16 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
       downButtonHandler();
     }
   });
+  const findParticients = val => {
+    const senderData = messageData?.messages.filter(item => {
+      return item.senderId != val.senderId;
+    });
+    const id = senderData[0]?.senderId;
+    const senderName = messageData?.participents.filter(
+      item => item.id === id || item.user_id === id,
+    );
+    return senderName;
+  };
 
   const handleSendMessage = async (text, type) => {
     setLinkOpen(false);
@@ -241,8 +251,8 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
 
   const handleConfirmDelete = id => {
     Alert.alert(
-      'Delete Message',
-      'Are you sure you want to delete this message?',
+      'Unsend Message',
+      'Are you sure you want to unsend this message?',
       [{text: 'Cancel'}, {text: 'Yes', onPress: () => deleteMessage(id)}],
     );
   };
@@ -265,30 +275,16 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
     if (userDetail && messageuid) {
       db.ref('Messages/' + messageuid).on('value', snapshot => {
         if (snapshot.val()) {
-          if (snapshot.val()?.senderId === userDetail?.id) {
+          if (
+            snapshot.val()?.participentIds?.length > 0 &&
+            snapshot.val()?.participentIds?.some(e => e === userDetail?.id)
+          ) {
             db.ref('Messages/' + messageuid)
               .update({senderRead: 0})
               .then(res => {
                 db.ref('Messages/' + messageuid).once('value', snapshot => {
                   if (snapshot.val()) {
-                    console.log({
-                      msgs: JSON.stringify(snapshot.val().messages),
-                    });
-                    setState(prevState => ({
-                      ...prevState,
-                      messages: snapshot.val().messages || [],
-                      messageData: snapshot.val(),
-                    }));
-                  }
-                });
-              });
-          }
-          if (snapshot.val()?.receiverId === userDetail?.id) {
-            db.ref('Messages/' + messageuid)
-              .update({receiverRead: 0})
-              .then(res => {
-                db.ref('Messages/' + messageuid).once('value', snapshot => {
-                  if (snapshot.val()) {
+                    // getMessages()
                     setState(prevState => ({
                       ...prevState,
                       messages: snapshot.val()?.messages || [],
@@ -329,13 +325,7 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
               }}
             />
           </View>
-          <Text style={styles.userName}>
-            {messageData
-              ? messageData?.senderId === userDetail?.id
-                ? messageData?.receiver?.name
-                : messageData?.sender?.name
-              : ''}
-          </Text>
+          <Text style={styles.userName}>{messageData?.name || ''}</Text>
         </View>
       </View>
 
@@ -651,4 +641,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   addNotificationAction: data => dispatch(addNotificationAction(data)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupChat);

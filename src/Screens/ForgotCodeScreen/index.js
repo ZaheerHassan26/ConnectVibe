@@ -16,7 +16,7 @@ import {
 import Button from '../../Components/Button';
 import {useThemeColor} from '../ThemeProvider/redux/saga';
 
-const CELL_COUNT = 5;
+const CELL_COUNT = 4;
 
 const ForgotCode = ({
   navigation,

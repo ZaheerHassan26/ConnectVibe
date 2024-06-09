@@ -19,7 +19,11 @@ export const getStyles = theme =>
     },
     headerText: {
       color: 'white',
+      textAlign: 'center',
       fontSize: 18,
+      left: 10,
+      top: 9,
+      height: 45,
       fontWeight: '500',
     },
     ImgView: {
