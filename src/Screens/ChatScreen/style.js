@@ -18,6 +18,13 @@ export const getStyles = theme =>
       paddingBottom: 20,
       flexDirection: 'row',
     },
+    searchContainer: {
+      width: '85%',
+      height: 45,
+      borderRadius: 8,
+      marginLeft: 10,
+      color: 'white',
+    },
     imageDiv: {
       flexDirection: 'row',
       gap: 7,
@@ -45,7 +52,7 @@ export const getStyles = theme =>
       alignItems: 'flex-end',
     },
     sentHeaderView: {
-      justifyContent: "flex-end",
+      justifyContent: 'flex-end',
       marginLeft: 20,
       borderRadius: 12,
       // borderTopLeftRadius: 40,

@@ -16,6 +16,8 @@ import {
 import {connect} from 'react-redux';
 import AddScreen from '../Screens/AddScreen';
 import AddUser from '../Screens/NewChat/AddUser';
+import CreateGroup from '../Screens/ChatScreen/CreateGroup';
+import GroupChat from '../Screens/ChatScreen/GroupChat';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,29 +41,6 @@ const AppNavigator = ({theme}) => {
         <View style={[styles.defaultIcon, {}]}>
           <AntDesign size={20} color={'white'} name={'home'} />
           <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>Home</Text>
-        </View>
-      ),
-    },
-    {
-      name: 'profile',
-      component: EditProfile,
-      focusedIcon: (
-        <View
-          style={[styles.activeIconContainer, {backgroundColor: activeTab}]}>
-          <EvilIcons
-            size={30}
-            color={'white'}
-            name={'user'}
-            style={{marginBottom: 7}}
-          />
-        </View>
-      ),
-      defaultIcon: (
-        <View style={styles.defaultIcon}>
-          <EvilIcons size={25} color={'white'} name={'user'} />
-          <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>
-            Profile
-          </Text>
         </View>
       ),
     },
@@ -107,7 +86,7 @@ const AppNavigator = ({theme}) => {
           },
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarButton: ['home', 'profile', 'setting'].includes(route.name)
+          tabBarButton: ['home', 'setting'].includes(route.name)
             ? undefined
             : () => {
                 return null;
@@ -135,9 +114,12 @@ const AppNavigator = ({theme}) => {
         headerShown: false,
       }}>
       <AppStack.Screen name="BottomBar" component={BottomNavigator} />
-      <AppStack.Screen name="chat" component={Chat} />
+      <AppStack.Screen name="Chat" component={Chat} />
+      <AppStack.Screen name="EditProfile" component={EditProfile} />
       <AppStack.Screen name="AddUser" component={AddUser} />
       <AppStack.Screen name="AddScreen" component={AddScreen} />
+      <AppStack.Screen name="CreateGroup" component={CreateGroup} />
+      <AppStack.Screen name="GroupChat" component={GroupChat} />
     </AppStack.Navigator>
   );
 };

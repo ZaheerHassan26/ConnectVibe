@@ -12,6 +12,9 @@ export function useImages() {
       attachment: require('../Assets/Images/attachment.png'),
       power: require('../Assets/Images/power.png'),
       rightArrow: require('../Assets/Images/rightArrow.png'),
+      settings: require('../Assets/Images/settingsIcon.png'),
+      book: require('../Assets/Images/book.png'),
+      profileIcon: require('../Assets/Images/profileIcon.png'),
     },
   };
 }

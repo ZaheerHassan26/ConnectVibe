@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  FlatList,
+  Text,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
-
+import database from '@react-native-firebase/database';
 import {useThemeColor} from '../ThemeProvider/redux/saga';
 import {getUser as getUserAction} from './redux/action';
 import styles from './style';
-import {FlatList} from 'react-native-gesture-handler';
-import {Text} from 'react-native';
+import {Toast} from 'react-native-toast-notifications';
 
 const height = Dimensions.get('window').height;
 
@@ -29,61 +29,80 @@ const AddUser = ({
   userDetail,
 }) => {
   const [searchName, setSearchName] = useState('');
-  const [threads, setThreads] = useState([]);
 
   const handleSearch = val => {
     setSearchName(val);
   };
 
   const createAndNavigate = item => {
-    let loggedUser = userDetail?.id;
-    let secondUser = item?.id;
-
-    const chatRoom = threads.find(el => {
-      return (
-        (el.user1 == loggedUser && el.user2 == secondUser) ||
-        (el.user2 == loggedUser && el.user1 == secondUser)
-      );
-    });
-    if (!chatRoom) {
-      firestore()
-        .collection('Chats')
-        .add({
-          user1: loggedUser,
-          user2: secondUser,
-        })
-        .then(data => {
-          navigation.navigate('chat', {
-            roomID: data?._documentPath?._parts[1],
-            data: item,
+    const id = `${userDetail?.id}_${item?.id}`;
+    const rid = `${item?.id}_${userDetail?.id}`;
+    const db = database();
+    db.ref('Messages/' + id).once('value', snapshot => {
+      if (snapshot.val()) {
+        let value = {
+          sender: {...userDetail},
+          senderId: userDetail?.id,
+          id: id,
+          timeStamp: Date.now(),
+          receiverRead: 0,
+          receiverId: item.id,
+          receiver: item,
+        };
+        database()
+          .ref('Messages/' + id)
+          .update(value)
+          .then(res => {
+            navigation.navigate('chat', {messageuid: id, data: item});
+          })
+          .catch(err => {
+            Toast.show('Something went wrong!');
           });
+      } else {
+        db.ref('Messages/' + rid).once('value', snapshot => {
+          if (snapshot.val()) {
+            let value = {
+              sender: userDetail,
+              senderId: userDetail?.id,
+              id: rid,
+              timeStamp: Date.now(),
+              receiverRead: 0,
+              receiverId: item.id,
+              receiver: item,
+            };
+            database()
+              .ref('Messages/' + rid)
+              .update(value)
+              .then(res => {
+                navigation.navigate('chat', {messageuid: rid, data: item});
+              })
+              .catch(err => {
+                Toast.show('Something went wrong!');
+              });
+          } else {
+            let value = {
+              sender: userDetail,
+              senderId: userDetail?.id,
+              id: id,
+              timeStamp: Date.now(),
+              receiverRead: 0,
+              receiverId: item.id,
+              receiver: item,
+            };
+            database()
+              .ref('Messages/' + id)
+              .update(value)
+              .then(res => {
+                navigation.navigate('chat', {messageuid: id, data: item});
+              })
+              .catch(err => {
+                Toast.show('Something went wrong!');
+              });
+          }
         });
-    } else {
-      navigation.navigate('chat', {
-        roomID: chatRoom?._id,
-        data: item,
-      });
-    }
+      }
+    });
   };
-
-  const getRooms = () => {
-    firestore()
-      .collection('Chats')
-      .onSnapshot(querySnapshot => {
-        const threads = querySnapshot._docs.map(documentSnapshot => {
-          return {
-            _id: documentSnapshot.id,
-            name: '',
-            ...documentSnapshot.data(),
-          };
-        });
-        setThreads(threads);
-      });
-  };
-
-  useEffect(() => {
-    getRooms();
-  }, []);
 
   useEffect(() => {
     if (searchName !== '') {
@@ -121,6 +140,25 @@ const AddUser = ({
           onChangeText={handleSearch}
         />
       </View>
+
+      <View style={{width: '90%', marginTop: 10}}>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            borderBottomWidth: 1,
+            paddingBottom: 10,
+          }}
+          onPress={() => navigation.navigate('CreateGroup')}>
+          <Text
+            style={{
+              color: textColor,
+              marginLeft: 10,
+            }}>
+            Group message
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <View
         style={{
           marginVertical: 20,

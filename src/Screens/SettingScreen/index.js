@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  Switch,
 } from 'react-native';
 import React, {useState} from 'react';
 import Logout from '../../Components/LogoutModal';
@@ -13,13 +12,30 @@ import {useImages} from '../../Utils/Images';
 import {getStyles} from './style';
 import {connect} from 'react-redux';
 import {setTheme, toggleTheme} from '../ThemeProvider/redux/action';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const Setting = ({onSelectTheme, theme, toggle_theme, isDark}) => {
+const Setting = ({theme, navigation}) => {
   const [isLogOutModelVisible, setIsLogOutModalVisible] = useState(false);
   const {images} = useImages();
   const styles = getStyles(theme);
 
   const data = [
+    {
+      image: images.profileIcon,
+      text: 'Edit Profile',
+      navigate: 'EditProfile',
+    },
+    {
+      image: images.book,
+      text: 'Terms and Conditions',
+      navigate: 'termsAndCondition',
+    },
+    {
+      image: images.settings,
+      text: 'settings',
+      navigate: 'settings',
+    },
     {
       image: images.power,
       text: 'Logout',
@@ -28,20 +44,21 @@ const Setting = ({onSelectTheme, theme, toggle_theme, isDark}) => {
       },
     },
   ];
-  const handleToggle = () => {
-    toggle_theme();
-    isDark ? onSelectTheme('default') : onSelectTheme('dark');
-  };
+
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const imageBackground = useThemeColor('black');
+  const placeholderColor = useThemeColor('placeholder');
+  const searchBar = useThemeColor('activeTab');
+
   const renderItem = ({item}) => (
     <TouchableOpacity
-      onPress={
-        () =>
-          item.navigate
-            ? navigation.navigate(item.navigate)
-            : item.onclick
-            ? item.onclick()
-            : ''
-        //  navigation.navigate(item.navigate)
+      onPress={() =>
+        item.navigate
+          ? navigation.navigate(item.navigate)
+          : item.onclick
+          ? item.onclick()
+          : ''
       }
       style={styles.bottomItemView}>
       <View style={styles.leftBottomView}>
@@ -57,32 +74,22 @@ const Setting = ({onSelectTheme, theme, toggle_theme, isDark}) => {
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <Text style={styles.bottomText}>{item.text}</Text>
+        <Text style={[styles.bottomText, {color: textColor}]}>{item.text}</Text>
       </View>
-      <TouchableOpacity style={styles.rightBottomView}>
-        <Image
-          source={images.rightArrow}
-          style={{
-            width: 8.22,
-            height: 14,
-          }}
-        />
+      <TouchableOpacity>
+        <AntDesign name="right" color={textColor} size={15} />
       </TouchableOpacity>
     </TouchableOpacity>
   );
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.moreMainView}>
+    <SafeAreaView style={[styles.container, {backgroundColor}]}>
+      <View style={[styles.moreMainView, {backgroundColor}]}>
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
         />
-        <View style={{flexDirection: 'row'}}>
-          <Text>dark mode</Text>
-          <Switch value={isDark} onChange={handleToggle} />
-        </View>
       </View>
       <Logout
         setIsLogOutModalVisible={setIsLogOutModalVisible}

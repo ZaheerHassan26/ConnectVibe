@@ -1,5 +1,6 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {getThemeColor} from '../ThemeProvider/redux/saga';
+const width = Dimensions.get('screen').width;
 export const getStyles = theme =>
   StyleSheet.create({
     container: {
@@ -43,6 +44,7 @@ export const getStyles = theme =>
       marginHorizontal: 10,
       marginTop: 20,
       flexDirection: 'row',
+      width: width - 50,
     },
     imgText: {
       color: getThemeColor('white', theme),

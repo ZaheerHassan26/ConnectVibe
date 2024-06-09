@@ -28,6 +28,8 @@ import {
 import Button from '../../Components/Button';
 import Error from '../../Components/Input/Error';
 import {useThemeColor} from '../ThemeProvider/redux/saga';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useStore} from 'react-redux';
 
 const schema = yup.object({
   name: yup.string().trim().required(),
@@ -45,6 +47,7 @@ const EditProfile = ({
   theme,
   userDetail,
   getProfileAction,
+  navigation,
 }) => {
   const {
     control,
@@ -56,9 +59,11 @@ const EditProfile = ({
   });
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [profileImage, setProfileImage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const isFocused = useIsFocused();
   const styles = getStyles(theme);
+  const store = useStore().getState();
 
   const updateProfileButton = data => {
     const payload = new FormData();
@@ -83,15 +88,19 @@ const EditProfile = ({
   };
 
   useEffect(() => {
+    setLoading(true);
     const data = {
       id: userDetail?.id,
     };
     getProfileAction(data);
+  }, [isFocused]);
+
+  useLayoutEffect(() => {
     setProfileImage(profileData?.profile_image);
     setValue('name', profileData?.name);
     setValue('email', profileData?.user_email);
     setValue('phone', profileData?.phone);
-  }, [isFocused]);
+  }, [loading, isFocused]);
 
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
@@ -106,132 +115,128 @@ const EditProfile = ({
         barStyle={'light-content'}
       />
       <View style={[styles.header, {backgroundColor: headerBackgroundColor}]}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{justifyContent: 'center', height: 45}}>
+          <Ionicons size={25} color={'white'} name={'arrow-back'} />
+        </TouchableOpacity>
         <Text style={styles.headerText}>Profile</Text>
       </View>
-      {!profileData ? (
-        <ActivityIndicator
-          size={'large'}
-          color={textColor}
-          style={{marginVertical: '60%'}}
-        />
-      ) : (
-        <ScrollView>
-          <View style={styles.ImgView}>
-            {profileImage ? (
-              <View
-                style={[
-                  styles.imageView,
-                  {
-                    borderColor: textColor,
-                  },
-                ]}>
-                <Image
-                  source={
-                    profileImage?.path
-                      ? {uri: profileImage?.path}
-                      : {uri: profileImage}
-                  }
-                  style={styles.profileImg}
-                />
-              </View>
-            ) : (
-              <View style={styles.imageView}>
-                <Text style={styles.imgTxt}>N/A</Text>
-              </View>
-            )}
-            <TouchableOpacity
-              style={styles.camImg}
-              onPress={() => setShowImageUploadModal(true)}>
-              <Entypo size={25} color={'white'} name={'camera'} />
-            </TouchableOpacity>
-          </View>
-          <View style={{marginHorizontal: 20}}>
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="username"
-                  value={value}
-                  onChangeText={onChange}
-                  placeholder={'AdminTest'}
-                  textColor={textColor}
-                  activeUnderlineColor={textColor}
-                  placeholderTextColor={styles.placeholder}
-                  style={styles.input}
-                />
-              )}
-              name="name"
-            />
-            <Error errors={errors.name} />
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="Email"
-                  value={value}
-                  onChangeText={onChange}
-                  placeholder={'example@test.com'}
-                  textColor={styles.placeholder.color}
-                  placeholderTextColor={styles.placeholder}
-                  style={styles.input}
-                  editable={false}
-                />
-              )}
-              name="email"
-            />
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="Phone"
-                  value={value}
-                  onChangeText={onChange}
-                  placeholder={'123456789'}
-                  textColor={textColor}
-                  activeUnderlineColor={textColor}
-                  placeholderTextColor={styles.placeholder}
-                  style={styles.input}
-                />
-              )}
-              name="phone"
-            />
-            <Error errors={errors.phone} />
-
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  label="Password"
-                  value={value}
-                  onChangeText={onChange}
-                  textColor={textColor}
-                  activeUnderlineColor={textColor}
-                  placeholder={'12345'}
-                  placeholderTextColor={styles.placeholder}
-                  style={styles.input}
-                />
-              )}
-              name="password"
-            />
-          </View>
-
-          <View>
-            <Button
-              text={'Save'}
-              loading={requesting}
-              containerStyle={[
-                styles.buttonCon,
+      <ScrollView>
+        <View style={styles.ImgView}>
+          {profileImage ? (
+            <View
+              style={[
+                styles.imageView,
                 {
-                  backgroundColor: textColor,
+                  borderColor: textColor,
                 },
-              ]}
-              onPress={handleSubmit(updateProfileButton)}
-              disabled={requesting}
-            />
-          </View>
-        </ScrollView>
-      )}
+              ]}>
+              <Image
+                source={
+                  profileImage?.path
+                    ? {uri: profileImage?.path}
+                    : {uri: profileImage}
+                }
+                style={styles.profileImg}
+              />
+            </View>
+          ) : (
+            <View style={styles.imageView}>
+              <Text style={styles.imgTxt}>N/A</Text>
+            </View>
+          )}
+          <TouchableOpacity
+            style={styles.camImg}
+            onPress={() => setShowImageUploadModal(true)}>
+            <Entypo size={25} color={'white'} name={'camera'} />
+          </TouchableOpacity>
+        </View>
+        <View style={{marginHorizontal: 20}}>
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                label="username"
+                value={value}
+                onChangeText={onChange}
+                placeholder={'AdminTest'}
+                textColor={textColor}
+                activeUnderlineColor={textColor}
+                placeholderTextColor={styles.placeholder}
+                style={styles.input}
+              />
+            )}
+            name="name"
+          />
+          <Error errors={errors.name} />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                label="Email"
+                value={value}
+                onChangeText={onChange}
+                placeholder={'example@test.com'}
+                textColor={styles.placeholder.color}
+                placeholderTextColor={styles.placeholder}
+                style={styles.input}
+                editable={false}
+              />
+            )}
+            name="email"
+          />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                label="Phone"
+                value={value}
+                onChangeText={onChange}
+                placeholder={'123456789'}
+                textColor={textColor}
+                activeUnderlineColor={textColor}
+                placeholderTextColor={styles.placeholder}
+                style={styles.input}
+              />
+            )}
+            name="phone"
+          />
+          <Error errors={errors.phone} />
 
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                label="Password"
+                value={value}
+                onChangeText={onChange}
+                textColor={textColor}
+                activeUnderlineColor={textColor}
+                placeholder={'12345'}
+                placeholderTextColor={styles.placeholder}
+                style={styles.input}
+              />
+            )}
+            name="password"
+          />
+        </View>
+
+        <View>
+          <Button
+            text={'Save'}
+            loading={requesting}
+            containerStyle={[
+              styles.buttonCon,
+              {
+                backgroundColor: textColor,
+              },
+            ]}
+            onPress={handleSubmit(updateProfileButton)}
+            disabled={requesting}
+          />
+        </View>
+      </ScrollView>
       <CameraModal
         setPictureModalVisible={setShowImageUploadModal}
         pictureModalVisible={showImageUploadModal}
