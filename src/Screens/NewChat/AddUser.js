@@ -29,7 +29,7 @@ const AddUser = ({
   userDetail,
 }) => {
   const [searchName, setSearchName] = useState('');
-
+ 
   const handleSearch = val => {
     setSearchName(val);
   };
@@ -145,7 +145,6 @@ const AddUser = ({
         <TouchableOpacity
           style={{
             flexDirection: 'row',
-            borderBottomWidth: 1,
             paddingBottom: 10,
           }}
           onPress={() => navigation.navigate('CreateGroup')}>
@@ -154,7 +153,7 @@ const AddUser = ({
               color: textColor,
               marginLeft: 10,
             }}>
-            Group message
+            Create Group
           </Text>
         </TouchableOpacity>
       </View>

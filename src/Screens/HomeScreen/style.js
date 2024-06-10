@@ -45,6 +45,8 @@ export const getStyles = theme =>
       marginTop: 20,
       flexDirection: 'row',
       width: width - 50,
+      borderBottomWidth: 1,
+      paddingBottom: 10,
     },
     imgText: {
       color: getThemeColor('white', theme),

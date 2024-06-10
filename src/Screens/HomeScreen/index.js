@@ -150,16 +150,10 @@ const Home = ({userDetail, navigation}) => {
 
   useEffect(() => {
     setIsActive('All');
-    const focusListener = navigation.addListener('focus', getMessages);
-    const blurListener = navigation.addListener('blur', () => {
-      handleChange('List', []);
-      handleChange('allList', []);
-    });
-    return () => {
-      focusListener();
-      blurListener();
-    };
-  }, [navigation]);
+    getMessages();
+    handleChange('List', []);
+    handleChange('allList', []);
+  }, [isFocused]);
 
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
@@ -168,6 +162,7 @@ const Home = ({userDetail, navigation}) => {
   const placeholderColor = useThemeColor('placeholder');
 
   const group = List?.filter(item => item.type == 'group');
+  
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: backgroundColor}]}>

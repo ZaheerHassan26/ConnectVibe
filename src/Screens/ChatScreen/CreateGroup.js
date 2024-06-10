@@ -23,6 +23,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useStore} from 'react-redux';
+import {signal} from '@preact/signals-react';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -57,16 +58,19 @@ const CreateGroup = ({
   const {images} = useImages();
   const styles = getStyles(theme);
   const isFocused = useIsFocused();
-  const store = useStore();
+  const users = signal(userSearched);
 
   const handleChange = (key, value) => {
     setState(pre => ({...pre, [key]: value}));
   };
 
-  const getAllEmployee = () => {
+  const getAllUsers = () => {
+    console.log('run');
+    console.log(users.value);
+
     handleChange('loading', true);
-    handleChange('allEmployee', userSearched);
-    handleChange('List', userSearched);
+    handleChange('allEmployee', users.value);
+    handleChange('List', users.value);
     handleChange('loading', false);
   };
 
@@ -161,8 +165,12 @@ const CreateGroup = ({
 
   useEffect(() => {
     getUserAction('');
-    getAllEmployee();
   }, [isFocused]);
+
+  useEffect(() => {
+    users.value = userSearched;
+    getAllUsers();
+  }, [userSearched]);
 
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
@@ -242,12 +250,12 @@ const CreateGroup = ({
             <TouchableOpacity
               disabled={!groupName || loadingCreate}
               onPress={createMessageList}>
-              <Text style={{}}>Create group</Text>
+              <Text>Create group</Text>
             </TouchableOpacity>
           </View>
         )}
         <View style={{width: '90%', marginTop: 10}}></View>
-        <Text style={{width: '90%', marginTop: 10}}>Suggested</Text>
+        <Text style={{marginTop: 10, marginHorizontal: 10}}>Suggested</Text>
         {loading && <ActivityIndicator size="small" />}
         <FlatList
           data={sortByUser(List)}
