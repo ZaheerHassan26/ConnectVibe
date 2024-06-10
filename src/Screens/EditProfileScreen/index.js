@@ -100,7 +100,7 @@ const EditProfile = ({
     setValue('name', profileData?.name);
     setValue('email', profileData?.user_email);
     setValue('phone', profileData?.phone);
-  }, [loading, isFocused]);
+  }, [profileData]);
 
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
