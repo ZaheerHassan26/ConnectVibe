@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
     paddingLeft: 14,
     height: 42,
-    // backgroundColor: '#3a6579',
   },
   loginImage: {
     marginTop: 100,

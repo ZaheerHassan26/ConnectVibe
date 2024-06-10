@@ -33,6 +33,7 @@ import {useImages} from '../../Utils/Images';
 import moment from 'moment';
 import storage from '@react-native-firebase/storage';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -181,6 +182,7 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
 
   const handleSendMessage = async (text, type) => {
     setLinkOpen(false);
+    const fcmToken = await AsyncStorage.getItem('FCMToken');
     if (inputValue.trim() || text) {
       const data = {
         text: inputValue || text,
@@ -214,10 +216,12 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
         })
         .then(() => {
           const notificationData = {
+            access_token:
+              'ya29.a0AXooCgsv-PRP4v_DeLNO1Qwdg6BLEALbb-Wq4QcxZ7mHnDS2hHQvLHUttS9RqnGCUGeooZeOZHnBh2gntuJAqYdTPhKz64vsiXx9LphvJ7RnRGZb7WUpjIT8uOwTReSeIHM7w9-OHX89tIZKb2I-r39iAhhGnA2fNoClaCgYKATUSARESFQHGX2MiKvvdSQUYP58Kweo7AkY-Cg0171',
+            title: userDetail?.name,
+            message: inputValue || 'Sent a Photo',
+            receiver: messageData?.receiver?.id,
             sender: userDetail?.id,
-            receiver: 6,
-            title: 'Hey',
-            message: 'New message',
           };
           addNotificationAction(notificationData);
         })
@@ -259,7 +263,6 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
   const imageList = assets?.map(({uri, image}) => ({
     url: uri ? uri : image,
   }));
-
   useEffect(() => {
     const db = database();
     if (userDetail && messageuid) {
@@ -369,7 +372,6 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
           if (item == null) {
             return <View />;
           } else if (item?.senderId !== userDetail?.id) {
-            // item?.type == 'image' && setAssets(prev => [...prev, item.text]);
             return (
               <View
                 key={index}
@@ -406,6 +408,7 @@ const Chat = ({route, theme, addNotificationAction, userDetail}) => {
                         : images.profile
                     }
                   />
+
                   {item?.type === 'image' ? (
                     <View
                       style={{

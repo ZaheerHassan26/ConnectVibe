@@ -21,7 +21,6 @@ async function getUserApi(data) {
 function* getUserApiCall({data}) {
   try {
     const response = yield call(getUserApi, data);
-    console.log(response.data,'response');
     yield put(getUserSuccess(response.data));
   } catch (e) {
     const {response} = e;

@@ -53,7 +53,7 @@ const AddUser = ({
           .ref('Messages/' + id)
           .update(value)
           .then(res => {
-            navigation.navigate('chat', {messageuid: id, data: item});
+            navigation.navigate('Chat', {messageuid: id, data: item});
           })
           .catch(err => {
             Toast.show('Something went wrong!');
@@ -74,7 +74,7 @@ const AddUser = ({
               .ref('Messages/' + rid)
               .update(value)
               .then(res => {
-                navigation.navigate('chat', {messageuid: rid, data: item});
+                navigation.navigate('Chat', {messageuid: rid, data: item});
               })
               .catch(err => {
                 Toast.show('Something went wrong!');
@@ -93,7 +93,7 @@ const AddUser = ({
               .ref('Messages/' + id)
               .update(value)
               .then(res => {
-                navigation.navigate('chat', {messageuid: id, data: item});
+                navigation.navigate('Chat', {messageuid: id, data: item});
               })
               .catch(err => {
                 Toast.show('Something went wrong!');

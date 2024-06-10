@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  StatusBar,
 } from 'react-native';
 import React, {useState} from 'react';
 import Logout from '../../Components/LogoutModal';
@@ -29,12 +30,7 @@ const Setting = ({theme, navigation}) => {
     {
       image: images.book,
       text: 'Terms and Conditions',
-      navigate: 'termsAndCondition',
-    },
-    {
-      image: images.settings,
-      text: 'settings',
-      navigate: 'settings',
+      navigate: 'Term&Cond',
     },
     {
       image: images.power,
@@ -47,9 +43,7 @@ const Setting = ({theme, navigation}) => {
 
   const backgroundColor = useThemeColor('primary');
   const textColor = useThemeColor('text');
-  const imageBackground = useThemeColor('black');
-  const placeholderColor = useThemeColor('placeholder');
-  const searchBar = useThemeColor('activeTab');
+  const headerBackgroundColor = useThemeColor('headerColor');
 
   const renderItem = ({item}) => (
     <TouchableOpacity
@@ -83,6 +77,11 @@ const Setting = ({theme, navigation}) => {
   );
   return (
     <SafeAreaView style={[styles.container, {backgroundColor}]}>
+      <StatusBar
+        animated={true}
+        backgroundColor={headerBackgroundColor}
+        barStyle={'light-content'}
+      />
       <View style={[styles.moreMainView, {backgroundColor}]}>
         <FlatList
           data={data}
@@ -101,7 +100,6 @@ const Setting = ({theme, navigation}) => {
 
 const mapStateToProps = state => ({
   theme: state?.themes?.theme,
-  isDark: state?.themes?.isDark,
 });
 const mapDispatchToProps = dispatch => ({
   onSelectTheme: theme => dispatch(setTheme(theme)),

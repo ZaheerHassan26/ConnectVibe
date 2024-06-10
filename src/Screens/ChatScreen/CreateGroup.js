@@ -22,10 +22,9 @@ import {getStyles} from './style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {useStore} from 'react-redux';
 import {signal} from '@preact/signals-react';
+import {TextInput as Input} from 'react-native-paper';
 
-const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const CreateGroup = ({
@@ -65,9 +64,6 @@ const CreateGroup = ({
   };
 
   const getAllUsers = () => {
-    console.log('run');
-    console.log(users.value);
-
     handleChange('loading', true);
     handleChange('allEmployee', users.value);
     handleChange('List', users.value);
@@ -151,12 +147,14 @@ const CreateGroup = ({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <TextInput
-            placeholderTextColor={placeholderColor}
-            placeholder="Group name"
-            style={[styles.searchContainer, {backgroundColor: searchBar}]}
-            onChangeText={value => handleChange('groupName', value)}
+          <Input
+            label="Group Name"
             value={groupName}
+            onChangeText={value => handleChange('groupName', value)}
+            textColor={textColor}
+            style={[styles.searchContainer, {backgroundColor: 'transparent',height:60,bottom:5}]}
+            activeUnderlineColor={textColor}
+            underlineColor={textColor}
           />
         </View>
       </>

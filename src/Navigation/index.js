@@ -5,8 +5,11 @@ import AuthNavigator from './AuthStack';
 import {navigationRef} from './NavigationService';
 import {connect} from 'react-redux';
 
+
 const RootNavigator = ({userDetail}) => {
   const ACCESS_TOKEN = userDetail?.token;
+
+
   return (
     <NavigationContainer ref={navigationRef}>
       {ACCESS_TOKEN ? <AppNavigator /> : <AuthNavigator />}

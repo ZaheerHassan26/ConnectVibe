@@ -178,9 +178,9 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
       downButtonHandler();
     }
   });
-  const findParticients = val => {
+  const findParticients = () => {
     const senderData = messageData?.messages.filter(item => {
-      return item.senderId != val.senderId;
+      return item.senderId !== userDetail.id;
     });
     const id = senderData[0]?.senderId;
     const senderName = messageData?.participents.filter(
@@ -284,7 +284,6 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
               .then(res => {
                 db.ref('Messages/' + messageuid).once('value', snapshot => {
                   if (snapshot.val()) {
-                    // getMessages()
                     setState(prevState => ({
                       ...prevState,
                       messages: snapshot.val()?.messages || [],
@@ -356,10 +355,10 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index?.toString()}
         renderItem={({item, index}) => {
+          const senderName = findParticients(item);
           if (item == null) {
             return <View />;
           } else if (item?.senderId !== userDetail?.id) {
-            // item?.type == 'image' && setAssets(prev => [...prev, item.text]);
             return (
               <View
                 key={index}
@@ -383,79 +382,110 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
                     }}
                     resizeMode="cover"
                     source={
-                      messageData?.senderId === userDetail?.id
-                        ? messageData?.receiver?.profile_image
+                      messageData?.participents?.some(
+                        e => e?.id === item?.senderId,
+                      )
+                        ? messageData?.participents?.filter(
+                            e => e?.id === item?.senderId,
+                          )?.profile_image
                           ? {
-                              uri: messageData?.receiver?.profile_image,
+                              uri: messageData?.participents?.filter(
+                                e => e?.id === item?.senderId,
+                              )[0].profile_image,
+                            }
+                          : messageData?.participents?.filter(
+                              e => e?.id === item?.senderId,
+                            )[0]?.profile_image
+                          ? {
+                              uri: messageData?.participents?.filter(
+                                e => e?.id === item?.senderId,
+                              )[0]?.profile_image,
                             }
                           : images.profile
-                        : messageData?.sender?.profile_image
-                        ? {
-                            uri: messageData?.sender?.profile_image,
-                          }
                         : images.profile
                     }
                   />
-                  {item?.type === 'image' ? (
-                    <View
-                      style={{
-                        borderRadius: 10,
-                        padding: 5,
-                        backgroundColor: inputBackground,
-                      }}>
-                      <Image
-                        source={{uri: item?.text}}
-                        style={{
-                          width: 250,
-                          height: 200,
-                          resizeMode: 'contain',
-                        }}
-                      />
-                    </View>
-                  ) : (
-                    <View
-                      style={{
-                        backgroundColor: headerBackgroundColor,
-                        maxWidth: '90%',
-                        borderRadius: 10,
-                        paddingLeft: 10,
-                        paddingHorizontal: 30,
-                      }}>
-                      <Text
-                        style={{
-                          textAlign: 'left',
-                          color: 'white',
-                        }}>
-                        {item?.text}
-                      </Text>
 
-                      <View
-                        style={{
-                          width: '130%',
-                          alignItems: 'flex-end',
-                          marginTop: 10,
-                        }}>
+                  <View
+                    style={{
+                      maxWidth: '80%',
+                      borderRadius: 10,
+                      paddingBottom: 5,
+                      backgroundColor: headerBackgroundColor,
+                      maxWidth: '90%',
+                      paddingLeft: 10,
+                      paddingHorizontal: 30,
+                    }}>
+                    {item?.type === 'image' ? (
+                      <>
+                        {senderName?.map(item => {
+                          return (
+                            <Text style={{color: 'green'}}>
+                              {item?.name?.toUpperCase()}
+                            </Text>
+                          );
+                        })}
+                        <View
+                          style={{
+                            borderRadius: 10,
+                            padding: 5,
+                          }}>
+                          <Image
+                            source={{uri: item?.text}}
+                            style={{
+                              width: 250,
+                              height: 200,
+                              resizeMode: 'contain',
+                            }}
+                          />
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        {senderName?.map(item => {
+                          return (
+                            <Text style={{color: 'green'}}>
+                              {item?.name?.toUpperCase()}
+                            </Text>
+                          );
+                        })}
                         <Text
                           style={{
+                            textAlign: 'left',
                             color: 'white',
-                            fontSize: 10,
-                            marginHorizontal: 5,
-                            marginTop: -5,
                           }}>
-                          {moment(item?.timeStamp).format('h:mm a')}
+                          {item?.text}
                         </Text>
-                      </View>
-                    </View>
-                  )}
+
+                        <View
+                          style={{
+                            width: '130%',
+                            alignItems: 'flex-end',
+                            marginTop: 10,
+                          }}>
+                          <Text
+                            style={{
+                              color: 'white',
+                              fontSize: 10,
+                              marginHorizontal: 5,
+                              marginTop: -5,
+                            }}>
+                            {moment(item?.timeStamp).format('h:mm a')}
+                          </Text>
+                        </View>
+                        {/* </View> */}
+                      </>
+                    )}
+                  </View>
                 </View>
               </View>
             );
           } else {
             return (
               <Pressable
-                onLongPress={() => handleConfirmDelete(index)}
                 key={index}
-                style={styles.sentTextHeader}>
+                style={styles.sentTextHeader}
+                onPress={() => handleConfirmDelete(index)}>
                 <View
                   style={{
                     width: '95%',
@@ -610,10 +640,6 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              {/* <Image
-                source={language == 'ar' ? Images.forward : Images.backArrow}
-                style={styles.backArrowImage}
-              /> */}
             </TouchableOpacity>
           )}
           renderImage={({source}) => (

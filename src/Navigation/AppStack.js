@@ -1,6 +1,5 @@
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {createStackNavigator} from '@react-navigation/stack';
@@ -9,15 +8,13 @@ import EditProfile from '../Screens/EditProfileScreen';
 import Home from '../Screens/HomeScreen';
 import Chat from '../Screens/ChatScreen';
 import Setting from '../Screens/SettingScreen';
-import {
-  getThemeColor,
-  useThemeColor,
-} from '../Screens/ThemeProvider/redux/saga';
+import {useThemeColor} from '../Screens/ThemeProvider/redux/saga';
 import {connect} from 'react-redux';
 import AddScreen from '../Screens/AddScreen';
 import AddUser from '../Screens/NewChat/AddUser';
 import CreateGroup from '../Screens/ChatScreen/CreateGroup';
 import GroupChat from '../Screens/ChatScreen/GroupChat';
+import TermAndConditions from '../Screens/TermsandCond';
 
 const AppStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,7 +53,9 @@ const AppNavigator = ({theme}) => {
       defaultIcon: (
         <View style={styles.defaultIcon}>
           <AntDesign size={20} color={'white'} name={'setting'} />
-          <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>Logs</Text>
+          <Text style={{color: 'white', fontSize: 10, marginTop: 2}}>
+            Settings
+          </Text>
         </View>
       ),
     },
@@ -120,6 +119,7 @@ const AppNavigator = ({theme}) => {
       <AppStack.Screen name="AddScreen" component={AddScreen} />
       <AppStack.Screen name="CreateGroup" component={CreateGroup} />
       <AppStack.Screen name="GroupChat" component={GroupChat} />
+      <AppStack.Screen name="Term&Cond" component={TermAndConditions} />
     </AppStack.Navigator>
   );
 };

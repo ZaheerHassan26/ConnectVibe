@@ -14,9 +14,8 @@ const RemotePushController = props => {
           AsyncStorage.setItem('FCMToken', token.token);
         },
         onNotification: function (notification) {
-          if (notification.userInteraction) {
-            // navigate('Notifications');
-          }
+          console.log('Notification received:', notification);
+          notification.finish(PushNotificationIOS.FetchResult.NoData);
         },
         senderID: '629772472444',
         popInitialNotification: true,

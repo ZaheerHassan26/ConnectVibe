@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  useColorScheme,
 } from 'react-native';
 import React, {useState} from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -29,7 +30,6 @@ import moment from 'moment';
 
 const Home = ({userDetail, navigation}) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [filteredData, setFilteredData] = useState([]);
   const [isActive, setIsActive] = useState('');
   const [state, setState] = useState({
     loading: false,
@@ -39,17 +39,18 @@ const Home = ({userDetail, navigation}) => {
     searchText: '',
   });
 
-  const {loading, allList, unread, List, searchText} = state;
+  const {loading, allList, List, searchText} = state;
   const translateX = useRef(new Animated.Value(0)).current;
 
   const {images} = useImages();
   const isFocused = useIsFocused();
   const styles = getStyles();
+  const isDark = useColorScheme();
 
   const handleChange = (key, value) => {
     setState(pre => ({...pre, [key]: value}));
   };
-
+  console.log(isDark);
   const snapshotToArray = snapshot =>
     Object.entries(snapshot).map(e => Object.assign(e[1], {uid: e[0]}));
 
@@ -79,11 +80,20 @@ const Home = ({userDetail, navigation}) => {
   };
 
   const sortByUser = data => {
-    return data?.filter(
-      item =>
-        item?.senderId === userDetail?.id ||
-        item?.receiverId === userDetail?.id,
-    );
+    const id = userDetail?.id;
+    const filterArray = data?.filter(item => {
+      return (
+        item?.senderId === id ||
+        item?.receiverId === id ||
+        item?.participentIds?.includes(id)
+      );
+    });
+    return filterArray;
+  };
+
+  const groupSorted = data => {
+    const id = userDetail?.id;
+    return data?.filter(item => item?.participentIds?.includes(id));
   };
 
   const getMessages = async () => {
@@ -162,7 +172,7 @@ const Home = ({userDetail, navigation}) => {
   const placeholderColor = useThemeColor('placeholder');
 
   const group = List?.filter(item => item.type == 'group');
-  
+
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: backgroundColor}]}>
@@ -225,27 +235,37 @@ const Home = ({userDetail, navigation}) => {
         <TouchableOpacity
           style={{
             borderRadius: 10,
-            width: 50,
-            backgroundColor: 'grey',
+            width: 41,
+            height: 36,
+            backgroundColor:
+              isActive == 'All'
+                ? headerBackgroundColor
+                : isDark == 'dark'
+                ? '#404244'
+                : '#487E97',
             justifyContent: 'center',
             alignItems: 'center',
-            height: 30,
           }}
           onPress={() => setIsActive('All')}>
-          <Text>All</Text>
+          <Text style={{color: 'white'}}>All</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={{
             borderRadius: 10,
-
-            width: 50,
-            backgroundColor: 'grey',
+            width: 92,
+            height: 36,
+            backgroundColor:
+              isActive == 'Groups'
+                ? headerBackgroundColor
+                : isDark == 'dark'
+                ? '#404244'
+                : '#487E97',
             justifyContent: 'center',
             alignItems: 'center',
           }}
           onPress={() => setIsActive('Groups')}>
-          <Text>Groups</Text>
+          <Text style={{color: 'white'}}>Groups</Text>
         </TouchableOpacity>
       </View>
 
@@ -293,7 +313,12 @@ const Home = ({userDetail, navigation}) => {
             return (
               <>
                 <TouchableOpacity
-                  style={styles.chatContainer}
+                  style={[
+                    styles.chatContainer,
+                    {
+                      borderColor: textColor,
+                    },
+                  ]}
                   onPress={() => {
                     if (item?.type === 'group') {
                       navigation.navigate('GroupChat', {
@@ -354,7 +379,7 @@ const Home = ({userDetail, navigation}) => {
         />
       ) : (
         <FlatList
-          data={sortByUser(sortByDate(group))}
+          data={groupSorted(sortByDate(group))}
           numColumns={1}
           style={{width: '100%'}}
           noIndent={true}
@@ -392,7 +417,12 @@ const Home = ({userDetail, navigation}) => {
             return (
               <>
                 <TouchableOpacity
-                  style={styles.chatContainer}
+                  style={[
+                    styles.chatContainer,
+                    {
+                      borderColor: textColor,
+                    },
+                  ]}
                   onPress={() => {
                     navigation.navigate('GroupChat', {
                       messageuid: item.id,
