@@ -4,7 +4,6 @@ import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Must be outside of any component LifeCycle (such as `componentDidMount`).
 const RemotePushController = props => {
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -14,7 +13,6 @@ const RemotePushController = props => {
           AsyncStorage.setItem('FCMToken', token.token);
         },
         onNotification: function (notification) {
-          console.log('Notification received:', notification);
           notification.finish(PushNotificationIOS.FetchResult.NoData);
         },
         senderID: '629772472444',

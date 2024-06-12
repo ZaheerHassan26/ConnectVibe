@@ -120,6 +120,7 @@ const AppNavigator = ({theme}) => {
       <AppStack.Screen name="CreateGroup" component={CreateGroup} />
       <AppStack.Screen name="GroupChat" component={GroupChat} />
       <AppStack.Screen name="Term&Cond" component={TermAndConditions} />
+
     </AppStack.Navigator>
   );
 };

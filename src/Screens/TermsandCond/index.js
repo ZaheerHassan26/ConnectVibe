@@ -26,7 +26,7 @@ export default function TermAndConditions({navigation}) {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{justifyContent: 'center', height: 45}}>
-          <Ionicons size={25} color={'white'} name={'arrow-back'} />
+          <Ionicons size={25} color={'textColor'} name={'arrow-back'} />
         </TouchableOpacity>
         <Text
           style={[

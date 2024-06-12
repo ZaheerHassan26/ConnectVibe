@@ -27,10 +27,12 @@ import {useThemeColor} from '../ThemeProvider/redux/saga';
 import AddButton from '../../Components/AddButton';
 import database from '@react-native-firebase/database';
 import moment from 'moment';
+import {Toast} from 'react-native-toast-notifications';
 
 const Home = ({userDetail, navigation}) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isActive, setIsActive] = useState('');
+  const [selectedIds, setselectedIds] = useState([]);
   const [state, setState] = useState({
     loading: false,
     List: [],
@@ -50,7 +52,17 @@ const Home = ({userDetail, navigation}) => {
   const handleChange = (key, value) => {
     setState(pre => ({...pre, [key]: value}));
   };
-  console.log(isDark);
+
+  const selectMutipleCards = item => {
+    const findId = selectedIds?.find(id => id === item?.id);
+    if (findId) {
+      const filterArray = selectedIds.filter(itemID => findId !== itemID);
+      setselectedIds(filterArray);
+    } else {
+      setselectedIds(prev => [...prev, item?.id]);
+    }
+  };
+
   const snapshotToArray = snapshot =>
     Object.entries(snapshot).map(e => Object.assign(e[1], {uid: e[0]}));
 
@@ -62,6 +74,7 @@ const Home = ({userDetail, navigation}) => {
     );
     handleChange('unread', unread);
   };
+
   const sortByDate = data => {
     return data?.sort(function (a, b) {
       return (
@@ -114,6 +127,18 @@ const Home = ({userDetail, navigation}) => {
         });
     } catch (error) {
       handleChange('loading', false);
+    }
+  };
+
+  const deleteChatById = async chatId => {
+    try {
+      handleChange('loading', true);
+      await database().ref(`Messages/${chatId}`).remove();
+      handleChange('loading', false);
+      console.log(`Chat with ID ${chatId} has been deleted.`);
+    } catch (error) {
+      handleChange('loading', false);
+      console.error('Error deleting chat:', error);
     }
   };
 
@@ -303,6 +328,13 @@ const Home = ({userDetail, navigation}) => {
                 ? item.messages[item.messages.length - 1]
                 : null;
 
+            const timeStamp =
+              Array.isArray(item?.messages) &&
+              item.messages.length > 0 &&
+              moment(
+                item.messages[item.messages.length - 1]?.timeStamp,
+              ).fromNow();
+
             const messagePreview = lastMessage
               ? lastMessage.type === 'image'
                 ? 'Sent a photo'
@@ -312,67 +344,74 @@ const Home = ({userDetail, navigation}) => {
               : '';
             return (
               <>
-                <TouchableOpacity
-                  style={[
-                    styles.chatContainer,
-                    {
-                      borderColor: textColor,
-                    },
-                  ]}
-                  onPress={() => {
-                    if (item?.type === 'group') {
-                      navigation.navigate('GroupChat', {
-                        messageuid: item.id,
-                      });
-                    } else {
-                      navigation.navigate('Chat', {
-                        messageuid: item?.id,
-                        data: item,
-                      });
-                    }
-                  }}>
-                  <View style={[styles.imageContainer]}>
-                    <Image
-                      source={
-                        item?.type === 'group'
-                          ? images.profile
-                          : item?.senderId === userDetail?.id
-                          ? item?.sender?.profile_image
+                {lastMessage && (
+                  <TouchableOpacity
+                    style={[
+                      styles.chatContainer,
+                      {
+                        borderColor: textColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      if (item?.type === 'group') {
+                        navigation.navigate('GroupChat', {
+                          messageuid: item.id,
+                        });
+                      } else {
+                        navigation.navigate('Chat', {
+                          messageuid: item?.id,
+                          data: item,
+                        });
+                      }
+                    }}
+                    onLongPress={() => {
+                      if (item.type == 'group') {
+                        item.senderId == userDetail.id
+                          ? deleteChatById(item.id)
+                          : Toast.show('You cannot delete this chat');
+                      } else {
+                        deleteChatById(item.id);
+                      }
+                    }}>
+                    <View style={styles.imageContainer}>
+                      <Image
+                        source={
+                          item?.type === 'group'
+                            ? images.groupImage
+                            : item?.senderId === userDetail?.id
+                            ? {uri: item?.receiver?.profile_image}
+                            : item?.senderId !== userDetail?.id
                             ? {uri: item?.sender?.profile_image}
                             : images.profile
-                          : item?.receiver?.profile_image
-                      }
-                      style={styles.image}
-                    />
-                  </View>
-                  <View style={styles.textContainer} key={index}>
-                    <View style={{marginLeft: 10}}>
-                      <Text style={[styles.userName, {color: textColor}]}>
-                        {item?.type === 'group'
-                          ? item?.name
-                          : item?.senderId === userDetail?.id
-                          ? item?.receiver?.name
-                          : item?.sender?.name}
-                      </Text>
-                      <Text
-                        style={[styles.message, {color: textColor}]}
-                        numberOfLines={1}>
-                        {messagePreview}
+                        }
+                        style={styles.image}
+                      />
+                    </View>
+                    <View style={styles.textContainer} key={index}>
+                      <View style={{marginLeft: 10}}>
+                        <Text style={[styles.userName, {color: textColor}]}>
+                          {item?.type === 'group'
+                            ? item?.name
+                            : item?.senderId === userDetail?.id
+                            ? item?.receiver?.name
+                            : item?.sender?.name}
+                        </Text>
+                        <Text
+                          style={[styles.message, {color: textColor}]}
+                          numberOfLines={1}>
+                          {messagePreview}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.dateView}>
+                      <Text style={styles.date}>
+                        {timeStamp == 'a few seconds ago'
+                          ? 'Just Now'
+                          : timeStamp}
                       </Text>
                     </View>
-                  </View>
-                  <View style={styles.dateView}>
-                    <Text style={styles.date}>
-                      {Array.isArray(item?.messages) &&
-                        item.messages.length > 0 &&
-                        moment(
-                          item.messages[item.messages.length - 1]?.timeStamp,
-                        )
-                          .fromNow()
-                          .slice(0, 15)}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
               </>
             );
           }}
@@ -407,6 +446,13 @@ const Home = ({userDetail, navigation}) => {
                 ? item.messages[item.messages.length - 1]
                 : null;
 
+            const timeStamp =
+              Array.isArray(item?.messages) &&
+              item.messages.length > 0 &&
+              moment(
+                item.messages[item.messages.length - 1]?.timeStamp,
+              ).fromNow();
+
             const messagePreview = lastMessage
               ? lastMessage.type === 'image'
                 ? 'Sent a photo'
@@ -416,61 +462,59 @@ const Home = ({userDetail, navigation}) => {
               : '';
             return (
               <>
-                <TouchableOpacity
-                  style={[
-                    styles.chatContainer,
-                    {
-                      borderColor: textColor,
-                    },
-                  ]}
-                  onPress={() => {
-                    navigation.navigate('GroupChat', {
-                      messageuid: item.id,
-                      data: item,
-                    });
-                  }}>
-                  <View style={[styles.imageContainer]}>
-                    <Image
-                      source={
-                        item?.type == 'group'
-                          ? images.profile
-                          : item?.senderId === userDetail?.id
-                          ? item?.sender?.profile_image
-                            ? {uri: item?.sender?.profile_image}
-                            : images.profile
-                          : {uri: item?.receiver?.profile_image}
-                      }
-                      style={styles.image}
-                    />
-                  </View>
-                  <View style={styles.textContainer} key={index}>
-                    <View style={{marginLeft: 10}}>
-                      <Text style={[styles.userName, {color: textColor}]}>
-                        {item?.type === 'group'
-                          ? item?.name
-                          : item?.senderId === userDetail?.id
-                          ? item?.receiver?.name
-                          : item?.sender?.name}
-                      </Text>
-                      <Text
-                        style={[styles.message, {color: textColor}]}
-                        numberOfLines={1}>
-                        {messagePreview}
+                {lastMessage && (
+                  <TouchableOpacity
+                    style={[
+                      styles.chatContainer,
+                      {
+                        borderColor: textColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      navigation.navigate('GroupChat', {
+                        messageuid: item.id,
+                        data: item,
+                      });
+                    }}>
+                    <View style={[styles.imageContainer]}>
+                      <Image
+                        source={
+                          item?.type == 'group'
+                            ? images.groupImage
+                            : item?.senderId === userDetail?.id
+                            ? item?.receiver?.profile_image
+                              ? {uri: item?.receiver?.profile_image}
+                              : images.profile
+                            : {uri: item?.receiver?.profile_image}
+                        }
+                        style={styles.image}
+                      />
+                    </View>
+                    <View style={styles.textContainer} key={index}>
+                      <View style={{marginLeft: 10}}>
+                        <Text style={[styles.userName, {color: textColor}]}>
+                          {item?.type === 'group'
+                            ? item?.name
+                            : item?.senderId === userDetail?.id
+                            ? item?.receiver?.name
+                            : item?.sender?.name}
+                        </Text>
+                        <Text
+                          style={[styles.message, {color: textColor}]}
+                          numberOfLines={1}>
+                          {messagePreview}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.dateView}>
+                      <Text style={styles.date}>
+                        {timeStamp == 'a few seconds ago'
+                          ? 'Just Now'
+                          : timeStamp}
                       </Text>
                     </View>
-                  </View>
-                  <View style={styles.dateView}>
-                    <Text style={styles.date}>
-                      {Array.isArray(item?.messages) &&
-                        item.messages.length > 0 &&
-                        moment(
-                          item.messages[item.messages.length - 1]?.timeStamp,
-                        )
-                          .fromNow()
-                          .slice(0, 15)}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
               </>
             );
           }}

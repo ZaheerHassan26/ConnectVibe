@@ -76,11 +76,11 @@ function* loginApiCall({data, fcmToken}) {
     const response = yield call(loginAPi, data);
     if (response?.data?.token) {
       AsyncStorage.setItem('accessToken', response.data.token);
-      const fcmData = {
-        registration_id: fcmToken,
-        type: Platform.OS,
-      };
-      yield put(addDeviceAction(fcmData));
+      // const fcmData = {
+      //   registration_id: fcmToken,
+      //   type: Platform.OS,
+      // };
+      // yield put(addDeviceAction(fcmData));
       yield put(loginSuccess(response.data));
     }
   } catch (e) {

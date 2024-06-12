@@ -15,6 +15,7 @@ export function useImages() {
       settings: require('../Assets/Images/settingsIcon.png'),
       book: require('../Assets/Images/book.png'),
       profileIcon: require('../Assets/Images/profileIcon.png'),
+      groupImage: require('../Assets/Images/groupAvatar.png'),
     },
   };
 }

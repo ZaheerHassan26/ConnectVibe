@@ -23,89 +23,89 @@ export default function App() {
   const logoHeight = height;
   const logoWidth = width;
 
-  useEffect(() => {
-    requestUserPermission();
+  // useEffect(() => {
+  //   requestUserPermission();
 
-    PushNotification.createChannel(
-      {
-        channelId: 'com.connectvibe',
-        channelName: 'connectvibe',
-        channelDescription: 'Chat App',
-      },
-      created => console.log(`createChannel returned '${created}'`),
-    );
+  //   PushNotification.createChannel(
+  //     {
+  //       channelId: 'com.connectvibe',
+  //       channelName: 'connectvibe',
+  //       channelDescription: 'Chat App',
+  //     },
+  //     created => console.log(`createChannel returned '${created}'`),
+  //   );
 
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          setTimeout(() => {
-            if (remoteMessage.notification.title) {
-              console.log(
-                'Notification caused app to open from quit state:',
-                remoteMessage.notification.title,
-              );
-            }
-          }, 2000);
-        }
-      })
-      .catch(err => {
-        console.error('Error getting initial notification:', err);
-      });
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       if (remoteMessage) {
+  //         setTimeout(() => {
+  //           if (remoteMessage.notification.title) {
+  //             console.log(
+  //               'Notification caused app to open from quit state:',
+  //               remoteMessage.notification.title,
+  //             );
+  //           }
+  //         }, 2000);
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.error('Error getting initial notification:', err);
+  //     });
 
-    // Handle notification opened while app is in background
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log('Notification opened from background state:', remoteMessage);
-    });
+  //   // Handle notification opened while app is in background
+  //   messaging().onNotificationOpenedApp(remoteMessage => {
+  //     console.log('Notification opened from background state:', remoteMessage);
+  //   });
 
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      try {
-        console.log('Foreground notification:', remoteMessage);
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     try {
+  //       console.log('Foreground notification:', remoteMessage);
 
-        const {title, body} = remoteMessage.notification || {};
-        if (!title && !body) {
-          console.log('Notification data is missing title and body.');
-          return;
-        }
+  //       const {title, body} = remoteMessage.notification || {};
+  //       if (!title && !body) {
+  //         console.log('Notification data is missing title and body.');
+  //         return;
+  //       }
 
-        const localNotification = {
-          title: title || 'Notification',
-          message: body || 'You have a new message',
-        };
+  //       const localNotification = {
+  //         title: title || 'Notification',
+  //         message: body || 'You have a new message',
+  //       };
 
-        if (Platform.OS === 'android') {
-          localNotification.channelId = 'com.connectvibe';
-        }
+  //       if (Platform.OS === 'android') {
+  //         localNotification.channelId = 'com.connectvibe';
+  //       }
 
-        console.log('Displaying local notification:', localNotification);
-        PushNotification.localNotification(localNotification);
-      } catch (error) {
-        console.error('Error handling foreground notification:', error);
-      }
-    });
+  //       console.log('Displaying local notification:', localNotification);
+  //       PushNotification.localNotification(localNotification);
+  //     } catch (error) {
+  //       console.error('Error handling foreground notification:', error);
+  //     }
+  //   });
 
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
-    });
+  //   messaging().setBackgroundMessageHandler(async remoteMessage => {
+  //     console.log('Message handled in the background!', remoteMessage);
+  //   });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
 
-  async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  // async function requestUserPermission() {
+  //   const authStatus = await messaging().requestPermission();
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    console.log('Authorization status:', enabled ? 'enabled' : 'disabled');
-    await AsyncStorage.setItem('fcmenabled', enabled ? 'true' : '');
+  //   console.log('Authorization status:', enabled ? 'enabled' : 'disabled');
+  //   await AsyncStorage.setItem('fcmenabled', enabled ? 'true' : '');
 
-    if (enabled) {
-      console.log('FCM permissions granted.');
-    }
-  }
+  //   if (enabled) {
+  //     console.log('FCM permissions granted.');
+  //   }
+  // }
 
   const onloading = () => {
     setTimeout(() => {

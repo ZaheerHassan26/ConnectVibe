@@ -132,34 +132,34 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
       });
   };
 
-  const openDocument = async () => {
-    pick({
-      type: [types.pdf, types.docx],
-    })
-      .then(async response => {
-        const uri = response[0].uri;
-        const filename = response[0].name;
-        const uploadUri =
-          Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-        const task = storage()
-          .ref('Chat/' + filename)
-          .putFile(uploadUri);
-        task.on('state_changed', snapshot => {});
-        try {
-          await task;
-          task.snapshot.ref.getDownloadURL().then(downloadURL => {
-            handleSendMessage(downloadURL, 'document');
-          });
-        } catch (e) {
-          console.error(e);
-        }
-        handleChange('uploading', false);
-      })
-      .catch(err => {
-        handleChange('showAlert', false);
-        handleChange('uploading', false);
-      });
-  };
+  // const openDocument = async () => {
+  //   pick({
+  //     type: [types.pdf, types.docx],
+  //   })
+  //     .then(async response => {
+  //       const uri = response[0].uri;
+  //       const filename = response[0].name;
+  //       const uploadUri =
+  //         Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+  //       const task = storage()
+  //         .ref('Chat/' + filename)
+  //         .putFile(uploadUri);
+  //       task.on('state_changed', snapshot => {});
+  //       try {
+  //         await task;
+  //         task.snapshot.ref.getDownloadURL().then(downloadURL => {
+  //           handleSendMessage(downloadURL, 'document');
+  //         });
+  //       } catch (e) {
+  //         console.error(e);
+  //       }
+  //       handleChange('uploading', false);
+  //     })
+  //     .catch(err => {
+  //       handleChange('showAlert', false);
+  //       handleChange('uploading', false);
+  //     });
+  // };
 
   const toggleAnimation = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -178,16 +178,6 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
       downButtonHandler();
     }
   });
-  const findParticients = () => {
-    const senderData = messageData?.messages.filter(item => {
-      return item.senderId !== userDetail.id;
-    });
-    const id = senderData[0]?.senderId;
-    const senderName = messageData?.participents.filter(
-      item => item.id === id || item.user_id === id,
-    );
-    return senderName;
-  };
 
   const handleSendMessage = async (text, type) => {
     setLinkOpen(false);
@@ -232,7 +222,6 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
           addNotificationAction(notificationData);
         })
         .catch(err => {
-          console.log(err);
           Toast.show('Something went wrong!', Toast.LONG);
         });
       setInputValue('');
@@ -265,7 +254,6 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
 
     return profileImage ? {uri: profileImage} : images.profile;
   };
-
   const imageList = assets?.map(({uri, image}) => ({
     url: uri ? uri : image,
   }));
@@ -316,7 +304,11 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
           <View
             style={[styles.imageContainer, {backgroundColor: imageBackground}]}>
             <Image
-              source={getProfileImage()}
+              source={
+                messageData?.type == 'group'
+                  ? images.groupImage
+                  : getProfileImage()
+              }
               style={{
                 width: 37,
                 height: 36,
@@ -355,7 +347,7 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index?.toString()}
         renderItem={({item, index}) => {
-          const senderName = findParticients(item);
+          // const senderName = findPartcipents(item);
           if (item == null) {
             return <View />;
           } else if (item?.senderId !== userDetail?.id) {
@@ -418,13 +410,6 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
                     }}>
                     {item?.type === 'image' ? (
                       <>
-                        {senderName?.map(item => {
-                          return (
-                            <Text style={{color: 'green'}}>
-                              {item?.name?.toUpperCase()}
-                            </Text>
-                          );
-                        })}
                         <View
                           style={{
                             borderRadius: 10,
@@ -442,13 +427,6 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
                       </>
                     ) : (
                       <>
-                        {senderName?.map(item => {
-                          return (
-                            <Text style={{color: 'green'}}>
-                              {item?.name?.toUpperCase()}
-                            </Text>
-                          );
-                        })}
                         <Text
                           style={{
                             textAlign: 'left',
@@ -549,7 +527,7 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
               backgroundColor: inputBackground,
             },
           ]}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               backgroundColor: 'purple',
               width: 50,
@@ -560,7 +538,7 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
             }}
             onPress={openDocument}>
             <Ionicons size={25} color={'white'} name={'document'} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             style={{
@@ -616,11 +594,7 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
         <Pressable
           style={[styles.sendBtn, {backgroundColor: inputBackground}]}
           onPress={() => (state.messages ? handleSendMessage() : console(''))}>
-          <MaterialCommunityIcons
-            size={25}
-            color={textColor}
-            name={inputValue == '' ? 'microphone' : 'send'}
-          />
+          <MaterialCommunityIcons size={25} color={textColor} name={'send'} />
         </Pressable>
       </View>
 
@@ -639,8 +613,7 @@ const GroupChat = ({route, theme, addNotificationAction, userDetail}) => {
                 height: 33,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
-            </TouchableOpacity>
+              }}></TouchableOpacity>
           )}
           renderImage={({source}) => (
             <Image
