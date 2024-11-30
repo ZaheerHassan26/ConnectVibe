@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
 
     <application
         android:name=".MainApplication"
@@ -22,12 +25,19 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
+            android:usesCleartextTraffic="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data  android:exported="true" android:name="com.dieam.reactnativepushnotification.notification_foreground"
+                    android:value="false"/>
+        <!-- Change the resource name to your App's accent color - or any other color you want -->
+        <meta-data android:exported="true" android:name="com.dieam.reactnativepushnotification.notification_color"
+                    android:resource="@color/white"/> 
 
         <service
             android:name=".java.MyFirebaseMessagingService"
@@ -37,14 +47,9 @@
             </intent-filter>
         </service>
        
-        <meta-data
-            android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-        <meta-data
-            android:name="com.dieam.reactnativepushnotification.notification_foreground"
-            android:value="false"/>
-        <meta-data
-            android:name="com.dieam.reactnativepushnotification.notification_color"
-            android:resource="@color/white"/>
+        
+      <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_launcher_round" />
+      <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/white"/>
+
     </application>
 </manifest>

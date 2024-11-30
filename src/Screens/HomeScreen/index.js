@@ -12,24 +12,25 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {connect} from 'react-redux';
-import {useEffect} from 'react';
-import {useRef} from 'react';
-import {useIsFocused} from '@react-navigation/native';
+import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { useRef } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 
-import {useImages} from '../../Utils/Images';
-import {getUser as getUserAction} from '../NewChat/redux/action';
-import {getStyles} from './style';
-import {useThemeColor} from '../ThemeProvider/redux/saga';
+import { useImages } from '../../Utils/Images';
+import { getUser as getUserAction } from '../NewChat/redux/action';
+import { getStyles } from './style';
+import { useThemeColor } from '../ThemeProvider/redux/saga';
 import AddButton from '../../Components/AddButton';
 import database from '@react-native-firebase/database';
 import moment from 'moment';
-import {Toast} from 'react-native-toast-notifications';
+import { Toast } from 'react-native-toast-notifications';
+import { GetFCMToken } from '../../Utils/notification';
 
-const Home = ({userDetail, navigation}) => {
+const Home = ({ userDetail, navigation }) => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isActive, setIsActive] = useState('');
   const [selectedIds, setselectedIds] = useState([]);
@@ -41,16 +42,16 @@ const Home = ({userDetail, navigation}) => {
     searchText: '',
   });
 
-  const {loading, allList, List, searchText} = state;
+  const { loading, allList, List, searchText } = state;
   const translateX = useRef(new Animated.Value(0)).current;
 
-  const {images} = useImages();
+  const { images } = useImages();
   const isFocused = useIsFocused();
   const styles = getStyles();
   const isDark = useColorScheme();
 
   const handleChange = (key, value) => {
-    setState(pre => ({...pre, [key]: value}));
+    setState(pre => ({ ...pre, [key]: value }));
   };
 
   const selectMutipleCards = item => {
@@ -64,7 +65,7 @@ const Home = ({userDetail, navigation}) => {
   };
 
   const snapshotToArray = snapshot =>
-    Object.entries(snapshot).map(e => Object.assign(e[1], {uid: e[0]}));
+    Object.entries(snapshot).map(e => Object.assign(e[1], { uid: e[0] }));
 
   const unreadList = messages => {
     const unread = messages?.filter(
@@ -179,12 +180,13 @@ const Home = ({userDetail, navigation}) => {
         toValue: -300,
         duration: 300,
         useNativeDriver: true,
-      }).start(() => {});
+      }).start(() => { });
     }
   }, [isSearchActive]);
 
   useEffect(() => {
     setIsActive('All');
+    GetFCMToken()
     getMessages();
     handleChange('List', []);
     handleChange('allList', []);
@@ -200,14 +202,14 @@ const Home = ({userDetail, navigation}) => {
 
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: backgroundColor}]}>
+      style={[styles.container, { backgroundColor: backgroundColor }]}>
       <StatusBar
         animated={true}
         backgroundColor={headerBackgroundColor}
         barStyle={'light-content'}
       />
 
-      <View style={[styles.header, {backgroundColor: headerBackgroundColor}]}>
+      <View style={[styles.header, { backgroundColor: headerBackgroundColor }]}>
         {!isSearchActive ? (
           <>
             <Text style={styles.headerText}>Connect Vibe</Text>
@@ -219,7 +221,7 @@ const Home = ({userDetail, navigation}) => {
           <Animated.View
             style={[
               styles.searchContainer,
-              {transform: [{translateX}], backgroundColor: searchBar},
+              { transform: [{ translateX }], backgroundColor: searchBar },
             ]}>
             <View
               style={{
@@ -234,14 +236,14 @@ const Home = ({userDetail, navigation}) => {
                     handleChange('searchText', ''),
                     handleChange('List', allList);
                 }}
-                style={{marginHorizontal: 5}}>
+                style={{ marginHorizontal: 5 }}>
                 <Ionicons size={20} color={'white'} name={'arrow-back'} />
               </Pressable>
               <TextInput
                 value={searchText}
                 placeholderTextColor={placeholderColor}
                 placeholder="search"
-                style={{width: '80%', color: 'white', textAlign: 'left'}}
+                style={{ width: '80%', color: 'white', textAlign: 'left' }}
                 onChangeText={value => filtered('searchText', value)}
               />
             </View>
@@ -266,13 +268,13 @@ const Home = ({userDetail, navigation}) => {
               isActive == 'All'
                 ? headerBackgroundColor
                 : isDark == 'dark'
-                ? '#404244'
-                : '#487E97',
+                  ? '#404244'
+                  : '#487E97',
             justifyContent: 'center',
             alignItems: 'center',
           }}
           onPress={() => setIsActive('All')}>
-          <Text style={{color: 'white'}}>All</Text>
+          <Text style={{ color: 'white' }}>All</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -284,25 +286,25 @@ const Home = ({userDetail, navigation}) => {
               isActive == 'Groups'
                 ? headerBackgroundColor
                 : isDark == 'dark'
-                ? '#404244'
-                : '#487E97',
+                  ? '#404244'
+                  : '#487E97',
             justifyContent: 'center',
             alignItems: 'center',
           }}
           onPress={() => setIsActive('Groups')}>
-          <Text style={{color: 'white'}}>Groups</Text>
+          <Text style={{ color: 'white' }}>Groups</Text>
         </TouchableOpacity>
       </View>
 
       {loading ? (
-        <View style={{marginVertical: '50%'}}>
+        <View style={{ marginVertical: '50%' }}>
           <ActivityIndicator size="small" color={textColor} />
         </View>
       ) : isActive == 'All' ? (
         <FlatList
           data={sortByUser(sortByDate(List))}
           numColumns={1}
-          style={{width: '100%'}}
+          style={{ width: '100%' }}
           noIndent={true}
           keyExtractor={item => item?.timeStamp}
           ListEmptyComponent={() => (
@@ -320,11 +322,11 @@ const Home = ({userDetail, navigation}) => {
               </Text>
             </View>
           )}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             const lastMessage =
               item?.messages &&
-              Array.isArray(item.messages) &&
-              item.messages.length > 0
+                Array.isArray(item.messages) &&
+                item.messages.length > 0
                 ? item.messages[item.messages.length - 1]
                 : null;
 
@@ -339,8 +341,8 @@ const Home = ({userDetail, navigation}) => {
               ? lastMessage.type === 'image'
                 ? 'Sent a photo'
                 : lastMessage.text.length > 30
-                ? lastMessage.text.slice(0, 30) + ' ....'
-                : lastMessage.text
+                  ? lastMessage.text.slice(0, 30) + ' ....'
+                  : lastMessage.text
               : '';
             return (
               <>
@@ -379,25 +381,25 @@ const Home = ({userDetail, navigation}) => {
                           item?.type === 'group'
                             ? images.groupImage
                             : item?.senderId === userDetail?.id
-                            ? {uri: item?.receiver?.profile_image}
-                            : item?.senderId !== userDetail?.id
-                            ? {uri: item?.sender?.profile_image}
-                            : images.profile
+                              ? { uri: item?.receiver?.profile_image }
+                              : item?.senderId !== userDetail?.id
+                                ? { uri: item?.sender?.profile_image }
+                                : images.profile
                         }
                         style={styles.image}
                       />
                     </View>
                     <View style={styles.textContainer} key={index}>
-                      <View style={{marginLeft: 10}}>
-                        <Text style={[styles.userName, {color: textColor}]}>
+                      <View style={{ marginLeft: 10 }}>
+                        <Text style={[styles.userName, { color: textColor }]}>
                           {item?.type === 'group'
                             ? item?.name
                             : item?.senderId === userDetail?.id
-                            ? item?.receiver?.name
-                            : item?.sender?.name}
+                              ? item?.receiver?.name
+                              : item?.sender?.name}
                         </Text>
                         <Text
-                          style={[styles.message, {color: textColor}]}
+                          style={[styles.message, { color: textColor }]}
                           numberOfLines={1}>
                           {messagePreview}
                         </Text>
@@ -420,7 +422,7 @@ const Home = ({userDetail, navigation}) => {
         <FlatList
           data={groupSorted(sortByDate(group))}
           numColumns={1}
-          style={{width: '100%'}}
+          style={{ width: '100%' }}
           noIndent={true}
           keyExtractor={item => item?.timeStamp}
           ListEmptyComponent={() => (
@@ -438,11 +440,11 @@ const Home = ({userDetail, navigation}) => {
               </Text>
             </View>
           )}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             const lastMessage =
               item?.messages &&
-              Array.isArray(item.messages) &&
-              item.messages.length > 0
+                Array.isArray(item.messages) &&
+                item.messages.length > 0
                 ? item.messages[item.messages.length - 1]
                 : null;
 
@@ -457,8 +459,8 @@ const Home = ({userDetail, navigation}) => {
               ? lastMessage.type === 'image'
                 ? 'Sent a photo'
                 : lastMessage.text.length > 30
-                ? lastMessage.text.slice(0, 30) + ' ....'
-                : lastMessage.text
+                  ? lastMessage.text.slice(0, 30) + ' ....'
+                  : lastMessage.text
               : '';
             return (
               <>
@@ -482,25 +484,25 @@ const Home = ({userDetail, navigation}) => {
                           item?.type == 'group'
                             ? images.groupImage
                             : item?.senderId === userDetail?.id
-                            ? item?.receiver?.profile_image
-                              ? {uri: item?.receiver?.profile_image}
-                              : images.profile
-                            : {uri: item?.receiver?.profile_image}
+                              ? item?.receiver?.profile_image
+                                ? { uri: item?.receiver?.profile_image }
+                                : images.profile
+                              : { uri: item?.receiver?.profile_image }
                         }
                         style={styles.image}
                       />
                     </View>
                     <View style={styles.textContainer} key={index}>
-                      <View style={{marginLeft: 10}}>
-                        <Text style={[styles.userName, {color: textColor}]}>
+                      <View style={{ marginLeft: 10 }}>
+                        <Text style={[styles.userName, { color: textColor }]}>
                           {item?.type === 'group'
                             ? item?.name
                             : item?.senderId === userDetail?.id
-                            ? item?.receiver?.name
-                            : item?.sender?.name}
+                              ? item?.receiver?.name
+                              : item?.sender?.name}
                         </Text>
                         <Text
-                          style={[styles.message, {color: textColor}]}
+                          style={[styles.message, { color: textColor }]}
                           numberOfLines={1}>
                           {messagePreview}
                         </Text>
