@@ -1,34 +1,32 @@
 import {
-  View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import React from 'react';
+import { useThemeColor } from '../../Screens/ThemeProvider/redux/saga';
 
 const Button = ({
   containerStyle,
   textStyle,
   text,
   onPress,
-  //   rightImage,
   loading,
   disabled,
 }) => {
+  const loaderColor = useThemeColor('white');
+
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[styles.buttonTouchable, containerStyle]}
       disabled={disabled}>
       {loading ? (
-        <ActivityIndicator color="#fff" />
+        <ActivityIndicator color={loaderColor} />
       ) : (
-        <Text style={[styles.buttonText, textStyle]}>{text}</Text>
+        <Text style={[styles.buttonText, textStyle,{color:loaderColor}]}>{text}</Text>
       )}
-
-      {/* {rightImage && <Image style={styles.rightImage} source={rightImage} />} */}
     </TouchableOpacity>
   );
 };
@@ -39,7 +37,6 @@ const styles = StyleSheet.create({
   buttonTouchable: {
     height: 60,
     borderWidth: 1,
-    // borderColor: '#fff',
     borderRadius: 10,
     width: 143,
     flexDirection: 'row',
@@ -47,7 +44,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
-    color: '#fff',
     fontSize: 15,
     fontWeight: '700',
     textAlign: 'center',

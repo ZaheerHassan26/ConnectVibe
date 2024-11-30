@@ -9,13 +9,13 @@ import {
 import React, {useState} from 'react';
 import {Toast} from 'react-native-toast-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {Controller, useForm} from 'react-hook-form';
+import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-import Entypo from 'react-native-vector-icons/Entypo';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {Controller, useForm} from 'react-hook-form';
 
 import * as yup from 'yup';
 
@@ -28,6 +28,7 @@ import styles from './style';
 import {connect} from 'react-redux';
 import Input from '../../Components/Input';
 import Error from '../../Components/Input/Error';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
   name: yup.string().required('This field is required'),
@@ -35,7 +36,7 @@ const schema = yup.object({
     .string()
     .required('This field is required')
     .matches(emailRegex, 'Email is invalid'),
-  mobileNo: yup.string().required('This field is required'),
+  phone: yup.string().required('This field is required'),
   password: yup.string().required('This field is required'),
   confirmPassword: yup.string().required('This field is required'),
 });
@@ -55,7 +56,6 @@ const Signup = ({navigation, signupAction, requesting}) => {
   const {images} = useImages();
 
   const signupButton = data => {
-    console.log(data);
     if (data.password !== data.confirmPassword) {
       Toast.show('Password must be same');
     } else {
@@ -67,33 +67,49 @@ const Signup = ({navigation, signupAction, requesting}) => {
           uri: profileImage.path,
         });
       }
-      payload.append('username', data.name);
+      payload.append('name', data.name);
       payload.append('email', data.email);
-      payload.append('phone', data.mobileNo.trim());
+      payload.append('phone', data.phone.trim());
       payload.append('password', data.password.trim());
-      payload.append('confirmPassword', data.confirmPassword.trim());
       signupAction(payload, callBack);
     }
   };
   const callBack = () => {
-    navigation.navigate('login');
+    navigation.navigate('Login');
   };
+
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const cardBackgroundColor = useThemeColor('headerColor');
+  const buttonColor = useThemeColor('buttonColor');
+  const inputBackgroundColor = useThemeColor('activeTab');
+  const placeholderColor = useThemeColor('placeholder');
 
   return (
     <>
-      <View style={styles.main}>
-        <View style={styles.newRegistrationView}>
+      <View style={[styles.main, {backgroundColor: backgroundColor}]}>
+        <View
+          style={[
+            styles.newRegistrationView,
+            {backgroundColor: backgroundColor},
+          ]}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons size={25} color={'#10445C'} name={'arrow-back'} />
+            <Ionicons size={25} color={textColor} name={'arrow-back'} />
           </TouchableOpacity>
-          <Text style={styles.newRegistrationText}>New Registration</Text>
+          <Text style={[styles.newRegistrationText, {color: textColor}]}>
+            New Registration
+          </Text>
         </View>
-        <View style={styles.registrationInputView}>
+        <View
+          style={[
+            styles.registrationInputView,
+            {backgroundColor: cardBackgroundColor},
+          ]}>
           <View style={styles.registrationTextView}>
             <Text style={styles.registrationText}>New Registration</Text>
           </View>
           <Text style={styles.entryInformationText}>
-            Please enter the following informemailation to create a new account.
+            Please enter the following information to create a new account.
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pictureView}>
@@ -106,15 +122,19 @@ const Signup = ({navigation, signupAction, requesting}) => {
                   }>
                   <Image
                     style={styles.userPictureCircleWithCamera}
-                    source={images.userImageupload}
+                    source={images.userImageUpload}
                   />
                 </ImageBackground>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.lableStyle}>User Name</Text>
+            <Text style={styles.labelStyle}>User Name</Text>
 
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View style={styles.emailImgView}>
                 <Entypo size={17} color={'white'} name={'user'} />
               </View>
@@ -122,6 +142,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    placeholderColor={placeholderColor}
                     placeholder={'John'}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -134,9 +155,13 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Error errors={errors?.name} />
 
-            <Text style={styles.lableStyle}>Email</Text>
+            <Text style={styles.labelStyle}>Email</Text>
 
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View style={styles.emailImgView}>
                 <MaterialCommunityIcons
                   size={17}
@@ -148,6 +173,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    placeholderColor={placeholderColor}
                     placeholder={'example@test.com'}
                     onBlur={onBlur}
                     onChangeText={onChange}
@@ -160,9 +186,13 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Error errors={errors?.email} />
 
-            <Text style={styles.lableStyle}>Phone_no</Text>
+            <Text style={styles.labelStyle}>Phone_no</Text>
 
-            <View style={styles.inputFocus}>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View style={styles.emailImgView}>
                 <MaterialCommunityIcons
                   size={17}
@@ -174,19 +204,24 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    placeholderColor={placeholderColor}
                     placeholder={'123456789'}
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
                   />
                 )}
-                name="mobileNo"
+                name="phone"
               />
             </View>
-            <Error errors={errors?.mobileNo} />
+            <Error errors={errors?.phone} />
 
-            <Text style={[styles.lableStyle]}>Password</Text>
-            <View style={styles.inputFocus}>
+            <Text style={styles.labelStyle}>Password</Text>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
                 <View style={{flexDirection: 'row', width: '89%'}}>
@@ -197,6 +232,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
                     control={control}
                     render={({field: {onChange, onBlur, value}}) => (
                       <Input
+                        placeholderColor={placeholderColor}
                         placeholder={'password'}
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -223,8 +259,12 @@ const Signup = ({navigation, signupAction, requesting}) => {
 
             <Error errors={errors?.password} />
 
-            <Text style={[styles.lableStyle]}>Confirm Password</Text>
-            <View style={styles.inputFocus}>
+            <Text style={styles.labelStyle}>Confirm Password</Text>
+            <View
+              style={[
+                styles.inputFocus,
+                {backgroundColor: inputBackgroundColor},
+              ]}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
                 <View style={{flexDirection: 'row', width: '89%'}}>
@@ -235,6 +275,7 @@ const Signup = ({navigation, signupAction, requesting}) => {
                     control={control}
                     render={({field: {onChange, onBlur, value}}) => (
                       <Input
+                        placeholderColor={placeholderColor}
                         placeholder={'c_password'}
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -259,19 +300,6 @@ const Signup = ({navigation, signupAction, requesting}) => {
             </View>
             <Error errors={errors?.confirmPassword} />
 
-            <View style={{}}>
-              <Text style={styles.byClickText}>
-                terms_and_condition_new_account
-              </Text>
-              <TouchableOpacity
-              // onPress={() => navigation.navigate('termsAndCondition')}
-              >
-                <Text style={styles.termsAndConditionText}>
-                  terms_and_conditions
-                </Text>
-              </TouchableOpacity>
-            </View>
-
             <Button
               onPress={handleSubmit(signupButton)}
               text={'Register'}
@@ -280,7 +308,12 @@ const Signup = ({navigation, signupAction, requesting}) => {
                 fontWeight: 'bold',
               }}
               loading={requesting}
-              containerStyle={styles.button}
+              containerStyle={[
+                styles.button,
+                {
+                  backgroundColor: buttonColor,
+                },
+              ]}
             />
           </ScrollView>
         </View>

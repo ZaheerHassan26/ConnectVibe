@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
-
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Input = props => {
   const {
@@ -19,6 +17,7 @@ const Input = props => {
     keyboardType,
     editable,
     showPassword,
+    placeholderColor,
   } = props;
   return (
     <>
@@ -31,7 +30,7 @@ const Input = props => {
           maxLength={maxLength}
           multiline={multiline}
           textAlignVertical="top"
-          placeholderTextColor={'rgb(156, 178, 188)'}
+          placeholderTextColor={placeholderColor}
           secureTextEntry={secureTextEntry && !showPassword}
           value={value}
           onBlur={onBlur}

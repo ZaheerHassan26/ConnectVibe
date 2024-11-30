@@ -3,10 +3,8 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#EDF4F6',
   },
   enterCodeView: {
-    backgroundColor: '#EDF4F6',
     paddingTop: 60,
     flexDirection: 'row',
     paddingHorizontal: 10,
@@ -16,21 +14,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  entrCodedText: {
-    color: '#10445C',
+  enterCodedText: {
     fontSize: 18,
     fontWeight: '700',
     left: 10,
   },
   codeInputView: {
     flex: 1,
-    backgroundColor: '#10445C',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 32,
     paddingHorizontal: 27,
   },
-  verficationCodeText: {
+  verificationCodeText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: '700',
@@ -48,6 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 30,
+    textDecorationLine: 'underline',
   },
   resendText: {
     color: '#fff',
@@ -58,7 +55,6 @@ const styles = StyleSheet.create({
   },
   loginBtn: {
     width: '40%',
-    backgroundColor: '#00a1e9',
     height: 52,
     justifyContent: 'center',
     alignItems: 'center',
@@ -69,20 +65,22 @@ const styles = StyleSheet.create({
   codeFieldRoot: {marginTop: 20, width: '100%'},
   cell: {
     flex: 1,
-    lineHeight: 38,
-    fontSize: 28,
+    fontSize: 25,
     color: '#fff',
-    borderBottomWidth: 2,
-    borderColor: '#fff',
+    borderColor: 'grey',
     textAlign: 'center',
     fontWeight: '600',
-    paddingTop: 5,
+    paddingTop: 15,
     marginRight: 5,
     marginLeft: 5,
+    height: 67,
+    width: 55,
+    borderWidth: 1,
+    borderRadius: 4,
   },
   focusCell: {
     borderColor: '#fff',
-    fontSize: 28,
+    fontSize: 25,
     fontWeight: '600',
   },
   CodeWrapper: {
@@ -93,9 +91,9 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
   },
   button: {
-    backgroundColor: '#00a1e9',
     marginTop: 25,
     height: 52,
+    width: '100%',
   },
 });
 

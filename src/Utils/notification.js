@@ -1,48 +1,79 @@
-import React, { useEffect } from "react";
-import { Platform } from "react-native";
-import PushNotification from "react-native-push-notification";
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import messaging from '@react-native-firebase/messaging'
+import { Platform } from 'react-native'
 
-// Must be outside of any component LifeCycle (such as `componentDidMount`).
-const RemotePushController = (props) => {
-  useEffect(() => {
-    if (Platform.OS === "android") {
-      PushNotification.configure({
-        // (optional) Called when Token is generated (iOS and Android)
-        onRegister: function (token) {
-          // props.setAppToken(token)
-          // dispatch(transaction.setFCMToken(token.token));
+async function requestUserPermission() {
+  const authStatus = await messaging().requestPermission()
+  const enabled =
+    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL
 
-          AsyncStorage.setItem("FCMToken", token.token);
-        },
-        // (required) Called when a remote or local notification is opened or received
-        onNotification: function (notification) {
-          if (notification.userInteraction) {
-            // navigate('Notifications');
+  if (enabled) {
+    console.info('Authorization status:', authStatus)
+  }
+  return authStatus
+}
+
+const GetFCMToken = async doTask => {
+  const isAuthorised = await requestUserPermission()
+  console.info('isAuthorised', typeof isAuthorised)
+  if (isAuthorised === 1) {
+    const fcmtoken = await AsyncStorage.getItem('fcmtoken')
+    console.info('old token', fcmtoken)
+    if (!fcmtoken) {
+      try {
+        const token = await messaging().getToken()
+        if (token) {
+          console.info('new token', token)
+          AsyncStorage.setItem('fcmtoken', token)
+          const data = {
+            registration_id: token,
+            type: Platform.OS
           }
-        },
-        // Android only: GCM or FCM Sender ID
-        senderID: "42606366967",
-        popInitialNotification: true,
-        requestPermissions: true,
-      });
-    } else {
-      PushNotificationIOS.requestPermissions();
-      PushNotificationIOS.addEventListener("register", (token) => {
-        const data = {
-          token: token,
-          os: "ios",
-        };
-        AsyncStorage.setItem("FCMToken", data.token);
-      });
-      PushNotificationIOS.getInitialNotification().then((notification) => {
-        if (notification.userInteraction) {
-          // navigate('Notifications');
+          console.log(data, 'data')
+          // await registerFCM(data)
         }
-      });
+      } catch (error) {
+        console.error(error, 'error in fcmtoken')
+      }
     }
-  }, []);
-  return null;
-};
-export default RemotePushController;
+    NotificationListner(doTask)
+  }
+  messaging().onTokenRefresh(token => {
+    console.info('token refresh called')
+    AsyncStorage.setItem('fcmtoken', token)
+  })
+}
+
+const NotificationListner = doTask => {
+  messaging().setBackgroundMessageHandler(() => Promise.resolve())
+
+  messaging().onNotificationOpenedApp(remoteMessage => {
+    if (remoteMessage) {
+      console.info(
+        'Notification caused app to open from background state:',
+        remoteMessage?.notification,
+        remoteMessage?.data
+      )
+      doTask(remoteMessage?.data, remoteMessage?.notification)
+    }
+  })
+
+  messaging()
+    .getInitialNotification()
+    .then(remoteMessage => {
+      if (remoteMessage) {
+        console.info(
+          'Notification caused app to open from quit state:',
+          remoteMessage?.notification,
+          remoteMessage?.data
+        )
+        doTask(remoteMessage?.data, remoteMessage?.notification)
+      }
+    })
+  messaging().onMessage(async remoteMessage => {
+    console.info('all info', remoteMessage.notification, remoteMessage.data)
+  })
+}
+
+export { requestUserPermission, GetFCMToken, NotificationListner }

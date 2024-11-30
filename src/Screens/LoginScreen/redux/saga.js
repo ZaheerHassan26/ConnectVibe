@@ -4,10 +4,12 @@ import {Toast} from 'react-native-toast-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {BASE_URL} from '../../../Config/app';
+import {addDevice as addDeviceAction} from '../../HomeScreen/redux/actions';
+
 import XHR from '../../../Utils/XHR';
 
 import {
-  loginFaliure,
+  loginFailure,
   loginSuccess,
   facebookLoginSuccess,
   facebookLoginFailure,
@@ -55,7 +57,7 @@ async function googleLoginAPi(data) {
   return XHR(URL, option);
 }
 
-async function accountDisablenAPi(data) {
+async function accountDisableAPi(data) {
   const URL = `${BASE_URL}/api/v1/deactivate-account/${data.id}/`;
   const accessToken = await AsyncStorage.getItem('accessToken');
   const option = {
@@ -74,15 +76,16 @@ function* loginApiCall({data, fcmToken}) {
     const response = yield call(loginAPi, data);
     if (response?.data?.token) {
       AsyncStorage.setItem('accessToken', response.data.token);
-      const fcmData = {
-        registration_id: fcmToken,
-        type: Platform.OS,
-      };
+      // const fcmData = {
+      //   registration_id: fcmToken,
+      //   type: Platform.OS,
+      // };
+      // yield put(addDeviceAction(fcmData));
       yield put(loginSuccess(response.data));
     }
   } catch (e) {
     const {response} = e;
-    yield put(loginFaliure(response));
+    yield put(loginFailure(response));
     if (response?.data?.non_field_errors) {
       Toast.show(response?.data?.non_field_errors);
     } else {
@@ -119,10 +122,10 @@ function* googleLoginApiCall({data}) {
   }
 }
 
-function* accountDiableApiCall({data, hidelModal}) {
+function* accountDisableApiCall({data, hideModal}) {
   try {
-    const response = yield call(accountDisablenAPi, data);
-    hidelModal();
+    const response = yield call(accountDisableAPi, data);
+    hideModal();
     yield put(accountDisableSuccess(response.data));
     // yield put(logout());
   } catch (e) {
@@ -135,5 +138,5 @@ export default all([
   takeLatest(LOGIN, loginApiCall),
   takeLatest(FACEBOOK_LOGIN, facebookLoginApiCall),
   takeLatest(GOOGLE_LOGIN, googleLoginApiCall),
-  takeLatest(ACCOUNT_DISABLE, accountDiableApiCall),
+  takeLatest(ACCOUNT_DISABLE, accountDisableApiCall),
 ]);

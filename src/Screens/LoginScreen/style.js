@@ -3,7 +3,7 @@ const styles = StyleSheet.create({
   mainView: {
     marginHorizontal: 27,
   },
-  lableStyle: {
+  labelStyle: {
     fontSize: 15,
     lineHeight: 24,
     fontWeight: '700',
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
     paddingLeft: 14,
     height: 42,
-    backgroundColor: '#3a6579',
   },
   loginImage: {
     marginTop: 100,
@@ -33,7 +32,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderTopLeftRadius: 42,
     borderTopRightRadius: 42,
-    backgroundColor: '#10445C',
   },
   logoImgView: {
     justifyContent: 'center',
@@ -46,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  siginTxt: {color: 'white', fontWeight: '600', fontSize: 32},
+  signInTxt: {color: 'white', fontWeight: '600', fontSize: 32},
   subTxt: {color: 'white', fontWeight: '400', fontSize: 14, marginTop: 10},
   emailImg: {height: 13, width: 16},
   emailError: {color: 'yellow'},
@@ -60,13 +58,13 @@ const styles = StyleSheet.create({
   passView: {flexDirection: 'row'},
   emailImgView: {justifyContent: 'center', marginRight: 10},
 
-  careateAnAccountView: {
+  createAnAccountView: {
     flexDirection: 'row',
     gap: 6,
     marginTop: 15,
     justifyContent: 'center',
   },
-  careateAnAccountText: {
+  createAnAccountText: {
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '400',

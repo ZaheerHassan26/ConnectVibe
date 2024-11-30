@@ -35,14 +35,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 27,
   },
 
-  setNewPasswordlText: {
+  setNewPasswordText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: '700',
     marginTop: 50,
     marginBottom: 30,
   },
-  lableStyle: {
+  labelStyle: {
     fontSize: 15,
     lineHeight: 24,
     fontWeight: '700',

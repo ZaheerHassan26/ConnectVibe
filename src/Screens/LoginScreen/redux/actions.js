@@ -25,7 +25,7 @@ export const loginSuccess = (data) => ({
   data,
 });
 
-export const loginFaliure = (error) => ({
+export const loginFailure = (error) => ({
   type: LOGIN_FAILURE,
   error,
 });
@@ -54,10 +54,10 @@ export const googleLogin = (data) => ({
   data,
 });
 
-export const googleLoginSuccess = (data, hidelModal) => ({
+export const googleLoginSuccess = (data, hideModal) => ({
   type: GOOGLE_LOGIN_SUCCESS,
   data,
-  hidelModal,
+  hideModal,
 });
 
 export const googleLoginFailure = (error) => ({
@@ -65,11 +65,11 @@ export const googleLoginFailure = (error) => ({
   error,
 });
 
-export const accountDisable = (data, hidelModal) => {
+export const accountDisable = (data, hideModal) => {
   return {
     type: ACCOUNT_DISABLE,
     data,
-    hidelModal,
+    hideModal,
   };
 };
 

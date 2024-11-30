@@ -37,13 +37,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '400',
   },
-  serviseProviderText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: '700',
-    marginLeft: 5,
-  },
-  lableStyle: {
+  labelStyle: {
     fontSize: 15,
     lineHeight: 24,
     fontWeight: '700',

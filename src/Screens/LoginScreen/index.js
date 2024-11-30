@@ -24,9 +24,10 @@ import styles from './style';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Error from '../../Components/Input/Error';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
 
 const schema = yup.object({
-  email: yup
+  username: yup
     .string()
     .matches(emailRegex, 'Email is invalid')
     .required('Email is required'),
@@ -47,38 +48,43 @@ const Login = ({navigation, loginAction, requesting}) => {
   const [passwordView, setPasswordView] = useState(false);
 
   const loginUser = async data => {
-    // const fcmToken = await AsyncStorage.getItem('FCMToken');
-    loginAction(data, navigation);
+    const fcmToken = await AsyncStorage.getItem('FCMToken');
+    loginAction(data, fcmToken);
   };
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const cardBackgroundColor = useThemeColor('headerColor');
+  const buttonColor = useThemeColor('buttonColor');
+  const placeholderColor = useThemeColor('placeholder');
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#EDF4F6'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: backgroundColor}}>
       <StatusBar
         animated={true}
-        backgroundColor={'#EDF4F6'}
-        barStyle={'dark-content'}
+        backgroundColor={backgroundColor}
+        barStyle={textColor == '#FFFFFF' ? 'light-content' : 'dark-content'}
       />
       <KeyboardAwareScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          backgroundColor: '#EDF4F6',
+          backgroundColor: backgroundColor,
         }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
         <Image source={images.logo} style={styles.loginImage} />
         <View style={styles.logoImgView}>
-          <Text style={{marginTop: 10, fontSize: 32, color: '#10445C'}}>
+          <Text style={{marginTop: 10, fontSize: 32, color: textColor}}>
             Connect Vibe
           </Text>
         </View>
-        <View style={styles.cardView}>
+        <View style={[styles.cardView, {backgroundColor: cardBackgroundColor}]}>
           <View style={styles.cardHeader}>
-            <Text style={styles.siginTxt}>SignIn</Text>
+            <Text style={styles.signInTxt}>SignIn</Text>
             <Text style={styles.subTxt}>To access your dashboard</Text>
           </View>
 
           <View style={styles.mainView}>
-            <Text style={styles.lableStyle}>Email</Text>
+            <Text style={styles.labelStyle}>Email</Text>
 
             <View style={styles.inputFocus}>
               <View style={styles.emailImgView}>
@@ -93,17 +99,19 @@ const Login = ({navigation, loginAction, requesting}) => {
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
                     placeholder={'example@test.com'}
+                    placeholderColor={placeholderColor}
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
+                    cardBackgroundColor
                   />
                 )}
-                name="email"
+                name="username"
               />
             </View>
-            <Error errors={errors?.email} />
+            <Error errors={errors?.username} />
 
-            <Text style={[styles.lableStyle, {marginTop: 20}]}>Password</Text>
+            <Text style={[styles.labelStyle, {marginTop: 20}]}>Password</Text>
             <View style={styles.inputFocus}>
               <View
                 style={[styles.passView, {justifyContent: 'space-between'}]}>
@@ -118,6 +126,7 @@ const Login = ({navigation, loginAction, requesting}) => {
                         placeholder={'password'}
                         onBlur={onBlur}
                         onChangeText={onChange}
+                        placeholderColor={placeholderColor}
                         value={value}
                         showPassword={passwordView}
                         secureTextEntry={true}
@@ -157,20 +166,20 @@ const Login = ({navigation, loginAction, requesting}) => {
               }}
               loading={requesting}
               containerStyle={{
-                backgroundColor: '#00a1e9',
+                backgroundColor: buttonColor,
                 marginTop: 25,
                 width: '100%',
                 height: 52,
               }}
             />
-            <View style={styles.careateAnAccountView}>
-              <Text style={styles.careateAnAccountText}>
+            <View style={styles.createAnAccountView}>
+              <Text style={styles.createAnAccountText}>
                 Don’t have an account yet?
               </Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('Registeration')}>
+                onPress={() => navigation.navigate('Registration')}>
                 <Text
-                  style={[styles.careateAnAccountText, styles.fontWeightBold]}>
+                  style={[styles.createAnAccountText, styles.fontWeightBold]}>
                   Register now
                 </Text>
               </TouchableOpacity>
@@ -188,7 +197,7 @@ const mapStateTopProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loginAction: (data, navigation) => dispatch(loginAction(data, navigation)),
+  loginAction: (data, fcmToken) => dispatch(loginAction(data, fcmToken)),
 });
 
 export default connect(mapStateTopProps, mapDispatchToProps)(Login);

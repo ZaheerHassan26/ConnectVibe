@@ -1,12 +1,15 @@
 import {
+  ActivityIndicator,
   Image,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useLayoutEffect, useState} from 'react';
+
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as yup from 'yup';
 import {TextInput} from 'react-native-paper';
@@ -16,32 +19,35 @@ import {connect} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 
 import {emailRegex} from '../../Utils/function';
-import styles from './style';
+import {getStyles} from './style';
 import CameraModal from '../../Components/ImageModal';
-import {updateProfile as updateProfileAction} from './redux/actions';
-import {useImages} from '../../Utils/Images';
+import {
+  updateProfile as updateProfileAction,
+  getProfile as getProfileAction,
+} from './redux/actions';
 import Button from '../../Components/Button';
+import Error from '../../Components/Input/Error';
+import {useThemeColor} from '../ThemeProvider/redux/saga';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useStore} from 'react-redux';
 
 const schema = yup.object({
-  username: yup.string().trim().required(),
-  mobile_number: yup
+  name: yup.string().trim().required(),
+  phone: yup
     .string()
     .matches(/^(?:\D*\d){12}\D*$/, 'Invalid phone number')
-    .required()
     .label('Phone Number'),
-  email: yup
-    .string()
-    .matches(emailRegex, 'Enter a valid email')
-    .required()
-    .label('Email'),
-  password: yup.string().required('Password is required'),
+  email: yup.string().matches(emailRegex, 'Enter a valid email').label('Email'),
 });
 
 const EditProfile = ({
   updateProfileAction,
   requesting,
-  navigation,
   profileData,
+  theme,
+  userDetail,
+  getProfileAction,
+  navigation,
 }) => {
   const {
     control,
@@ -51,65 +57,86 @@ const EditProfile = ({
   } = useForm({
     resolver: yupResolver(schema),
   });
-
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [profileImage, setProfileImage] = useState('');
-  const [active, setActive] = useState(false);
-  const {images} = useImages();
+  const [loading, setLoading] = useState(false);
 
   const isFocused = useIsFocused();
+  const styles = getStyles(theme);
+  const store = useStore().getState();
 
-  const image = {
-    uri: null,
+  const updateProfileButton = data => {
+    const payload = new FormData();
+    payload.append('id', profileData?.id);
+    if (profileImage) {
+      payload.append('profile_image', {
+        name: profileImage.path + 'new image.jpeg',
+        type: profileImage.mime,
+        uri: profileImage.path,
+      });
+    }
+    if (data.name && data.name != profileData?.name) {
+      payload.append('name', data.name);
+    }
+    if (data.phone && data.phone != profileData?.phone) {
+      payload.append('phone', data.phone);
+    }
+    if (data.password !== undefined && data.password !== '') {
+      payload.append('new_password', data.password);
+    }
+    payload?._parts.length > 1 ? updateProfileAction(payload) : '';
   };
 
-  useLayoutEffect(() => {
-    setValue('name', profileData?.translations?.[language]?.name);
-    setValue('email', profileData?.user_email);
-    setValue('mobileNo', profileData?.phone?.substring(4));
+  useEffect(() => {
+    setLoading(true);
+    const data = {
+      id: userDetail?.id,
+    };
+    getProfileAction(data);
   }, [isFocused]);
 
-  const updatePrifileButton = data => {
-    if (!active) {
-      const payload = new FormData();
-      const city = CityData.find(item => item.label === data.city);
-      payload.append('id', profileData?.id);
-      if (profileImage) {
-        payload.append('profile_image', {
-          name: profileImage.path + 'new image.jpeg',
-          type: profileImage.mime,
-          uri: profileImage.path,
-        });
-      }
-      if (data.email.trim() != profileData?.user_email) {
-        payload.append('email', data.email);
-      }
+  useLayoutEffect(() => {
+    setProfileImage(profileData?.profile_image);
+    setValue('name', profileData?.name);
+    setValue('email', profileData?.user_email);
+    setValue('phone', profileData?.phone);
+  }, [profileData]);
 
-      if (data.mobileNo && data.mobileNo != profileData?.phone) {
-        data.mobileNo = '+' + countryCode.split('0')[2] + data.mobileNo.trim();
+  const backgroundColor = useThemeColor('primary');
+  const textColor = useThemeColor('text');
+  const headerBackgroundColor = useThemeColor('headerColor');
 
-        payload.append('phone', data.mobileNo);
-      }
-      if (data.password) {
-        payload.append('new_password', data.password);
-      }
-      payload?._parts.length > 1 ? updateProfileAction(payload, callBack) : '';
-    } else {
-      Toast.show('Please select the country and city');
-    }
-  };
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView
+      style={[styles.container, {backgroundColor: backgroundColor}]}>
+      <StatusBar
+        animated={true}
+        backgroundColor={headerBackgroundColor}
+        barStyle={'light-content'}
+      />
+      <View style={[styles.header, {backgroundColor: headerBackgroundColor}]}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{justifyContent: 'center', height: 45}}>
+          <Ionicons size={25} color={'white'} name={'arrow-back'} />
+        </TouchableOpacity>
         <Text style={styles.headerText}>Profile</Text>
       </View>
       <ScrollView>
         <View style={styles.ImgView}>
-          {image.uri ? (
-            <View style={styles.imageView}>
+          {profileImage ? (
+            <View
+              style={[
+                styles.imageView,
+                {
+                  borderColor: textColor,
+                },
+              ]}>
               <Image
                 source={
-                  profileImage ? {uri: profileImage?.path} : images.profile
+                  profileImage?.path
+                    ? {uri: profileImage?.path}
+                    : {uri: profileImage}
                 }
                 style={styles.profileImg}
               />
@@ -133,15 +160,16 @@ const EditProfile = ({
                 label="username"
                 value={value}
                 onChangeText={onChange}
-                placeholder={'Admintest'}
-                placeholderTextColor={'grey'}
-                activeUnderlineColor={'#10445C'}
+                placeholder={'AdminTest'}
+                textColor={textColor}
+                activeUnderlineColor={textColor}
+                placeholderTextColor={styles.placeholder}
                 style={styles.input}
               />
             )}
-            name="username"
+            name="name"
           />
-
+          <Error errors={errors.name} />
           <Controller
             control={control}
             render={({field: {onChange, onBlur, value}}) => (
@@ -150,13 +178,31 @@ const EditProfile = ({
                 value={value}
                 onChangeText={onChange}
                 placeholder={'example@test.com'}
-                placeholderTextColor={'grey'}
+                textColor={styles.placeholder.color}
+                placeholderTextColor={styles.placeholder}
                 style={styles.input}
-                disabled
+                editable={false}
               />
             )}
             name="email"
           />
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                label="Phone"
+                value={value}
+                onChangeText={onChange}
+                placeholder={'123456789'}
+                textColor={textColor}
+                activeUnderlineColor={textColor}
+                placeholderTextColor={styles.placeholder}
+                style={styles.input}
+              />
+            )}
+            name="phone"
+          />
+          <Error errors={errors.phone} />
 
           <Controller
             control={control}
@@ -165,9 +211,10 @@ const EditProfile = ({
                 label="Password"
                 value={value}
                 onChangeText={onChange}
+                textColor={textColor}
+                activeUnderlineColor={textColor}
                 placeholder={'12345'}
-                activeUnderlineColor={'#10445C'}
-                placeholderTextColor={'grey'}
+                placeholderTextColor={styles.placeholder}
                 style={styles.input}
               />
             )}
@@ -179,13 +226,17 @@ const EditProfile = ({
           <Button
             text={'Save'}
             loading={requesting}
-            containerStyle={styles.buttonCon}
-            onPress={handleSubmit(updatePrifileButton)}
+            containerStyle={[
+              styles.buttonCon,
+              {
+                backgroundColor: textColor,
+              },
+            ]}
+            onPress={handleSubmit(updateProfileButton)}
             disabled={requesting}
           />
         </View>
       </ScrollView>
-
       <CameraModal
         setPictureModalVisible={setShowImageUploadModal}
         pictureModalVisible={showImageUploadModal}
@@ -197,13 +248,14 @@ const EditProfile = ({
 
 const mapStateToProps = state => ({
   requesting: state?.editProfile?.requesting,
-  userDeatil: state?.login?.userDetail,
   profileData: state?.editProfile?.profile,
+  theme: state?.themes?.theme,
+  userDetail: state?.login?.userDetail?.user,
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateProfileAction: (data, callBack) =>
-    dispatch(updateProfileAction(data, callBack)),
+  getProfileAction: data => dispatch(getProfileAction(data)),
+  updateProfileAction: data => dispatch(updateProfileAction(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
