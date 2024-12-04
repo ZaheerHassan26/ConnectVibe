@@ -40,3 +40,55 @@ This project was built using the following technologies:
 - [redux-persist](https://github.com/rt2zz/redux-persist): To persist the Redux state across app restarts.
 - [AsyncStorage](https://github.com/react-native-async-storage/async-storage): Storage solution for persisting data locally in React Native apps.
 
+## Usage
+
+Follow these steps to clone and run the project:
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/ZaheerHassan26/ConnectVibe.git
+
+   cd ConnectVibe
+
+
+2. **Ensure Node.js is installed:**
+   ```bash
+   node -v  # Ensure the output is v16.x.x
+
+3. **Install Dependencies:**
+
+You can install dependencies using either Yarn or npm:
+
+- **Using Yarn:**
+
+    ```bash
+    yarn install
+    ```
+
+- **Using npm:**
+
+    ```bash
+    npm install
+    ```
+
+### Running the Project
+
+After installing the dependencies, you can run the project on both Android and iOS:
+
+- **For Android:**
+
+    ```bash
+    npx react-native run-android
+    ```
+
+- **For iOS (macOS only):**
+
+    ```bash
+    npx react-native run-ios
+    ```
+
+This will launch the app on your emulator or connected device for the respective platform.
+
+
+
+
