@@ -1,6 +1,12 @@
 # ConnectVibe
 React-Native ChatApp
 
+## Screenshots
+
+### 1. Home Screen
+![Home Screen](./screenshots/homeScreen.svg)
+
+
 ## Technologies Used
 
 This project was built using the following technologies:
