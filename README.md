@@ -3,31 +3,31 @@ React-Native ChatApp
 
 ## Screenshots
 
-### 1. Login Screen
+### 1. Login Screen  
 
 <p align="center">
-  <img src="./screenshots/splash.png" alt="Splash Screen" width="45%" />
-  <img src="./screenshots/login.svg" alt="Login Screen" width="45%" />
-</p>
+  <img src="./screenshots/splash.png" alt="Splash Screen" width="35%" height="auto" style="margin-right: 5px;" />
+  <img src="./screenshots/login.svg" alt="Login Screen" width="35%" height="auto" />
+</p>  
 
-
-### 2. Home Screen and Chat Screen
-
-<p align="center">
-  <img src="./screenshots/homeScreen.svg" alt="Home Screen" width="45%" />
-  <img src="./screenshots/chat.svg" alt="Chat Screen" width="45%" />
-</p>
-
-
-
-### Dark Mode
+### 2. Home Screen and Chat Screen  
 
 <p align="center">
-  <img src="./screenshots/registration.svg" alt="registration" width="45%" />
-  <img src="./screenshots/varificationCode.svg" alt="varificationCode" width="45%" />
-  <img src="./screenshots/homeScreen_dark.svg" alt="homeScreen_dark" width="45%" />
-  <img src="./screenshots/darkChat.svg" alt="darkChat" width="45%" />
-</p>
+  <img src="./screenshots/homeScreen.svg" alt="Home Screen" width="35%" height="auto" style="margin-right: 5px;" />
+  <img src="./screenshots/chat.svg" alt="Chat Screen" width="35%" height="auto" />
+</p>  
+
+### Dark Mode  
+
+<p align="center">
+  <img src="./screenshots/registration.svg" alt="Registration Screen" width="35%" height="auto" style="margin-right: 5px;" />
+  <img src="./screenshots/varificationCode.svg" alt="Verification Code Screen" width="35%" height="auto" style="margin-bottom: 10px;" />
+</p>  
+
+<p align="center">
+  <img src="./screenshots/homeScreen_dark.svg" alt="Home Screen Dark Mode" width="35%" height="auto" style="margin-right: 5px;" />
+  <img src="./screenshots/darkChat.svg" alt="Dark Mode Chat Screen" width="35%" height="auto" />
+</p>  
 
 
 ## Technologies Used
