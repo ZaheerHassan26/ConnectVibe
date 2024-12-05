@@ -28,6 +28,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 @end
 #endif
 
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
+@end
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -58,7 +60,50 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+  UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert |
+      UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+  [[UNUserNotificationCenter currentNotificationCenter]
+      requestAuthorizationWithOptions:authOptions
+      completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        // ...
+      }];
+
+  [application registerForRemoteNotifications];
+
+
   return YES;
+}
+
+- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
+    NSLog(@"FCM registration token: %@", fcmToken);
+    // Notify about received token.
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObject:fcmToken forKey:@"token"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:
+     @"FCMToken" object:nil userInfo:dataDict];
+    // TODO: If necessary send token to application server.
+    // Note: This callback is fired at each app startup and whenever a new token is generated.
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+  NSDictionary *userInfo = notification.request.content.userInfo;
+
+  // With swizzling disabled you must let Messaging know about the message, for Analytics
+  // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
+
+  // [START_EXCLUDE]
+  // Print message ID.
+
+  // [END_EXCLUDE]
+
+  // Print full message.
+  NSLog(@"%@", userInfo);
+
+  // Change this to your preferred presentation option
+  completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionAlert);
 }
 
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
@@ -82,6 +127,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   return initProps;
 }
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  NSLog(@"APNs device token retrieved: %@", deviceToken);
+  }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
