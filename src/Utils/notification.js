@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import messaging from '@react-native-firebase/messaging'
 import { Platform } from 'react-native'
+import navigationService from '../Navigation/NavigationService'
 
 async function requestUserPermission() {
   const authStatus = await messaging().requestPermission()
@@ -49,26 +50,22 @@ const NotificationListner = doTask => {
   messaging().setBackgroundMessageHandler(() => Promise.resolve())
 
   messaging().onNotificationOpenedApp(remoteMessage => {
-    if (remoteMessage) {
-      console.info(
-        'Notification caused app to open from background state:',
-        remoteMessage?.notification,
-        remoteMessage?.data
-      )
-      doTask(remoteMessage?.data, remoteMessage?.notification)
+    if (!!remoteMessage?.data && remoteMessage?.notification?.title) {
+      console.log('foreground notification', remoteMessage)
+      setTimeout(() => {
+        navigationService.navigate("Chat")
+      }, 500);
     }
   })
 
   messaging()
     .getInitialNotification()
     .then(remoteMessage => {
-      if (remoteMessage) {
-        console.info(
-          'Notification caused app to open from quit state:',
-          remoteMessage?.notification,
-          remoteMessage?.data
-        )
-        doTask(remoteMessage?.data, remoteMessage?.notification)
+      if (!!remoteMessage?.data && remoteMessage?.notification?.title) {
+        console.log('foreground notification', remoteMessage)
+        setTimeout(() => {
+          navigationService.navigate("Chat")
+        }, 500);
       }
     })
   messaging().onMessage(async remoteMessage => {

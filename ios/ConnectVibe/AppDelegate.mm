@@ -86,6 +86,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
     // Note: This callback is fired at each app startup and whenever a new token is generated.
 }
 
+// Handle incoming notification messages while app is in the foreground.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
        willPresentNotification:(UNNotification *)notification
          withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
@@ -104,6 +105,22 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   // Change this to your preferred presentation option
   completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionAlert);
+}
+
+
+// Handle notification messages after display notification is tapped by the user.
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void(^)(void))completionHandler {
+  NSDictionary *userInfo = response.notification.request.content.userInfo;
+
+  // With swizzling disabled you must let Messaging know about the message, for Analytics
+  // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
+
+  // Print full message.
+  NSLog(@"%@", userInfo);
+
+  completionHandler();
 }
 
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.

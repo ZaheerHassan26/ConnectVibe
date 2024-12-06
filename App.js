@@ -28,21 +28,6 @@ export default function App() {
       channelId: 'com.connectvibe',
       channelName: 'com.connectvibe'
     })
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        setTimeout(() => {
-          if (remoteMessage?.notification?.title) {
-          }
-        }, 2000)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    messaging().onNotificationOpenedApp(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage)
-    })
-
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       var localNotification = {
         id: 0, 
